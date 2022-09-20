@@ -1,6 +1,7 @@
 package com.innovation.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.innovation.backend.dto.request.MeetingRequestDto;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -94,6 +95,35 @@ public class Meeting extends Timestamped{
   //좋아요 갯수
   private Integer totalLikeCount;
 
+  //모임 생성
+  public Meeting(MeetingRequestDto requestDto, Member member){
+    this.title = requestDto.getTitle();
+    this.content = requestDto.getContent();
+    this.startDate = requestDto.getStartDate();
+    this.endDate = requestDto.getEndDate();
+    this.meetingDate = requestDto.getMeetingDate();
+    this.meetingEndDate = requestDto.getMeetingEndDate();
+    this.location = requestDto.getLocation();
+    this.online = requestDto.isOnline();
+    this.limitPeople = requestDto.getLimitPeople();
+    this.tag = requestDto.getTag();
+    this.admin = member;
+  }
+
+  //모임장 확인
+  public boolean isWrittenBy(Member member) {
+    return this.admin.getId().equals(member.getId());
+  }
+
+  //참여자 추가
+  public void plusNowPeople() {
+    this.nowPeople += 1;
+  }
+
+  //참여자 빼기
+  public void minusNowPeople() {
+    this.nowPeople -= 1;
+  }
 
 }
 

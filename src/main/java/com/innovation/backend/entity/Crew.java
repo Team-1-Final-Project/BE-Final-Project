@@ -37,5 +37,20 @@ public class Crew extends Timestamped{
   @JoinColumn(name = "MEETING_ID")
   private Meeting meetingJoin;
 
+  //모임에 크루 참여
+  public Crew(Member memberJoin, Meeting meetingJoin) {
+    this.memberJoin = memberJoin;
+    this.meetingJoin = meetingJoin;
+    this.attendance = false;
+  }
 
+  //출석시 출석상태 변경
+  public void attend() {
+    this.attendance = true;
+  }
+
+  //모임장 모임 작성시 본인 크루 참여
+  public static Crew of(Member member, Meeting meeting) {
+    return new Crew(member, meeting);
+  }
 }
