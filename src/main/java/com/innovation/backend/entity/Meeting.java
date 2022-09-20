@@ -125,6 +125,22 @@ public class Meeting extends Timestamped{
     this.nowPeople -= 1;
   }
 
+  //모임 업데이트
+  public void update(MeetingRequestDto requestDto){
+    this.title = requestDto.getTitle();
+    this.content = requestDto.getContent();
+    this.startDate = requestDto.getStartDate();
+    this.endDate = requestDto.getEndDate();
+    this.meetingDate = requestDto.getMeetingDate();
+    this.meetingEndDate = requestDto.getMeetingEndDate();
+    this.location = requestDto.getLocation();
+    this.online = requestDto.isOnline();
+    this.limitPeople = requestDto.getLimitPeople();
+    this.tag = requestDto.getTag();
+  }
+
+  //모임 상세
+
 }
 
 

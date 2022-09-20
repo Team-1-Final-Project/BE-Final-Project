@@ -49,8 +49,4 @@ public class Crew extends Timestamped{
     this.attendance = true;
   }
 
-  //모임장 모임 작성시 본인 크루 참여
-  public static Crew of(Member member, Meeting meeting) {
-    return new Crew(member, meeting);
-  }
 }
