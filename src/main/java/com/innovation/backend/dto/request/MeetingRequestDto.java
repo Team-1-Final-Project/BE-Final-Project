@@ -21,5 +21,6 @@ public class MeetingRequestDto {
   private final boolean online;
   private final int limitPeople;
   private final TagMeeting tag;
+  private final String postImg;
 
 }

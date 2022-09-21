@@ -38,6 +38,10 @@ public class Meeting extends Timestamped{
   @Column(nullable = false)
   private String content;
 
+  //모임 이미지
+  @Column
+  private String postImg;
+
   //모임 모집 시작일
   @Column(nullable = false)
   private LocalDate startDate;
@@ -59,9 +63,6 @@ public class Meeting extends Timestamped{
   @JsonIgnore
   private String location;
 
-  //모임 타입 (온라인/오프라인)
-  @Column(nullable = false)
-  private boolean online;
 
   //모임 최대 인원수
   @Column(nullable = false)
@@ -88,9 +89,9 @@ public class Meeting extends Timestamped{
   private List<Crew> Crew = new ArrayList<>();
 
   // 좋아요 정보
-  @OneToMany(mappedBy = "meetingLike", orphanRemoval = true)
-  @JsonIgnore
-  private List<HeartMeeting> LikeMeeting = new ArrayList<>();
+//  @OneToMany(mappedBy = "meetingLike", orphanRemoval = true)
+//  @JsonIgnore
+//  private List<HeartMeeting> LikeMeeting = new ArrayList<>();
 
   //좋아요 갯수
   private Integer totalLikeCount;
@@ -99,12 +100,12 @@ public class Meeting extends Timestamped{
   public Meeting(MeetingRequestDto requestDto, Member member){
     this.title = requestDto.getTitle();
     this.content = requestDto.getContent();
+    this.postImg = requestDto.getPostImg();
     this.startDate = requestDto.getStartDate();
     this.endDate = requestDto.getEndDate();
     this.meetingDate = requestDto.getMeetingDate();
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
-    this.online = requestDto.isOnline();
     this.limitPeople = requestDto.getLimitPeople();
     this.tag = requestDto.getTag();
     this.admin = member;
@@ -129,17 +130,17 @@ public class Meeting extends Timestamped{
   public void update(MeetingRequestDto requestDto){
     this.title = requestDto.getTitle();
     this.content = requestDto.getContent();
+    this.postImg = requestDto.getPostImg();
     this.startDate = requestDto.getStartDate();
     this.endDate = requestDto.getEndDate();
     this.meetingDate = requestDto.getMeetingDate();
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
-    this.online = requestDto.isOnline();
     this.limitPeople = requestDto.getLimitPeople();
     this.tag = requestDto.getTag();
   }
 
-  //모임 상세
+  //모임 상세 조회시 필요
 
 }
 
