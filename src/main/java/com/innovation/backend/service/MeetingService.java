@@ -6,6 +6,7 @@ import com.innovation.backend.entity.HeartMeeting;
 import com.innovation.backend.entity.Meeting;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.exception.CustomErrorException;
+import com.innovation.backend.exception.ErrorCode;
 import com.innovation.backend.repository.CrewRepository;
 import com.innovation.backend.repository.MeetingRepository;
 import com.innovation.backend.repository.MemberRepository;
@@ -66,13 +67,13 @@ public class MeetingService {
   public void updateMeeting(Long meetingId, MeetingRequestDto requestDto, Member member) {
     //해당 모임 찾기
     Meeting meeting = meetingRepository.findById(meetingId)
-        .orElseThrow(()-> new CustomErrorException("모임을 찾을 수 없습니다."));
+        .orElseThrow(()-> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
     //모임장과 같은 사용자인지 확인하기
     if (meeting.isWrittenBy(member)) {
       meeting.update(requestDto);
     } else {
-      throw new CustomErrorException("해당 캠페인 관리자가 아닙니다 ");
+      throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
     }
   }
 
@@ -82,13 +83,13 @@ public class MeetingService {
   public void deleteMeeting(Long meetingId, Member member) {
     //해당 모임 찾기
     Meeting meeting = meetingRepository.findById(meetingId)
-        .orElseThrow(()-> new CustomErrorException("모임을 찾을 수 없습니다."));
+        .orElseThrow(()-> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
     //모임장과 같은 사용자인지 확인하기
     if (meeting.isWrittenBy(member)) {
       meetingRepository.delete(meeting);
     } else {
-      throw new CustomErrorException("해당 캠페인 관리자가 아닙니다 ");
+      throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
     }
   }
 
