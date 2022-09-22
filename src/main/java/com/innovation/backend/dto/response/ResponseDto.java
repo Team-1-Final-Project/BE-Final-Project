@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class ResponseDto<T> {
+
   private boolean success;
   private T data;
   private ErrorCode error;
