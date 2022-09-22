@@ -23,7 +23,7 @@ public class MemberController {
     private final GoogleMemberService googleMemberService;
     private final MemberService memberService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/login/google", method = RequestMethod.GET)
     public ResponseEntity<Object> moveGoogleInitUrl() {
         String authUrl = googleConfigUtils.googleInitUrl();
         URI redirectUri;
@@ -39,10 +39,9 @@ public class MemberController {
     }
 
 
-    @RequestMapping(value = "/login/google", method = RequestMethod.GET)
+    @RequestMapping(value = "login/oauth2/code/google", method = RequestMethod.GET)
     public ResponseEntity<?> redirectGoogleLogin(@RequestParam(value = "code") String authCode, HttpServletResponse response) throws JsonProcessingException {
         return googleMemberService.googleLogin(authCode, response);
     }
-
 
 }

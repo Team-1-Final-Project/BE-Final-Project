@@ -40,11 +40,12 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/login/**").permitAll()
                 .antMatchers("/main").permitAll()
                 .antMatchers("/board" , "/board/{boardTagName}").permitAll()
                 .antMatchers("/recommends").permitAll()
                 .antMatchers("/meeting/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtSecurityConfig(SECRET_KEY, tokenProvider, userDetailsService));

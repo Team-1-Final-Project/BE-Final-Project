@@ -63,7 +63,7 @@ public class GoogleMemberService {
                 .clientId(googleConfigUtils.getGoogleClientId())
                 .clientSecret(googleConfigUtils.getGoogleSecret())
                 .code(authCode)
-                .redirectUri(googleConfigUtils.getGoogleRedirectUri())
+                .redirectUri(googleConfigUtils.getGoogleRedirectUri()) // 오류시
                 .grantType("authorization_code")
                 .build();
 
@@ -100,12 +100,13 @@ public class GoogleMemberService {
 
             String password = UUID.randomUUID().toString();
             String encodedPassword = passwordEncoder.encode(password);
+            String profileImage = userInfo.getPicture();
 
             Authority authority = Authority.valueOf("ROLE_USER");
             String provider = "google";
 
 
-            googleUser = new Member(email, encodedPassword, nickname, authority, provider);
+            googleUser = new Member(email, encodedPassword, nickname, profileImage, authority, provider);
             memberRepository.save(googleUser);
         }
         return googleUser;
