@@ -47,6 +47,7 @@ public class Member extends Timestamped {
     this.password = password;
     this.nickname = nickname;
     this.profileImage = profileImage;
+//    this.profile_image = profile_image;
     this.authority = authority;
     this.provider = provider;
   }

@@ -13,4 +13,5 @@ public class MemberResponseDto {
     private final String nickname;
     private final Authority authority;
     private final String profileImage;
+
 }
