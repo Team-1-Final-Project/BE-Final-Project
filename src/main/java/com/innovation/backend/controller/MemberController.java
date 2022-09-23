@@ -46,7 +46,7 @@ public class MemberController {
     }
 
 
-    @RequestMapping(value = "login/oauth2/code/google", method = RequestMethod.GET)
+    @RequestMapping(value = "/login/oauth2/code/google", method = RequestMethod.GET)
     public ResponseEntity<?> redirectGoogleLogin(@RequestParam(value = "code") String authCode, HttpServletResponse response) throws JsonProcessingException {
         return googleMemberService.googleLogin(authCode, response);
     }
