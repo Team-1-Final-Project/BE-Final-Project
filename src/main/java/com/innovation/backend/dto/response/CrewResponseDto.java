@@ -19,10 +19,4 @@ public class CrewResponseDto {
     this.nickname = crew.getMember().getNickname();
   }
 
-  public CrewResponseDto(Member member, Meeting meeting) {
-    this.memberId = member.getId();
-    this.meetingId = meeting.getId();
-    this.nickname = member.getNickname();
-  }
-
 }
