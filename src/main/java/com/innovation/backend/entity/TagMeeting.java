@@ -27,12 +27,12 @@ public class TagMeeting {
   @Column(nullable = false)
   private String name;
 
-  @JsonIgnore
-  @Column
-  private String relatedKeywords;
+//  @JsonIgnore
+//  @Column
+//  private String relatedKeywords;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "meeting_tag", cascade = CascadeType.ALL)
-  @JsonIgnore
-  private List<Meeting> meetings;
+//  @OneToMany(fetch = FetchType.LAZY, mappedBy = "meeting_tag", cascade = CascadeType.ALL)
+//  @JsonIgnore
+//  private List<Meeting> meetings;
 
 }
