@@ -54,6 +54,10 @@ public class MeetingController {
     return ResponseDto.success("모임이 수정되었습니다.");
   }
 
+  //모임 이미지 수정
+
+  //모임 이미지 삭제
+
 
 
   //모임 삭제
@@ -77,5 +81,5 @@ public class MeetingController {
   //모임 태그별 조회?
 
   //모임 좋아요/취소
-  
+
 }
