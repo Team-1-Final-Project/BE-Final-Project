@@ -49,7 +49,7 @@ public class MeetingService {
     //모임장 유저 정보 찾기
     Long memberId = member.getId();
     Member admin = memberRepository.findById(memberId).orElseThrow(
-        () -> new CustomErrorException(ErrorCode.NOT_FOUND_MEMBER));
+        () -> new CustomErrorException(ErrorCode.MEMBER_NOT_FOUND));
 
     //유저에 모임, 크루 추가
     List<Meeting> meetingList = admin.getMeetings();
