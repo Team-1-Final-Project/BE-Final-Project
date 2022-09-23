@@ -23,30 +23,30 @@ public class Crew extends Timestamped{
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  //출석 여부
-  @Column
-  private boolean attendance;
+  //참여 여부
+//  @Column
+//  private boolean attendance;
 
   //유저 정보
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "USER_ID",  nullable = false)
-  private Member memberJoin;
+  @JoinColumn(name = "MEMBER_ID",  nullable = false)
+  private Member member;
 
   //모임 정보
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "MEETING_ID")
-  private Meeting meetingJoin;
+  private Meeting meeting;
 
   //모임에 크루 참여
-  public Crew(Member memberJoin, Meeting meetingJoin) {
-    this.memberJoin = memberJoin;
-    this.meetingJoin = meetingJoin;
-    this.attendance = false;
+  public Crew(Member member, Meeting meeting) {
+    this.member = member;
+    this.meeting = meeting;
+//    this.attendance = false;
   }
 
-  //출석시 출석상태 변경
-  public void attend() {
-    this.attendance = true;
-  }
+  //참여시 참여상태 변경
+//  public void attend() {
+//    this.attendance = true;
+//  }
 
 }
