@@ -25,7 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class Member extends Timestamped {
 
   @Id
-  @Column(name="member_id")
+//  @Column(name="member_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 

@@ -148,6 +148,7 @@ public class MeetingController {
     try{
       meetingResponseDto = meetingService.getMeeting(meetingId);
     }catch (Exception e){
+      log.error(e.getMessage());
       return ResponseDto.fail(ErrorCode.INVALID_ERROR);
     }
     return ResponseDto.success(meetingResponseDto);
