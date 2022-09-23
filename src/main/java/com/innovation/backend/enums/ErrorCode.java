@@ -1,4 +1,4 @@
-package com.innovation.backend.exception;
+package com.innovation.backend.enums;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

@@ -6,7 +6,7 @@ import com.innovation.backend.entity.Crew;
 import com.innovation.backend.entity.Meeting;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.exception.CustomErrorException;
-import com.innovation.backend.exception.ErrorCode;
+import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.repository.CrewRepository;
 import com.innovation.backend.repository.MeetingRepository;
 import com.innovation.backend.repository.MemberRepository;

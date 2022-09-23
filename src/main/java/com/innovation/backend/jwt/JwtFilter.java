@@ -2,7 +2,7 @@ package com.innovation.backend.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.innovation.backend.dto.response.ResponseDto;
-import com.innovation.backend.exception.ErrorCode;
+import com.innovation.backend.enums.ErrorCode;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;

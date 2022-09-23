@@ -7,7 +7,7 @@ import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.enums.Authority;
 import com.innovation.backend.exception.CustomErrorException;
-import com.innovation.backend.exception.ErrorCode;
+import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.jwt.TokenDto;
 import com.innovation.backend.jwt.TokenProvider;
 import com.innovation.backend.jwt.UserDetailsImpl;
@@ -16,7 +16,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,24 +25,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @AllArgsConstructor
-@Transactional
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
-  //로그인한 사용자인지 확인
-  public Member memberFromUserDetails(UserDetails userDetails) {
-    if (userDetails instanceof UserDetailsImpl) {
-      return ((UserDetailsImpl) userDetails).getMember();
-    } else {
-      throw new CustomErrorException(ErrorCode.NEED_LOGIN);
-    }
-  }
+
     public ResponseDto<?> createMember(MemberRequestDto requestDto) {
 
-        if(!memberRepository.findByEmail(requestDto.getEmail()).isEmpty()) {
+        if(memberRepository.findByEmail(requestDto.getEmail()).isPresent()) {
             return ResponseDto.fail(ErrorCode.DUPLICATED_EMAIL);
         }
         String[] nickname = requestDto.getEmail().split("@");
@@ -98,7 +89,14 @@ public class MemberService {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         return optionalMember.orElse(null);
     }
-
+  //로그인한 사용자인지 확인
+  public Member memberFromUserDetails(UserDetails userDetails) {
+    if (userDetails instanceof UserDetailsImpl) {
+      return ((UserDetailsImpl) userDetails).getMember();
+    } else {
+      throw new CustomErrorException(ErrorCode.NEED_LOGIN);
+    }
+  }
     @Transactional
     public void putToken(Member member, HttpServletResponse response) {
         TokenDto tokenDto = tokenProvider.generateTokenDto(member);
