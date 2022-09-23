@@ -13,14 +13,14 @@ public class MeetingRequestDto {
 
   private final String title;
   private final String content;
+  private final String meetingImage;
   private final LocalDate startDate;
   private final LocalDate endDate;
   private final LocalDateTime meetingDate;
   private final LocalDateTime meetingEndDate;
   private final String location;
-  private final boolean online;
   private final int limitPeople;
   private final TagMeeting tag;
-  private final String postImg;
+
 
 }

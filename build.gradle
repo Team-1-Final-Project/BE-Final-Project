@@ -32,6 +32,9 @@ dependencies {
 	//Swagger setting
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
 
+	//s3
+	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.3.1'
+
 }
 
 tasks.named('test') {

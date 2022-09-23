@@ -40,7 +40,7 @@ public class Meeting extends Timestamped{
 
   //모임 이미지
   @Column
-  private String postImg;
+  private String meetingImage;
 
   //모임 모집 시작일
   @Column(nullable = false)
@@ -97,10 +97,10 @@ public class Meeting extends Timestamped{
   private Integer totalLikeCount;
 
   //모임 생성
-  public Meeting(MeetingRequestDto requestDto, Member member){
+  public Meeting(MeetingRequestDto requestDto, Member member, String meetingImage){
     this.title = requestDto.getTitle();
     this.content = requestDto.getContent();
-    this.postImg = requestDto.getPostImg();
+    this.meetingImage = meetingImage;
     this.startDate = requestDto.getStartDate();
     this.endDate = requestDto.getEndDate();
     this.meetingDate = requestDto.getMeetingDate();
@@ -126,11 +126,11 @@ public class Meeting extends Timestamped{
     this.nowPeople -= 1;
   }
 
-  //모임 업데이트
+  //모임 수정
   public void update(MeetingRequestDto requestDto){
     this.title = requestDto.getTitle();
     this.content = requestDto.getContent();
-    this.postImg = requestDto.getPostImg();
+    this.meetingImage = requestDto.getMeetingImage();
     this.startDate = requestDto.getStartDate();
     this.endDate = requestDto.getEndDate();
     this.meetingDate = requestDto.getMeetingDate();
@@ -138,6 +138,16 @@ public class Meeting extends Timestamped{
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
     this.tag = requestDto.getTag();
+  }
+
+  //모임 사진 수정
+  public void updateMeetingImage (String meetingImage){
+    this.meetingImage = meetingImage;
+  }
+
+  //모입 사진 삭제
+  public void deleteMeetingImage (){
+    this.meetingImage = null;
   }
 
   //모임 상세 조회시 필요
