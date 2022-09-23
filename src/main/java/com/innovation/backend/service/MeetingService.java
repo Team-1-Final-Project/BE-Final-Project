@@ -13,8 +13,10 @@ import com.innovation.backend.repository.MeetingRepository;
 import com.innovation.backend.repository.MemberRepository;
 import com.innovation.backend.util.S3Upload;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -144,14 +146,28 @@ public void deleteImage(Long meetingId,Member member) {
 
 
   //모임 전체 조회 (전체)
-//  public List<MeetingResponseDto> getAllMeeting (){
-//    List<Meeting> meetingList = meetingRepository.findAllByOrderByCreatedAtDesc();
-//
-//   return
-//  }
+  public List<MeetingResponseDto> getAllMeeting (){
+
+    List<Meeting> meetingList = meetingRepository.findAllByOrderByCreatedAtDesc();
+    List<MeetingResponseDto> meetingResponseDtoList = new ArrayList<>();
+
+    for(Meeting meeting: meetingList){
+      MeetingResponseDto meetingResponseDto = new MeetingResponseDto(meeting);
+      meetingResponseDtoList.add(meetingResponseDto);
+    }
+
+   return meetingResponseDtoList;
+  }
 
 
   //모임 상세 조회 (전체)
+  public MeetingResponseDto getMeeting(Long meetingId) {
+
+    Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(
+        ()->new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
+
+    return new MeetingResponseDto(meeting);
+  }
 
 
   //모임 태그별 조회 (전체)

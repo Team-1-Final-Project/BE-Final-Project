@@ -3,6 +3,7 @@ package com.innovation.backend.controller;
 import com.innovation.backend.dto.request.MeetingRequestDto;
 import com.innovation.backend.dto.response.MeetingResponseDto;
 import com.innovation.backend.dto.response.ResponseDto;
+import com.innovation.backend.entity.Meeting;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.service.MeetingService;
@@ -69,7 +70,7 @@ public class MeetingController {
   public ResponseDto<?> updateMeetingImage(@AuthenticationPrincipal UserDetails userDetails,@PathVariable("meetingId") Long meetingId,@RequestPart(required = false) MultipartFile image){
     Member member = memberService.memberFromUserDetails(userDetails);
     try{
-      meetingService.updateMeetingImage(meetingId,image);
+      meetingService.updateMeetingImage(meetingId,member,image);
     } catch (Exception e) {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
@@ -113,19 +114,28 @@ public class MeetingController {
   }
 
   //모임 전체 조회
-//  @GetMapping("/meeting")
-//  public ResponseDto<List<MeetingResponseDto>> getAllMeeting (){
-//    List<MeetingResponseDto> meetingResponseDtoList;
-//
-//    try {
-//      meetingResponseDtoList = meetingService.getAllMeeting();
-//    }catch (Exception e){
-//      return ResponseDto.fail(ErrorCode.INVALID_ERROR);
-//    }
-//    return ResponseDto.success(meetingResponseDtoList);
-//  }
+  @GetMapping("/meeting")
+  public ResponseDto<List<MeetingResponseDto>> getAllMeeting (){
+    List<MeetingResponseDto> meetingResponseDtoList;
+    try {
+      meetingResponseDtoList = meetingService.getAllMeeting();
+    }catch (Exception e){
+      return ResponseDto.fail(ErrorCode.INVALID_ERROR);
+    }
+    return ResponseDto.success(meetingResponseDtoList);
+  }
 
   //모임 상세 조회
+  @GetMapping ("/meeting/{meetingId}")
+  public ResponseDto<MeetingResponseDto> getMeeting (@PathVariable("meetingId") Long meetingId){
+    MeetingResponseDto meetingResponseDto;
+    try{
+      meetingResponseDto = meetingService.getMeeting(meetingId);
+    }catch (Exception e){
+      return ResponseDto.fail(ErrorCode.INVALID_ERROR);
+    }
+    return ResponseDto.success(meetingResponseDto);
+  }
 
   //모임 태그별 조회?
 
