@@ -5,7 +5,6 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-.properties
 
 ### STS ###
 .apt_generated
@@ -27,6 +26,8 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+application-s3.properties
+application.properties
 
 ### NetBeans ###
 /nbproject/private/
