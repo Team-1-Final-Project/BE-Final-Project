@@ -1,8 +1,16 @@
 package com.innovation.backend.entity;
 
-import javax.persistence.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.enums.Authority;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +28,16 @@ public class Member extends Timestamped {
   @Column(name="member_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+
+  @OneToMany(mappedBy = "member", orphanRemoval = true)
+  @JsonIgnore
+  private List<Crew> crews;
+
+  @OneToMany(mappedBy = "admin", orphanRemoval = true)
+  @JsonIgnore
+  private List<Meeting> meetings;
+
 
   @Column(nullable = false, unique = true)
   private String email;
@@ -53,3 +71,4 @@ public class Member extends Timestamped {
   }
 
 }
+

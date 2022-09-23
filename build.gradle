@@ -33,6 +33,9 @@ dependencies {
 	//Swagger setting
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.11'
 
+	//s3
+	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.3.1'
+
 	//OAuth2
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
@@ -44,7 +47,6 @@ dependencies {
 	compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
-
 
 }
 
