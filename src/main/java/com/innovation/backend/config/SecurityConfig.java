@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,6 +34,9 @@ public class SecurityConfig {
     }
 
     @Bean
+    public WebSecurityCustomizer ignoringCustomizer() { return (web) -> web.ignoring().antMatchers("/h2-console/**"); }
+
+    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().configurationSource(corsConfigurationSource);
         http.csrf().disable()
@@ -40,13 +44,20 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/google","/oauth2/**", "/css/**","/images/**","/js/**","/favicon.ico/**").permitAll()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/main").permitAll()
                 .antMatchers("/board" , "/board/{boardTagName}").permitAll()
                 .antMatchers("/recommends").permitAll()
                 .antMatchers("/meeting/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
+//                .and()
+//                .oauth2Login()
+//                .defaultSuccessUrl("/main")
+//                .failureUrl("/login/google")
                 .and()
                 .apply(new JwtSecurityConfig(SECRET_KEY, tokenProvider, userDetailsService));
         return http.build();

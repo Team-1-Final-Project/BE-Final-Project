@@ -30,7 +30,8 @@ public class Member extends Timestamped {
   @Column(nullable = false)
   private String password;
 
-  private String profile_image;
+  @Column
+  private String profileImage;
 
   @Enumerated(EnumType.STRING)
   private Authority authority;
@@ -41,14 +42,14 @@ public class Member extends Timestamped {
     return passwordEncoder.matches(password, this.password);
   }
 
-  public Member(String email, String password, String nickname, String profile_image, Authority authority, String provider){
+  public Member(String email, String nickname, String password, String profileImage, Authority authority, String provider){
     this.email = email;
     this.password = password;
     this.nickname = nickname;
-    this.profile_image = profile_image;
+    this.profileImage = profileImage;
+//    this.profile_image = profile_image;
     this.authority = authority;
     this.provider = provider;
   }
-
 
 }
