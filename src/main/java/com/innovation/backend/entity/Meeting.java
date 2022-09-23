@@ -106,7 +106,7 @@ public class Meeting extends Timestamped{
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
- //   this.tag = requestDto.getTag();
+    //   this.tag = requestDto.getTag();
     this.admin = member;
   }
 
@@ -126,7 +126,7 @@ public class Meeting extends Timestamped{
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
- //   this.tag = requestDto.getTag();
+    //   this.tag = requestDto.getTag();
   }
 
   //모임 사진 수정
@@ -134,24 +134,32 @@ public class Meeting extends Timestamped{
     this.meetingImage = meetingImage;
   }
 
-  //모입 사진 삭제
+  //모임 사진 삭제
   public void deleteMeetingImage (){
     this.meetingImage = null;
   }
 
-
-  // 크루 추가
-  public void addCrew(Crew crew) {
-    this.crews.add(crew);
+  //참가자 추가
+  public void addNowPeople(){
     this.nowPeople += 1;
   }
 
+  //참가자 빼기
+  public void minusNowPeople(){
+    this.nowPeople -= 1;
+  }
+  // 크루 추가
+  public void addCrew(Crew crew) {
+    this.crews.add(crew);
+
+  }
   // 크루 빼기
   public void deleteCrew(Crew crew) {
     this.crews.remove(crew);
-    this.nowPeople -= 1;
-  }
 
+  }
 }
+
+
 
 

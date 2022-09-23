@@ -37,11 +37,12 @@ public class MeetingController {
 
  // 모임 생성
   @PostMapping("/meeting")
-  public ResponseDto<String> createMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestPart("data") MeetingRequestDto requestDto,@RequestPart(required = false) MultipartFile image
-  ) {
+  public ResponseDto<MeetingResponseDto> createMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestPart("data") MeetingRequestDto requestDto,@RequestPart(required = false) MultipartFile image
+  ) {MeetingResponseDto meetingResponseDto;
     try {
       Member member = userDetails.getMember();
-      meetingService.createMeeting(requestDto, member,image);
+
+      meetingResponseDto = meetingService.createMeeting(requestDto, member,image);
     } catch (CustomErrorException e) {
       log.error(e.getMessage());
       return ResponseDto.fail(ErrorCode.NEED_LOGIN);
@@ -49,7 +50,7 @@ public class MeetingController {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
     }
-    return ResponseDto.success("모임이 생성되었습니다.");
+    return ResponseDto.success(meetingResponseDto);
   }
 
 

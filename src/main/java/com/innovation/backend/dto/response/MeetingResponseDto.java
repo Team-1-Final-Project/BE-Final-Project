@@ -46,7 +46,7 @@ public class MeetingResponseDto {
     this.createdAt = meeting.getCreatedAt();
     // this.tag = meeting.getTag();
     for(Crew crew : meeting.getCrews()){
-      CrewResponseDto crewResponseDto = new CrewResponseDto(meeting.getAdmin());
+      CrewResponseDto crewResponseDto = new CrewResponseDto(crew);
       crews.add(crewResponseDto);
     }
 

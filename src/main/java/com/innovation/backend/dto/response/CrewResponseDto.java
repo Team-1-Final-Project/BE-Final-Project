@@ -1,5 +1,7 @@
 package com.innovation.backend.dto.response;
 
+import com.innovation.backend.entity.Crew;
+import com.innovation.backend.entity.Meeting;
 import com.innovation.backend.entity.Member;
 import lombok.Getter;
 
@@ -7,11 +9,19 @@ import lombok.Getter;
 
 public class CrewResponseDto {
 
-  private Long memberId;
-  private String nickname;
+  private final Long memberId;
+  private final Long meetingId;
+  private final String nickname;
 
-  public CrewResponseDto(Member member) {
+  public CrewResponseDto(Crew crew){
+    this.memberId = crew.getMember().getId();
+    this.meetingId = crew.getMeeting().getId();
+    this.nickname = crew.getMember().getNickname();
+  }
+
+  public CrewResponseDto(Member member, Meeting meeting) {
     this.memberId = member.getId();
+    this.meetingId = meeting.getId();
     this.nickname = member.getNickname();
   }
 

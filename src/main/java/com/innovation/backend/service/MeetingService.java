@@ -32,7 +32,8 @@ public class MeetingService {
 
   //모임 생성
   @Transactional
-  public void createMeeting (MeetingRequestDto requestDto, Member member, MultipartFile image){
+  public MeetingResponseDto createMeeting (MeetingRequestDto requestDto, Member member, MultipartFile image){
+
     String meetingImage = null;
 
     if (image != null &&!image.isEmpty()) {
@@ -46,10 +47,12 @@ public class MeetingService {
 
     Meeting meeting = new Meeting(requestDto,member,meetingImage); // 모임 객체 생성
     Crew crew = new Crew(member,meeting);// 모임장 크루에 넣기
+    meeting.addCrew(crew);
 
 
     meetingRepository.save(meeting);
     crewRepository.save(crew);
+    return new MeetingResponseDto(meeting);
 
   }
 
