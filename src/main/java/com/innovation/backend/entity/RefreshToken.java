@@ -23,6 +23,6 @@ public class RefreshToken {
     private Member member;
 
     @Column(nullable = false)
-    private String value;
+    private String tokenValue;
 
 }
