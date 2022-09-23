@@ -6,6 +6,8 @@ import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.Meeting;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.enums.ErrorCode;
+import com.innovation.backend.exception.CustomErrorException;
+import com.innovation.backend.jwt.UserDetailsImpl;
 import com.innovation.backend.service.MeetingService;
 import com.innovation.backend.service.MemberService;
 import java.util.List;
@@ -35,12 +37,15 @@ public class MeetingController {
 
  // 모임 생성
   @PostMapping("/meeting")
-  public ResponseDto<?> createMeeting(@AuthenticationPrincipal UserDetails userDetails,@RequestPart("data") MeetingRequestDto requestDto,@RequestPart(required = false) MultipartFile image
+  public ResponseDto<String> createMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestPart("data") MeetingRequestDto requestDto,@RequestPart(required = false) MultipartFile image
   ) {
     try {
-      Member member = memberService.memberFromUserDetails(userDetails);
+      Member member = userDetails.getMember();
       meetingService.createMeeting(requestDto, member,image);
-    } catch (Exception e) {
+    } catch (CustomErrorException e) {
+      log.error(e.getMessage());
+      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
+    }catch (Exception e) {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
     }
@@ -51,14 +56,16 @@ public class MeetingController {
 
 
   //모임 수정
-
   @PutMapping("/meeting/{meetingId}")
-  public ResponseDto<?> updateMeeting(@AuthenticationPrincipal UserDetails userDetails, @PathVariable("meetingId") Long meetingId, @RequestBody MeetingRequestDto requestDto){
+  public ResponseDto<String> updateMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("meetingId") Long meetingId, @RequestBody MeetingRequestDto requestDto){
 
     try{
-      Member member = memberService.memberFromUserDetails(userDetails);
+      Member member = userDetails.getMember();
       meetingService.updateMeeting(meetingId,requestDto,member);
-    } catch (Exception e) {
+    } catch (CustomErrorException e) {
+      log.error(e.getMessage());
+      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
+    }catch (Exception e) {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
     }
@@ -67,10 +74,14 @@ public class MeetingController {
 
   //모임 이미지 수정
   @PutMapping("/meeting/{meetingId}/image")
-  public ResponseDto<?> updateMeetingImage(@AuthenticationPrincipal UserDetails userDetails,@PathVariable("meetingId") Long meetingId,@RequestPart(required = false) MultipartFile image){
-    Member member = memberService.memberFromUserDetails(userDetails);
+  public ResponseDto<String> updateMeetingImage(@AuthenticationPrincipal UserDetailsImpl userDetails,@PathVariable("meetingId") Long meetingId,@RequestPart(required = false) MultipartFile image){
+
     try{
+      Member member = userDetails.getMember();
       meetingService.updateMeetingImage(meetingId,member,image);
+    }catch (CustomErrorException e) {
+      log.error(e.getMessage());
+      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
     } catch (Exception e) {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
@@ -81,11 +92,14 @@ public class MeetingController {
 
   //모임 이미지 삭제
   @DeleteMapping("/meeting/{meetingId}/image")
-  public ResponseDto<?> deleteMeetingImage(@AuthenticationPrincipal UserDetails userDetails,@PathVariable("meetingId") Long meetingId){
+  public ResponseDto<String> deleteMeetingImage(@AuthenticationPrincipal UserDetailsImpl userDetails,@PathVariable("meetingId") Long meetingId){
 
     try{
-      Member member = memberService.memberFromUserDetails(userDetails);
+      Member member = userDetails.getMember();
       meetingService.deleteImage(meetingId,member);
+    }catch (CustomErrorException e) {
+      log.error(e.getMessage());
+      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
     } catch (Exception e) {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
@@ -99,12 +113,13 @@ public class MeetingController {
 
   //모임 삭제
   @DeleteMapping("/meeting/{meetingId}")
-  public ResponseDto<?> deleteMeeting(@AuthenticationPrincipal UserDetails userDetails, @PathVariable("meetingId") Long meetingId){
+  public ResponseDto<String> deleteMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("meetingId") Long meetingId){
     try{
-      //로그인한 사용자인지 확인
-      Member member = memberService.memberFromUserDetails(userDetails);
-
+      Member member = userDetails.getMember();
       meetingService.deleteMeeting(meetingId,member);
+    }catch (CustomErrorException e) {
+      log.error(e.getMessage());
+      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
     }catch (Exception e) {
       log.error(e.getMessage());
       return ResponseDto.fail(ErrorCode.INVALID_ERROR);

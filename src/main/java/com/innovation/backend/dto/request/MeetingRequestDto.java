@@ -14,9 +14,9 @@ public class MeetingRequestDto {
   private final String title;
   private final String content;
   private final String meetingImage;
-  private final LocalDate startDate;
-  private final LocalDate endDate;
-  private final LocalDateTime meetingDate;
+  private final LocalDate joinStartDate;
+  private final LocalDate joinEndDate;
+  private final LocalDateTime meetingStartDate;
   private final LocalDateTime meetingEndDate;
   private final String location;
   private final int limitPeople;

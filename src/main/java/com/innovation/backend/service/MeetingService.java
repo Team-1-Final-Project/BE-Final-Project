@@ -5,9 +5,8 @@ import com.innovation.backend.dto.response.MeetingResponseDto;
 import com.innovation.backend.entity.Crew;
 import com.innovation.backend.entity.Meeting;
 import com.innovation.backend.entity.Member;
-import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.enums.ErrorCode;
-import com.innovation.backend.jwt.UserDetailsImpl;
+import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.repository.CrewRepository;
 import com.innovation.backend.repository.MeetingRepository;
 import com.innovation.backend.repository.MemberRepository;
@@ -15,23 +14,20 @@ import com.innovation.backend.util.S3Upload;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class MeetingService {
 
   private final MeetingRepository meetingRepository;
   private final MemberRepository memberRepository;
-
   private final CrewRepository crewRepository;
-
   private final S3Upload s3Upload;
 
   //모임 생성
@@ -39,30 +35,18 @@ public class MeetingService {
   public void createMeeting (MeetingRequestDto requestDto, Member member, MultipartFile image){
     String meetingImage = null;
 
-    if (!image.isEmpty()) {
+    if (image != null &&!image.isEmpty()) {
       try {
         meetingImage = s3Upload.uploadFiles(image, "images");
-        System.out.println(meetingImage);
+       log.info(meetingImage);
       } catch (IOException e) {
-        e.printStackTrace();
+        log.error(e.getMessage());
       }
     }
 
     Meeting meeting = new Meeting(requestDto,member,meetingImage); // 모임 객체 생성
     Crew crew = new Crew(member,meeting);// 모임장 크루에 넣기
 
-    //모임장 유저 정보 찾기
-    Long memberId = member.getId();
-    Member admin = memberRepository.findById(memberId).orElseThrow(
-        () -> new CustomErrorException(ErrorCode.MEMBER_NOT_FOUND));
-
-    //유저에 모임, 크루 추가
-    List<Meeting> meetingList = admin.getMeetings();
-    meetingList.add(meeting);
-    List<Crew> crewList = admin.getCrews();
-    crewList.add(crew);
-    List<Crew> meetingCrewList = meeting.getCrew();
-    meetingCrewList.add(crew);
 
     meetingRepository.save(meeting);
     crewRepository.save(crew);
@@ -94,7 +78,7 @@ public class MeetingService {
     String meetingImage = meeting.getMeetingImage();
 //모임장과 같은 유저인지 확인하기
     if (meeting.isWrittenBy(member)) {
-      if (!image.isEmpty()) {
+      if (image != null &&!image.isEmpty()) {
         try {
           s3Upload.fileDelete(meetingImage);
           meetingImage = s3Upload.uploadFiles(image, "images");

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,21 +45,21 @@ public class Meeting extends Timestamped{
 
   //모임 모집 시작일
   @Column(nullable = false)
-  private LocalDate startDate;
+  private LocalDate joinStartDate;
 
   //모임 모집 종료일
   @Column(nullable = false)
-  private LocalDate endDate;
+  private LocalDate joinEndDate;
 
   //모임 시작일
   @Column(nullable = false)
-  private LocalDateTime meetingDate;
+  private LocalDateTime meetingStartDate;
 
   //모임 종료일
   @Column(nullable = false)
   private LocalDateTime meetingEndDate;
 
-  //모임 지역?
+  //모임 지역
   @Column(nullable = false)
   @JsonIgnore
   private String location;
@@ -84,26 +85,24 @@ public class Meeting extends Timestamped{
   private Member admin;
 
   //참여자 정보->crew
-  @OneToMany(mappedBy = "meetingJoin", orphanRemoval = true)
+  @OneToMany(mappedBy = "meeting", cascade = CascadeType.REMOVE,orphanRemoval = true)
   @JsonIgnore
-  private List<Crew> Crew = new ArrayList<>();
+  private List<Crew> crews = new ArrayList<>();
 
   // 좋아요 정보
 //  @OneToMany(mappedBy = "meetingLike", orphanRemoval = true)
 //  @JsonIgnore
 //  private List<HeartMeeting> LikeMeeting = new ArrayList<>();
 
-  //좋아요 갯수
-  private Integer totalLikeCount;
 
   //모임 생성
   public Meeting(MeetingRequestDto requestDto, Member member, String meetingImage){
     this.title = requestDto.getTitle();
     this.content = requestDto.getContent();
     this.meetingImage = meetingImage;
-    this.startDate = requestDto.getStartDate();
-    this.endDate = requestDto.getEndDate();
-    this.meetingDate = requestDto.getMeetingDate();
+    this.joinStartDate = requestDto.getJoinStartDate();
+    this.joinEndDate = requestDto.getJoinEndDate();
+    this.meetingStartDate = requestDto.getMeetingStartDate();
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
@@ -116,24 +115,14 @@ public class Meeting extends Timestamped{
     return this.admin.getId().equals(member.getId());
   }
 
-  //참여자 추가
-  public void plusNowPeople() {
-    this.nowPeople += 1;
-  }
-
-  //참여자 빼기
-  public void minusNowPeople() {
-    this.nowPeople -= 1;
-  }
-
   //모임 수정
   public void update(MeetingRequestDto requestDto){
     this.title = requestDto.getTitle();
     this.content = requestDto.getContent();
     this.meetingImage = requestDto.getMeetingImage();
-    this.startDate = requestDto.getStartDate();
-    this.endDate = requestDto.getEndDate();
-    this.meetingDate = requestDto.getMeetingDate();
+    this.joinStartDate = requestDto.getJoinStartDate();
+    this.joinEndDate = requestDto.getJoinEndDate();
+    this.meetingStartDate = requestDto.getMeetingStartDate();
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
@@ -150,7 +139,18 @@ public class Meeting extends Timestamped{
     this.meetingImage = null;
   }
 
-  //모임 상세 조회시
+
+  // 크루 추가
+  public void addCrew(Crew crew) {
+    this.crews.add(crew);
+    this.nowPeople += 1;
+  }
+
+  // 크루 빼기
+  public void deleteCrew(Crew crew) {
+    this.crews.remove(crew);
+    this.nowPeople -= 1;
+  }
 
 }
 

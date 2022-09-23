@@ -30,7 +30,7 @@ public class Member extends Timestamped {
   private Long id;
 
 
-  @OneToMany(mappedBy = "memberJoin", orphanRemoval = true)
+  @OneToMany(mappedBy = "member", orphanRemoval = true)
   @JsonIgnore
   private List<Crew> crews;
 

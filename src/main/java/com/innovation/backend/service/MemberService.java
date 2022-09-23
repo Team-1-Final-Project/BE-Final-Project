@@ -89,14 +89,6 @@ public class MemberService {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         return optionalMember.orElse(null);
     }
-  //로그인한 사용자인지 확인
-  public Member memberFromUserDetails(UserDetails userDetails) {
-    if (userDetails instanceof UserDetailsImpl) {
-      return ((UserDetailsImpl) userDetails).getMember();
-    } else {
-      throw new CustomErrorException(ErrorCode.NEED_LOGIN);
-    }
-  }
     @Transactional
     public void putToken(Member member, HttpServletResponse response) {
         TokenDto tokenDto = tokenProvider.generateTokenDto(member);
