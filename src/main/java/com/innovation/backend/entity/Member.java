@@ -62,10 +62,9 @@ public class Member extends Timestamped {
 
   public Member(String email, String nickname, String password, String profileImage, Authority authority, String provider){
     this.email = email;
-    this.password = password;
     this.nickname = nickname;
+    this.password = password;
     this.profileImage = profileImage;
-//    this.profile_image = profile_image;
     this.authority = authority;
     this.provider = provider;
   }
