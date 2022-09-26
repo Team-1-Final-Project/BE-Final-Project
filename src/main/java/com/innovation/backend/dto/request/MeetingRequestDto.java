@@ -20,7 +20,7 @@ public class MeetingRequestDto {
   private final LocalDateTime meetingEndDate;
   private final String location;
   private final int limitPeople;
-//  private final TagMeeting tag;
+  private final TagMeeting tag;
 
 
 }

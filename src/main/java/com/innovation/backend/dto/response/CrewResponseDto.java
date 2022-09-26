@@ -1,8 +1,6 @@
 package com.innovation.backend.dto.response;
 
 import com.innovation.backend.entity.Crew;
-import com.innovation.backend.entity.Meeting;
-import com.innovation.backend.entity.Member;
 import lombok.Getter;
 
 @Getter
