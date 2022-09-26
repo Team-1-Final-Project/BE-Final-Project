@@ -1,34 +1,40 @@
 package com.innovation.backend.service;
 
+
 import com.innovation.backend.dto.request.MemberRequestDto;
 import com.innovation.backend.dto.response.MemberResponseDto;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.enums.Authority;
-import com.innovation.backend.exception.ErrorCode;
+import com.innovation.backend.exception.CustomErrorException;
+import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.jwt.TokenDto;
 import com.innovation.backend.jwt.TokenProvider;
+import com.innovation.backend.jwt.UserDetailsImpl;
 import com.innovation.backend.repository.MemberRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Optional;
-
+@Slf4j
 @Service
-@Transactional
-@RequiredArgsConstructor
+@AllArgsConstructor
+//@RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
+
     public ResponseDto<?> createMember(MemberRequestDto requestDto) {
 
-        if(!memberRepository.findByEmail(requestDto.getEmail()).isEmpty()) {
+        if(memberRepository.findByEmail(requestDto.getEmail()).isPresent()) {
             return ResponseDto.fail(ErrorCode.DUPLICATED_EMAIL);
         }
         String[] nickname = requestDto.getEmail().split("@");
@@ -83,7 +89,6 @@ public class MemberService {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         return optionalMember.orElse(null);
     }
-
     @Transactional
     public void putToken(Member member, HttpServletResponse response) {
         TokenDto tokenDto = tokenProvider.generateTokenDto(member);
@@ -92,3 +97,4 @@ public class MemberService {
         response.addHeader("Access-Token-Expire-Time", tokenDto.getAccessTokenExpiresIn().toString());
     }
 }
+
