@@ -3,7 +3,6 @@ package com.innovation.backend.controller;
 import com.innovation.backend.dto.request.MeetingRequestDto;
 import com.innovation.backend.dto.response.MeetingResponseDto;
 import com.innovation.backend.dto.response.ResponseDto;
-import com.innovation.backend.entity.Meeting;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.exception.CustomErrorException;
@@ -14,7 +13,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,7 +43,7 @@ public class MeetingController {
       meetingResponseDto = meetingService.createMeeting(requestDto, member,image);
     } catch (CustomErrorException e) {
       log.error(e.getMessage());
-      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
+      return ResponseDto.fail(e.getErrorCode());
     }catch (Exception e) {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
@@ -65,7 +63,7 @@ public class MeetingController {
       meetingService.updateMeeting(meetingId,requestDto,member);
     } catch (CustomErrorException e) {
       log.error(e.getMessage());
-      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
+      return ResponseDto.fail(e.getErrorCode());
     }catch (Exception e) {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
@@ -82,7 +80,7 @@ public class MeetingController {
       meetingService.updateMeetingImage(meetingId,member,image);
     }catch (CustomErrorException e) {
       log.error(e.getMessage());
-      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
+      return ResponseDto.fail(e.getErrorCode());
     } catch (Exception e) {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
@@ -100,12 +98,12 @@ public class MeetingController {
       meetingService.deleteImage(meetingId,member);
     }catch (CustomErrorException e) {
       log.error(e.getMessage());
-      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
+      return ResponseDto.fail(e.getErrorCode());
     } catch (Exception e) {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
     }
-    return ResponseDto.success("모임 사진이 수정되었습니다.");
+    return ResponseDto.success("모임 사진이 삭제 되었습니다.");
 
   }
 
@@ -120,7 +118,7 @@ public class MeetingController {
       meetingService.deleteMeeting(meetingId,member);
     }catch (CustomErrorException e) {
       log.error(e.getMessage());
-      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
+      return ResponseDto.fail(e.getErrorCode());
     }catch (Exception e) {
       log.error(e.getMessage());
       return ResponseDto.fail(ErrorCode.INVALID_ERROR);
@@ -147,7 +145,10 @@ public class MeetingController {
     MeetingResponseDto meetingResponseDto;
     try{
       meetingResponseDto = meetingService.getMeeting(meetingId);
-    }catch (Exception e){
+    }catch (CustomErrorException e) {
+    log.error(e.getMessage());
+    return ResponseDto.fail(e.getErrorCode());
+  }catch (Exception e){
       log.error(e.getMessage());
       return ResponseDto.fail(ErrorCode.INVALID_ERROR);
     }

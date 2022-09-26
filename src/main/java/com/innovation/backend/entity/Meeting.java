@@ -106,7 +106,7 @@ public class Meeting extends Timestamped{
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
-    //   this.tag = requestDto.getTag();
+//    this.tag = requestDto.getTag();
     this.admin = member;
   }
 
@@ -126,7 +126,7 @@ public class Meeting extends Timestamped{
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
-    //   this.tag = requestDto.getTag();
+//    this.tag = requestDto.getTag();
   }
 
   //모임 사진 수정
@@ -148,6 +148,7 @@ public class Meeting extends Timestamped{
   public void minusNowPeople(){
     this.nowPeople -= 1;
   }
+
   // 크루 추가
   public void addCrew(Crew crew) {
     this.crews.add(crew);

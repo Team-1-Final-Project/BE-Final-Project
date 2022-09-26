@@ -2,6 +2,7 @@ package com.innovation.backend.dto.response;
 
 import com.innovation.backend.entity.Crew;
 import com.innovation.backend.entity.Meeting;
+import com.innovation.backend.entity.TagMeeting;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,15 +21,16 @@ public class MeetingResponseDto {
   private final LocalDateTime meetingStartDate;
   private final LocalDateTime meetingEndDate;
   private final String location;
+  private final String meetingImage;
   private final int limitPeople;
   private final int nowPeople;
   private final LocalDateTime createdAt;
   private final MemberResponseDto admin;
 
-  // private  TagMeeting tag;
+ //  private TagMeeting tag;
   // private  Integer heartNums;
 
-  //리스트 모임에 가입한 유저 목록 (프로필이미지, 이름,보유 뱃지? )
+  //리스트 모임에 가입한 유저 목록
   private final List<CrewResponseDto> crews = new ArrayList<>();
 
   public MeetingResponseDto (Meeting meeting){
@@ -40,11 +42,12 @@ public class MeetingResponseDto {
     this.meetingStartDate = meeting.getMeetingStartDate();
     this.meetingEndDate = meeting.getMeetingEndDate();
     this.location = meeting.getLocation();
+    this.meetingImage = meeting.getMeetingImage();
     this.limitPeople = meeting.getLimitPeople();
     this.nowPeople = meeting.getNowPeople();
+//    this.tag = meeting.getTag();
     this.admin = new MemberResponseDto(meeting.getAdmin()); //모임장
     this.createdAt = meeting.getCreatedAt();
-    // this.tag = meeting.getTag();
     for(Crew crew : meeting.getCrews()){
       CrewResponseDto crewResponseDto = new CrewResponseDto(crew);
       crews.add(crewResponseDto);
