@@ -65,14 +65,6 @@ public class CrewService {
 
   }
 
-  //모임 참여 인원 수 조회
-  public Long getCrewCount (Long meetingId){
-    Meeting meeting = meetingRepository.findById(meetingId)
-        .orElseThrow(()-> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
-
-    return crewRepository.countByMeeting(meeting);
-  }
-
   //모임 참여 유저 리스트 조회
   public List<CrewResponseDto> getCrewList (Long meetingId){
     Meeting meeting = meetingRepository.findById(meetingId)

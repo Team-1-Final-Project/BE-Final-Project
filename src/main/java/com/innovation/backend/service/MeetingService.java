@@ -9,7 +9,6 @@ import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.repository.CrewRepository;
 import com.innovation.backend.repository.MeetingRepository;
-import com.innovation.backend.repository.MemberRepository;
 import com.innovation.backend.util.S3Upload;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class MeetingService {
 
   private final MeetingRepository meetingRepository;
-  private final MemberRepository memberRepository;
   private final CrewRepository crewRepository;
   private final S3Upload s3Upload;
 
@@ -39,7 +37,7 @@ public class MeetingService {
     if (image != null &&!image.isEmpty()) {
       try {
         meetingImage = s3Upload.uploadFiles(image, "images");
-       log.info(meetingImage);
+        log.info(meetingImage);
       } catch (IOException e) {
         log.error(e.getMessage());
       }
@@ -79,7 +77,7 @@ public class MeetingService {
         .orElseThrow(()-> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
     String meetingImage = meeting.getMeetingImage();
-//모임장과 같은 유저인지 확인하기
+    //모임장과 같은 유저인지 확인하기
     if (meeting.isWrittenBy(member)) {
       if (image != null &&!image.isEmpty()) {
         try {
@@ -113,23 +111,23 @@ public class MeetingService {
   }
 
   //모임 이미지 삭제
-@Transactional
-public void deleteImage(Long meetingId,Member member) {
-  //해당 모임 찾기
-  Meeting meeting = meetingRepository.findById(meetingId)
-      .orElseThrow(()-> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
+  @Transactional
+  public void deleteImage(Long meetingId,Member member) {
+    //해당 모임 찾기
+    Meeting meeting = meetingRepository.findById(meetingId)
+        .orElseThrow(()-> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
-  String meetingImage = meeting.getMeetingImage();
+    String meetingImage = meeting.getMeetingImage();
 
-  //모임장과 같은 유저인지 확인하기
-  if (meeting.isWrittenBy(member)) {
-  meeting.deleteMeetingImage();//db에서 null로 바꿔줌
-  s3Upload.fileDelete(meetingImage);//S3에서 사진 삭제
-  } else {
-    throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
+    //모임장과 같은 유저인지 확인하기
+    if (meeting.isWrittenBy(member)) {
+      meeting.deleteMeetingImage();//db에서 null로 바꿔줌
+      s3Upload.fileDelete(meetingImage);//S3에서 사진 삭제
+    } else {
+      throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
+    }
+
   }
-
-}
 
 
   //모임 전체 조회 (전체)
@@ -143,7 +141,7 @@ public void deleteImage(Long meetingId,Member member) {
       meetingResponseDtoList.add(meetingResponseDto);
     }
 
-   return meetingResponseDtoList;
+    return meetingResponseDtoList;
   }
 
 
@@ -158,6 +156,8 @@ public void deleteImage(Long meetingId,Member member) {
 
 
   //모임 태그별 조회 (전체)
+
+  //참여한 모임만 조회 (사용자)
 
 
   //모임 좋아요 토글

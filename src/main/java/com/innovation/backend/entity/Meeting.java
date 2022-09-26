@@ -74,9 +74,9 @@ public class Meeting extends Timestamped{
   private int nowPeople = 1;
 
   //모임 태그
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "TAG_NAME",nullable = false)
-  private TagMeeting tag;
+//  @ManyToOne(fetch = FetchType.LAZY)
+//  @JoinColumn(name = "TAG_NAME",nullable = false)
+//  private TagMeeting tag;
 
   //모임장 정보=>admin
   @ManyToOne(fetch = FetchType.LAZY)
@@ -106,7 +106,7 @@ public class Meeting extends Timestamped{
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
-    this.tag = requestDto.getTag();
+//    this.tag = requestDto.getTag();
     this.admin = member;
   }
 
@@ -126,7 +126,7 @@ public class Meeting extends Timestamped{
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
-    this.tag = requestDto.getTag();
+//    this.tag = requestDto.getTag();
   }
 
   //모임 사진 수정
