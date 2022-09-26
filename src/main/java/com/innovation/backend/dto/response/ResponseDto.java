@@ -1,6 +1,6 @@
 package com.innovation.backend.dto.response;
 
-import com.innovation.backend.exception.ErrorCode;
+import com.innovation.backend.enums.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -4,13 +4,12 @@ import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.entity.RefreshToken;
 import com.innovation.backend.enums.Authority;
-import com.innovation.backend.exception.ErrorCode;
+import com.innovation.backend.enums.ErrorCode;
 
 import com.innovation.backend.repository.RefreshTokenRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -63,7 +62,7 @@ public class TokenProvider {
         RefreshToken refreshTokenObject = RefreshToken.builder()
                 .id(member.getId())
                 .member(member)
-                .value(refreshToken)
+                .tokenValue(refreshToken)
                 .build();
 
         refreshTokenRepository.save(refreshTokenObject);
