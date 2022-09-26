@@ -106,7 +106,7 @@ public class GoogleMemberService {
             String provider = "google";
 
 
-            googleUser = new Member(email, encodedPassword, nickname, profileImage, authority, provider);
+            googleUser = new Member(email, nickname, encodedPassword, profileImage, authority, provider);
             memberRepository.save(googleUser);
         }
         return googleUser;
