@@ -32,7 +32,7 @@ public class MeetingService {
   @Transactional
   public MeetingResponseDto createMeeting (MeetingRequestDto requestDto, Member member, MultipartFile image){
 
-    String meetingImage = null;
+    String meetingImage=null;
 
     if (image != null &&!image.isEmpty()) {
       try {

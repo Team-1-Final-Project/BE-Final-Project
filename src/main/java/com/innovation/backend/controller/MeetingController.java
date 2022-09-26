@@ -105,7 +105,7 @@ public class MeetingController {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
     }
-    return ResponseDto.success("모임 사진이 수정되었습니다.");
+    return ResponseDto.success("모임 사진이 삭제 되었습니다.");
 
   }
 

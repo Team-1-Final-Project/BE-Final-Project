@@ -21,6 +21,7 @@ public class MeetingResponseDto {
   private final LocalDateTime meetingStartDate;
   private final LocalDateTime meetingEndDate;
   private final String location;
+  private final String meetingImage;
   private final int limitPeople;
   private final int nowPeople;
   private final LocalDateTime createdAt;
@@ -41,6 +42,7 @@ public class MeetingResponseDto {
     this.meetingStartDate = meeting.getMeetingStartDate();
     this.meetingEndDate = meeting.getMeetingEndDate();
     this.location = meeting.getLocation();
+    this.meetingImage = meeting.getMeetingImage();
     this.limitPeople = meeting.getLimitPeople();
     this.nowPeople = meeting.getNowPeople();
 //    this.tag = meeting.getTag();

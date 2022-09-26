@@ -59,6 +59,11 @@ public class CrewService {
     Crew crew = crewRepository.findByMemberAndMeeting(member,meeting)
         .orElseThrow(()->new CustomErrorException(ErrorCode.NEVER_JOIN));
 
+    //모임장인 경우 참여취소 안됨
+    if(meeting.getAdmin().equals(member)){
+      throw new CustomErrorException(ErrorCode.ADMIN_CANNOT_CANCEL_JOIN);
+    }
+
     crewRepository.deleteByMemberAndMeeting(member,meeting);
     meeting.minusNowPeople();
     meeting.deleteCrew(crew);
