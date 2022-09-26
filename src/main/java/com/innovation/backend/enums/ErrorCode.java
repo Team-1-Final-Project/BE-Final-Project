@@ -34,7 +34,8 @@ public enum ErrorCode {
   NOT_ADMIN_OF_MEETING("NOT_ADMIN_OF_MEETING","해당 모임 관리자가 아닙니다."),
   NOT_FOUND_MEETING("NOT_FOUND_MEETING","모임을 찾을 수 없습니다."),
   ALREADY_JOIN("ALREADY_JOIN","이미 참여한 모임입니다."),
-  NEVER_JOIN("NEVER_JOIN","참여 신청하지 않은 모임입니다.");
+  NEVER_JOIN("NEVER_JOIN","참여 신청하지 않은 모임입니다."),
+  ADMIN_CANNOT_CANCEL_JOIN("ADMIN_CANNOT_CANCEL_JOIN", "모임장은 탈퇴할 수 없습니다.");
 
   private final String code;
   private final String message;

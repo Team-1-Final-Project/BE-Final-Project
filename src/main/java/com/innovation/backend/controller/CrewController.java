@@ -32,7 +32,7 @@ public class CrewController {
       crewService.join(meetingId,member.getId());
     }catch(CustomErrorException e) {
       log.error(e.getMessage());
-      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
+      return ResponseDto.fail(e.getErrorCode());
     }catch (Exception e) {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
@@ -48,7 +48,7 @@ public class CrewController {
       crewService.cancelJoin(meetingId, member.getId());
     }catch(CustomErrorException e) {
       log.error(e.getMessage());
-      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
+      return ResponseDto.fail(e.getErrorCode());
     }catch (Exception e) {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
@@ -64,7 +64,7 @@ public class CrewController {
       crewResponseDtoList = crewService.getCrewList(meetingId);
     }catch(CustomErrorException e) {
       log.error(e.getMessage());
-      return ResponseDto.fail(ErrorCode.NEED_LOGIN);
+      return ResponseDto.fail(e.getErrorCode());
     }catch (Exception e) {
       log.error("error: ", e);
       return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
