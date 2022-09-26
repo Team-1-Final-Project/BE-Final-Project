@@ -139,7 +139,7 @@ public class KakaoMemberService {
             String profileImage = kakaoUserInfoDto.getProfileImage();
 
             String nickname = kakaoUserInfoDto.getNickname();
-            kakaoUser = new Member(email, encodedPassword, nickname, profileImage, authority, provider);
+            kakaoUser = new Member(email, nickname, encodedPassword, profileImage, authority, provider);
 
         }
         memberRepository.save(kakaoUser);
