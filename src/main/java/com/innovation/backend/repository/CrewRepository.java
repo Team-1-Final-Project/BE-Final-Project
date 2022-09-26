@@ -9,7 +9,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CrewRepository extends JpaRepository<Crew, Long> {
   Optional<Crew> findByMemberAndMeeting(Member member, Meeting meeting);
+  List<Crew> findByMeeting (Meeting meeting);
 
   void deleteByMemberAndMeeting (Member member, Meeting meeting);
+
+  Long countByMeeting (Meeting meeting);
 
 }

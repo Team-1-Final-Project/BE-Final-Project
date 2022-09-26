@@ -9,6 +9,8 @@ import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.repository.CrewRepository;
 import com.innovation.backend.repository.MeetingRepository;
 import com.innovation.backend.repository.MemberRepository;
+import java.util.ArrayList;
+import java.util.List;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class CrewService {
   private final MemberRepository memberRepository;
   private final MeetingRepository meetingRepository;
 
-  //모임 참여하기
+  //모임 참여
   @Transactional
   public CrewResponseDto join(Long meetingId, Long memberId){
     Member member = memberRepository.findById(memberId)
@@ -44,7 +46,7 @@ public class CrewService {
 
   }
 
-  //모임 참여 취소하기
+  //모임 참여 취소
   @Transactional
   public void cancelJoin(Long meetingId, Long memberId){
     Member member = memberRepository.findById(memberId)
@@ -63,9 +65,26 @@ public class CrewService {
 
   }
 
-  //모임 참여 인원 불러오기
+  //모임 참여 인원 수 조회
+  public Long getCrewCount (Long meetingId){
+    Meeting meeting = meetingRepository.findById(meetingId)
+        .orElseThrow(()-> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
-  //모임 참여 유저 조회하기
+    return crewRepository.countByMeeting(meeting);
+  }
 
-  //출석 체크하기?
+  //모임 참여 유저 리스트 조회
+  public List<CrewResponseDto> getCrewList (Long meetingId){
+    Meeting meeting = meetingRepository.findById(meetingId)
+        .orElseThrow(()-> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
+
+    List<Crew> crewList = crewRepository.findByMeeting(meeting);
+    List<CrewResponseDto> crewResponseDtoList = new ArrayList<>();
+
+    for(Crew crew : crewList){
+      CrewResponseDto crewResponseDto = new CrewResponseDto(crew);
+      crewResponseDtoList.add(crewResponseDto);
+    }
+    return crewResponseDtoList;
+  }
 }
