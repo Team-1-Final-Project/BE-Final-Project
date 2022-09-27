@@ -157,13 +157,24 @@ public class MeetingService {
     String meetingImage = meeting.getMeetingImage();
     //모임장과 같은 유저인지 확인하기
     if (meeting.isWrittenBy(member)) {
-      if (image != null && !image.isEmpty()) {
-        try {
-          s3Upload.fileDelete(meetingImage);
-          meetingImage = s3Upload.uploadFiles(image, "images");
-          System.out.println(meetingImage);
-        } catch (IOException e) {
-          e.printStackTrace();
+      if(meetingImage != null){
+        if ( !image.isEmpty()) {
+          try {
+            s3Upload.fileDelete(meetingImage);
+            meetingImage = s3Upload.uploadFiles(image, "images");
+            System.out.println(meetingImage);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+      }else {
+        if ( !image.isEmpty()) {
+          try {
+            meetingImage = s3Upload.uploadFiles(image, "images");
+            System.out.println(meetingImage);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
         }
       }
     } else {
