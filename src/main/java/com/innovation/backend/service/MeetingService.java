@@ -181,6 +181,7 @@ public class MeetingService {
       throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
     }
     meeting.updateMeetingImage(meetingImage);
+    meetingRepository.save(meeting);
   }
 
 
