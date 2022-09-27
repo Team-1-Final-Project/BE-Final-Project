@@ -25,7 +25,7 @@ public class CrewService {
 
   //모임 참여
   @Transactional
-  public CrewResponseDto join(Long meetingId, Long memberId){
+  public void join(Long meetingId, Long memberId){
     Member member = memberRepository.findById(memberId)
         .orElseThrow(()-> new CustomErrorException(ErrorCode.MEMBER_NOT_FOUND));
 
@@ -41,8 +41,6 @@ public class CrewService {
     meeting.addNowPeople();
 
     crewRepository.save(crew);
-
-    return new CrewResponseDto(crew);
 
   }
 
