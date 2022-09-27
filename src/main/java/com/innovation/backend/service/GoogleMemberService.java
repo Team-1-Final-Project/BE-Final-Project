@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.innovation.backend.config.GoogleConfigUtils;
 import com.innovation.backend.dto.GoogleLoginDto;
-import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.enums.Authority;
 import com.innovation.backend.jwt.TokenDto;
@@ -28,6 +27,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +42,7 @@ public class GoogleMemberService {
     private final GoogleConfigUtils googleConfigUtils;
     private final TokenProvider tokenProvider;
 
-    public ResponseEntity<?> googleLogin(String authCode, HttpServletResponse response) throws JsonProcessingException {
+    public RedirectView googleLogin(String authCode, HttpServletResponse response) throws JsonProcessingException {
         GoogleLoginDto userInfo = getGoogleUserInfo(authCode);
 
         Member googleUser = signupGoogleUserIfNeeded(userInfo);
@@ -52,7 +52,11 @@ public class GoogleMemberService {
         TokenDto tokenDto = tokenProvider.generateTokenDto(googleUser);
         response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
 
-        return ResponseEntity.ok().body(ResponseDto.success("Google OAuth 로그인 성공"));
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("http://localhost:3000");
+        return redirectView;
+
+//        return ResponseEntity.ok().body(ResponseDto.success("Google OAuth 로그인 성공"));
     }
 
 
