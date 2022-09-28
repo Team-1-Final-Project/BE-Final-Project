@@ -34,11 +34,8 @@ public class MeetingService {
   private final MeetingRepository meetingRepository;
   private final CrewRepository crewRepository;
   private final S3Upload s3Upload;
-
   private final TagMeetingRepository tagMeetingRepository;
-
   private final MeetingTagConnectionRepository meetingTagConnectionRepository;
-
 
   //모임 생성
   @Transactional
@@ -119,7 +116,7 @@ public class MeetingService {
       for (Long newMeetingTagId : newTagMeetingIdList){
         TagMeeting tagMeeting
             = tagMeetingRepository.findById(newMeetingTagId)
-            .orElseThrow(() -> new CustomErrorException(ErrorCode.ENTITY_NOT_FOUND));
+            .orElseThrow(() -> new CustomErrorException(ErrorCode.TAG_NOT_FOUND));
 
         MeetingTagConnection meetingTagConnection = new MeetingTagConnection(meeting, tagMeeting);
         meetingTagConnection = meetingTagConnectionRepository.save(meetingTagConnection);
@@ -140,7 +137,6 @@ public class MeetingService {
         return meetingTagConnection;
       }
     }
-
     return null;
   }
 
@@ -275,6 +271,5 @@ public class MeetingService {
 
     meeting.setMeetingTagConnectionList(meetingTagConnectionList);
   }
-
 
 }

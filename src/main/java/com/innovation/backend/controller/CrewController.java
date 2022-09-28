@@ -72,7 +72,4 @@ public class CrewController {
     return ResponseDto.success(crewResponseDtoList);
   }
 
-  //가입한 모임 조회 (사용자)
-  
-
 }

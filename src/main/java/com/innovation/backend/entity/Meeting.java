@@ -77,9 +77,6 @@ public class Meeting extends Timestamped{
   private int nowPeople = 1;
 
   //모임 태그
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "TAG_MEETING",nullable = false)
-//  private TagMeeting tagMeeting;
   @OneToMany(mappedBy = "meeting",cascade = CascadeType.REMOVE,orphanRemoval = true)
   @JsonIgnore
   private Set<MeetingTagConnection> meetingTagConnectionList = new HashSet<>();

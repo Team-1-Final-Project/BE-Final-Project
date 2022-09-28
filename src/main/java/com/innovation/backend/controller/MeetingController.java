@@ -168,6 +168,4 @@ public class MeetingController {
     return ResponseDto.success(meetingService.getMeetingByTag(tagIds));
   }
 
-  //모임 좋아요/취소
-
 }

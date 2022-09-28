@@ -9,11 +9,13 @@ public class CrewResponseDto {
 
   private final Long memberId;
   private final Long meetingId;
+  private final String email;
   private final String nickname;
 
   public CrewResponseDto(Crew crew){
     this.memberId = crew.getMember().getId();
     this.meetingId = crew.getMeeting().getId();
+    this.email = crew.getMember().getEmail();
     this.nickname = crew.getMember().getNickname();
   }
 
