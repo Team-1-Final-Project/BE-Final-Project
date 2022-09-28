@@ -28,8 +28,19 @@ public class Comment extends Timestamped{
   @ManyToOne(fetch = FetchType.LAZY)
   private Board board;
 
-  public void update(CommentRequestDto commentRequestDto) {
+  public Comment(Board board, CommentRequestDto commentRequestDto, Member member) {
+    this.board = board;
+    this.content = commentRequestDto.getContent();
+    this.member = member;
+  }
+  public void alter(CommentRequestDto commentRequestDto) {
     this.content = commentRequestDto.getContent();
   }
 
+  public boolean validateMember(Long memberId) {
+    Long thisMemberId = this.member.getId();
+    return !memberId.equals(thisMemberId);
+  }
+
 }
+

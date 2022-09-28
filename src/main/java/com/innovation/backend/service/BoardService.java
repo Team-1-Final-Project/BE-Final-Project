@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-//@AllArgsConstructor
 @RequiredArgsConstructor
 public class BoardService {
 
@@ -190,7 +189,7 @@ public class BoardService {
 
             }
         boardRepository.delete(board);
-        return ResponseDto.success("삭제가 성공적으로 완료되었습니다.");
+        return ResponseDto.success("게시글 삭제가 성공적으로 완료되었습니다.");
     }
 
     @Transactional(readOnly = true)

@@ -59,9 +59,8 @@ public class Board extends Timestamped{
     this.heartBoardNums = heartBoardNums;
   }
 
-
-  @Column
-  private int heartBoardNums;
+//  @Column
+//  private int heartBoardNums;
 
   @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<HeartBoard> heartBoardList;
@@ -99,15 +98,13 @@ public class Board extends Timestamped{
     Long thisMemberId = this.member.getId();
     return !memberId.equals(thisMemberId);
   }
-  
-}
 
-  public void heart(){
-    this.heartBoardNums += 1;
-  }
-
-  public void unheart(){
-    this.heartBoardNums -= 1;
-  }
+//  public void heart(){
+//    this.heartBoardNums += 1;
+//  }
+//
+//  public void unheart(){
+//    this.heartBoardNums -= 1;
+//  }
 
 }
