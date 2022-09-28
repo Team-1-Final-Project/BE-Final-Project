@@ -1,8 +1,14 @@
 package com.innovation.backend.dto.response;
 
 import com.innovation.backend.entity.Comment;
+import com.innovation.backend.entity.Timestamped;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-public class CommentResponseDto {
+
+@Getter
+@NoArgsConstructor
+public class CommentResponseDto extends Timestamped {
     private Long commentId;
     private String commentWriter;
     private String profileImage;

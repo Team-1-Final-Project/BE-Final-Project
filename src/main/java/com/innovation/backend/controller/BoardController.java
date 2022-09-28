@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 
 @RestController
@@ -40,7 +41,7 @@ public class BoardController {
 
     @PostMapping(value = "/board", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDto<?> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart BoardRequestDto boardRequestDto, @RequestPart MultipartFile uploadImage) {
+    public ResponseDto<?> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart BoardRequestDto boardRequestDto, @RequestPart MultipartFile uploadImage) throws IOException {
         return boardService.createBoard(userDetails, boardRequestDto, uploadImage);
     }
 
@@ -52,7 +53,7 @@ public class BoardController {
 
     @PutMapping(value = "/board/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseDto<?> alterBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart BoardRequestDto boardRequestDto, @RequestPart MultipartFile uploadImage) {
+    public ResponseDto<?> alterBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart BoardRequestDto boardRequestDto, @RequestPart MultipartFile uploadImage) throws IOException {
         return boardService.alterBoard(id, userDetails, boardRequestDto, uploadImage);
     }
 
