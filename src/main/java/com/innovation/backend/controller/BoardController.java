@@ -1,10 +1,13 @@
 package com.innovation.backend.controller;
 
+import com.innovation.backend.dto.response.LikeResultResponseDto;
 import com.innovation.backend.dto.request.BoardRequestDto;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.jwt.UserDetailsImpl;
 import com.innovation.backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +18,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 @RestController
 @RequiredArgsConstructor
 public class BoardController {
 
     private final BoardService boardService;
+
+
+    //게시글 좋아요
+    @PutMapping("/board/heart/{boardId}")
+    public ResponseDto<LikeResultResponseDto> addBoardLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long boardId) {
+        return ResponseDto.success(boardService.addBoardLike(userDetails,boardId));
+    }
 
     @GetMapping("/board")
     @ResponseStatus(HttpStatus.OK)
@@ -50,9 +61,5 @@ public class BoardController {
     public ResponseDto<?> deleteBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.deleteBoard(id, userDetails);
     }
-
-
-
-
 
 }

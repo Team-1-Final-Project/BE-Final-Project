@@ -7,8 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.ArrayList;
 
 @Getter
 @NoArgsConstructor
@@ -44,6 +46,20 @@ public class Board extends Timestamped{
   @Column
   private String boardImage;
 
+
+  /// 좋아요 부분
+  @Column
+  private int heartBoardNums = 0;
+
+  @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+  private Set<HeartBoard> heartBoards = new HashSet<>();
+
+  // 좋아요수 증가
+  public void addBoardLike(int heartBoardNums){
+    this.heartBoardNums = heartBoardNums;
+  }
+
+
   @Column
   private int heartBoardNums;
 
@@ -55,6 +71,7 @@ public class Board extends Timestamped{
 
   @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> commentList;
+
 
   public Board(BoardRequestDto boardRequestDto, Member member, String boardImage){
     this.title = boardRequestDto.getTitle();
@@ -82,6 +99,8 @@ public class Board extends Timestamped{
     Long thisMemberId = this.member.getId();
     return !memberId.equals(thisMemberId);
   }
+  
+}
 
   public void heart(){
     this.heartBoardNums += 1;
