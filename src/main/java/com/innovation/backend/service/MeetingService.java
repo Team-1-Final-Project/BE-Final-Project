@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -259,12 +258,6 @@ public class MeetingService {
 
     return meetingResponseDtoList;
   }
-
-  //참여한 모임만 조회 (사용자)
-
-  //모임 좋아요 토글
-
-  //좋아요한 모임만 조회 (사용자)
 
   private void addMeetingTagConnection(MeetingRequestDto requestDto, Meeting meeting) {
     Set<MeetingTagConnection> meetingTagConnectionList = new HashSet<>();
