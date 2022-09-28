@@ -20,8 +20,8 @@ public enum ErrorCode {
   TOKEN_NOT_FOUND("TOKEN_NOT_FOUND", "존재하지 않는 Token 입니다."),
 
   DUPLICATED_EMAIL("DUPLICATED_EMAIL", "이미 가입된 회원입니다."),
-
   DUPLICATED_NICKNAME("DUPLICATED_NICKNAME","중복된 닉네임입니다."),
+  DUPLICATED_MISSION("DUPLICATED_MISSION","이미 성공한 미션입니다."),
 
   USED_EMAIL("USED_EMAIL", "중복된 회원정보입니다."),
   EMAIL_NOT_FOUND("EMAIL_NOT_FOUND", "회원정보가 일치하지 않습니다."),
