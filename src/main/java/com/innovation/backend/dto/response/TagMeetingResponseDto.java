@@ -1,6 +1,5 @@
 package com.innovation.backend.dto.response;
 
-import com.innovation.backend.entity.MeetingTagConnection;
 import com.innovation.backend.entity.TagMeeting;
 import lombok.Getter;
 

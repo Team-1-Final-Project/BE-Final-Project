@@ -11,11 +11,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface MeetingTagConnectionRepository extends JpaRepository<MeetingTagConnection, Long> {
 
-
-  Optional<MeetingTagConnection> findByTagMeeting (TagMeeting tagMeeting);
-
-  MeetingTagConnection findByMeeting(Meeting meeting);
-
   @Query(nativeQuery = true, value = "select m.* from meeting_tag_connection as m where tag_id = :tagId")
   List<MeetingTagConnection> findByTagId(Long tagId);
 
