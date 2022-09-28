@@ -2,8 +2,10 @@ package com.innovation.backend.service;
 
 import com.innovation.backend.dto.request.MeetingRequestDto;
 import com.innovation.backend.dto.request.TagMeetingRequestDto;
+import com.innovation.backend.dto.response.LikeResultResponseDto;
 import com.innovation.backend.dto.response.MeetingLikeResponseDto;
 import com.innovation.backend.dto.response.MeetingResponseDto;
+import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.*;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.exception.CustomErrorException;
@@ -307,7 +309,7 @@ public class MeetingService {
 
     //모임 좋아요
     @Transactional
-    public void addMeetingLike(UserDetailsImpl userDetails, Long meetingId) {
+    public LikeResultResponseDto addMeetingLike(UserDetailsImpl userDetails, Long meetingId) {
         String userId = userDetails.getUsername();
         Member member = memberRepository.findByEmail(userId).orElseThrow();
         Meeting meeting = meetingRepository.findById(meetingId).orElseThrow();
@@ -316,9 +318,11 @@ public class MeetingService {
         if (isMeetingLike(member, meeting)) {
             heartMeetingRepository.deleteByMemberAndMeeting(member, meeting);
             meeting.addMeetingLike(likeNums - 1);
+            return new LikeResultResponseDto("모임 좋아요 취소!");
         } else {
             heartMeetingRepository.save(heartMeeting);
             meeting.addMeetingLike(likeNums + 1);
+            return new LikeResultResponseDto("모임 좋아요 성공!");
         }
     }
 
