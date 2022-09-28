@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +39,6 @@ public class MeetingService {
 
   private final MeetingTagConnectionRepository meetingTagConnectionRepository;
 
-  private final EntityManager entityManager;
 
   //모임 생성
   @Transactional
@@ -246,31 +244,6 @@ public class MeetingService {
 
   // 모임 태그별 조회 (전체)
   public List<MeetingResponseDto> getMeetingByTag (TagMeetingRequestDto tagMeetingRequestDto) {
-//    StringBuilder selectQuery = new StringBuilder();
-//    selectQuery.append(
-//        "select m.* from meeting as m left join meeting_tag_connection as mtc on mtc.meeting_id = m.id");
-//
-//    if (tagMeetingRequestDto.getTagIds().size() > 0) {
-//      selectQuery.append(" where ");
-//      for (int i = 0; i < tagMeetingRequestDto.getTagIds().size(); i++) {
-//        if (i != 0) {
-//          selectQuery.append(" or ");
-//        }
-//        selectQuery.append("mtc.tag_id = :id_" + i);
-//      }
-//    }
-//
-//    Query query = entityManager.createNativeQuery(selectQuery.toString());
-//    if (tagMeetingRequestDto.getTagIds().size() > 0) {
-//      for (int i = 0; i < tagMeetingRequestDto.getTagIds().size(); i++) {
-//        query.setParameter("id_"+i , tagMeetingRequestDto.getTagIds().get(i));
-//      }
-//    }
-//
-//    List<Meeting> meetings = query.unwrap(NativeQuery.class).setResultTransformer(
-//        Transformers.aliasToBean((Meeting.class))).getResultList();
-//
-//    return meetings.stream().map(MeetingResponseDto::new).collect(Collectors.toList());
 
     Set<Meeting> meetings = new HashSet<>();
 
@@ -289,12 +262,6 @@ public class MeetingService {
 
     return meetingResponseDtoList;
   }
-
-  //참여한 모임만 조회 (사용자)
-
-  //모임 좋아요 토글
-
-  //좋아요한 모임만 조회 (사용자)
 
   private void addMeetingTagConnection(MeetingRequestDto requestDto, Meeting meeting) {
     Set<MeetingTagConnection> meetingTagConnectionList = new HashSet<>();
