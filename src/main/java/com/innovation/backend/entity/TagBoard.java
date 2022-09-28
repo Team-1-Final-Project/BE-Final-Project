@@ -20,6 +20,6 @@ public class TagBoard {
   private Long id;
 
   @Column(nullable = false)
-  private String name;
+  private String tagName;
 
 }

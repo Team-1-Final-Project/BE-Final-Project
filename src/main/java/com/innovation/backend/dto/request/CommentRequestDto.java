@@ -1,17 +1,12 @@
 package com.innovation.backend.dto.request;
 
+import com.innovation.backend.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Getter
 @NoArgsConstructor
-public class BoardRequestDto {
-    private String title;
+public class CommentRequestDto {
+    private Long boardId;
     private String content;
-
-    private String boardImage;
-    private List<String> tagBoard;
-
 }

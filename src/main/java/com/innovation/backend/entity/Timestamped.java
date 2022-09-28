@@ -14,9 +14,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public abstract class Timestamped {
 
   @CreatedDate
-  private LocalDateTime createdAt;
+  protected LocalDateTime createdAt;
 
   @LastModifiedDate
-  private LocalDateTime modifiedAt;
+  protected LocalDateTime modifiedAt;
 
 }

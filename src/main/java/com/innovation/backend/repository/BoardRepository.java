@@ -8,4 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board,Long> {
+
+    Optional<Board> findById(Long id);
+    Board findBoardById(Long id);
+    Board deleteBoardById(Long id);
+    Optional<Board> findAllByMember(Member member);
+    List<Board> findAllByOrderByHeartBoardNumsDesc();
+
+    List<Board> findAllByTagBoard();
+    List<Board> findAllByOrderByCreatedAtDesc();
 }
