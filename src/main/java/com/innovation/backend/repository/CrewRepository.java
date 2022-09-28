@@ -13,6 +13,6 @@ public interface CrewRepository extends JpaRepository<Crew, Long> {
 
   void deleteByMemberAndMeeting (Member member, Meeting meeting);
 
-  Long countByMeeting (Meeting meeting);
+  List<Crew> findByMember (Member member);
 
 }
