@@ -245,32 +245,6 @@ public class MeetingService {
 
     // 모임 태그별 조회 (전체)
     public List<MeetingResponseDto> getMeetingByTag(TagMeetingRequestDto tagMeetingRequestDto) {
-//    StringBuilder selectQuery = new StringBuilder();
-//    selectQuery.append(
-//        "select m.* from meeting as m left join meeting_tag_connection as mtc on mtc.meeting_id = m.id");
-//
-//    if (tagMeetingRequestDto.getTagIds().size() > 0) {
-//      selectQuery.append(" where ");
-//      for (int i = 0; i < tagMeetingRequestDto.getTagIds().size(); i++) {
-//        if (i != 0) {
-//          selectQuery.append(" or ");
-//        }
-//        selectQuery.append("mtc.tag_id = :id_" + i);
-//      }
-//    }
-//
-//    Query query = entityManager.createNativeQuery(selectQuery.toString());
-//    if (tagMeetingRequestDto.getTagIds().size() > 0) {
-//      for (int i = 0; i < tagMeetingRequestDto.getTagIds().size(); i++) {
-//        query.setParameter("id_"+i , tagMeetingRequestDto.getTagIds().get(i));
-//      }
-//    }
-//
-//    List<Meeting> meetings = query.unwrap(NativeQuery.class).setResultTransformer(
-//        Transformers.aliasToBean((Meeting.class))).getResultList();
-//
-//    return meetings.stream().map(MeetingResponseDto::new).collect(Collectors.toList());
-
         Set<Meeting> meetings = new HashSet<>();
 
         for (Long tagId : tagMeetingRequestDto.getTagIds()) {
