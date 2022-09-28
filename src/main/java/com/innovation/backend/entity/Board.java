@@ -56,17 +56,17 @@ public class Board extends Timestamped{
   @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> commentList;
 
-  public Board(BoardRequestDto boardRequestDto, Member member){
+  public Board(BoardRequestDto boardRequestDto, Member member, String boardImage){
     this.title = boardRequestDto.getTitle();
     this.content = boardRequestDto.getContent();
-    this.boardImage = boardRequestDto.getBoardImage();
+    this.boardImage = boardImage;
     this.member = member;
   }
 
-  public void alter(BoardRequestDto boardRequestDto){
+  public void alter(BoardRequestDto boardRequestDto, String boardImageAlter){
     String title = boardRequestDto.getTitle();
     String content = boardRequestDto.getContent();
-    String boardImage = boardRequestDto.getBoardImage();
+    String boardImage = boardImageAlter;
     if(title != null){
       this.title = title;
     }
@@ -75,7 +75,7 @@ public class Board extends Timestamped{
     }
     if(boardImage != null){
       this.boardImage = boardImage;
-    }
+    } // 수정되지 않은 데이터 기존 유지
   }
 
   public boolean validateMember(Long memberId) {

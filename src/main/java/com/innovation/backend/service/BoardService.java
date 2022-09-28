@@ -7,21 +7,19 @@ import com.innovation.backend.dto.response.GetAllBoardDto;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.*;
 import com.innovation.backend.enums.ErrorCode;
+import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.jwt.TokenProvider;
 import com.innovation.backend.jwt.UserDetailsImpl;
 import com.innovation.backend.repository.BoardRepository;
 import com.innovation.backend.repository.CommentRepository;
 import com.innovation.backend.repository.HeartBoardRepository;
-import lombok.AllArgsConstructor;
+import com.innovation.backend.util.S3Upload;
 import lombok.RequiredArgsConstructor;
-import netscape.javascript.JSObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +33,7 @@ public class BoardService {
     private final UserDetailsImpl userDetails;
     private final HeartBoardRepository heartBoardRepository;
     private final CommentRepository commentRepository;
+    private final S3Upload s3Upload;
 
     //게시글 전체 최신순으로 정렬
     @Transactional
@@ -46,7 +45,7 @@ public class BoardService {
             int heartBoardNums = heartBoardRepository.countByBoard(board);
             String boardImage = board.getBoardImage();
             if(!boardImage.isEmpty()){
-                boardImage = board.getBoardImage(0);
+                boardImage = board.getBoardImage();
             }
             GetAllBoardDto getAllBoardDto = new GetAllBoardDto(board, heartBoardNums, boardImage);
             getAllBoardDtoList.add(getAllBoardDto);
@@ -56,7 +55,7 @@ public class BoardService {
 
     // 게시글 작성
     @Transactional
-    public ResponseDto<?> createBoard(BoardRequestDto boardRequestDto, MultipartFile uploadImage){
+    public ResponseDto<?> createBoard(UserDetailsImpl userDetails, BoardRequestDto boardRequestDto, MultipartFile uploadImage) throws IOException {
 
 //        if (null == request.getHeader("Refresh-Token")) {
 //            return ResponseDto.fail(ErrorCode.MEMBER_NOT_FOUND);
@@ -67,7 +66,14 @@ public class BoardService {
 //        }
 
         Member member = userDetails.getMember(); //회원 검사
-        Board board = new Board(boardRequestDto, member);
+
+        String boardImage=null;
+
+        if (uploadImage != null &&!uploadImage.isEmpty()) {
+                boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
+        }
+
+        Board board = new Board(boardRequestDto, member, boardImage);
         boardRepository.save(board);
 //        List<String> tagBoardList = boardRequestDto.getTagBoard();
         BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums());
@@ -105,8 +111,10 @@ public class BoardService {
 
     //게시글 수정
     @Transactional
-    public ResponseDto<?> alterBoard(Long id, UserDetailsImpl userDetails, BoardRequestDto boardRequestDto, MultipartFile uploadImage) {
+    public ResponseDto<?> alterBoard(Long id, UserDetailsImpl userDetails, BoardRequestDto boardRequestDto, MultipartFile uploadImage) throws IOException {
         Board board = isPresentBoard(id);
+        Board boardAlter = boardRepository.findBoardById(id);
+
         if (null == board) {
             return ResponseDto.fail(ErrorCode.ENTITY_NOT_FOUND);
         }
@@ -116,15 +124,39 @@ public class BoardService {
             return ResponseDto.fail(ErrorCode.NOT_SAME_MEMBER);
         }
 
-        board.alter(boardRequestDto);
+        String boardImage = boardAlter.getBoardImage();
+
+            if (boardImage != null &&!boardImage.isEmpty()) {
+                    s3Upload.fileDelete(boardImage);
+                    boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
+            }
+        board.alter(boardRequestDto, boardImage);
         BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums());
         return ResponseDto.success(boardResponseDto);
     }
 
-
     //게시글 삭제
     @Transactional
     public ResponseDto<?> deleteBoard(Long id, UserDetailsImpl userDetails) {
+        Board board = isPresentBoard(id);
+        Board boardDelete = boardRepository.deleteBoardById(id);
+        if (null == board) {
+            return ResponseDto.fail(ErrorCode.ENTITY_NOT_FOUND);
+        }
+        Member member = userDetails.getMember();
+
+        if(board.validateMember(member.getId())) {
+            return ResponseDto.fail(ErrorCode.NOT_SAME_MEMBER);
+        }
+
+        String boardImage = boardDelete.getBoardImage();
+
+            if (boardImage != null &&!boardImage.isEmpty()) {
+                s3Upload.fileDelete(boardImage);
+
+            }
+        boardRepository.delete(board);
+        return ResponseDto.success("삭제가 성공적으로 완료되었습니다.");
     }
 
     @Transactional(readOnly = true)

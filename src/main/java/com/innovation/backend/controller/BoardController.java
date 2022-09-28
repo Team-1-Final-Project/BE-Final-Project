@@ -41,7 +41,7 @@ public class BoardController {
 
     @PutMapping(value = "/board/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseDto<?> alterBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart BoardRequestDto boardRequestDto, @RequestPart MultipartFile uploadImage {
+    public ResponseDto<?> alterBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart BoardRequestDto boardRequestDto, @RequestPart MultipartFile uploadImage) {
         return boardService.alterBoard(id, userDetails, boardRequestDto, uploadImage);
     }
 
