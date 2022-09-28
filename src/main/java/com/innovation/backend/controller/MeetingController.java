@@ -2,6 +2,7 @@ package com.innovation.backend.controller;
 
 import com.innovation.backend.dto.request.MeetingRequestDto;
 import com.innovation.backend.dto.request.TagMeetingRequestDto;
+import com.innovation.backend.dto.response.MeetingLikeResponseDto;
 import com.innovation.backend.dto.response.MeetingResponseDto;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.Member;
@@ -10,19 +11,13 @@ import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.jwt.UserDetailsImpl;
 import com.innovation.backend.service.MeetingService;
 import com.innovation.backend.service.MemberService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -32,6 +27,7 @@ public class MeetingController {
   private final MemberService memberService;
 
   private final MeetingService meetingService;
+
 
 
   // 모임 생성
@@ -166,6 +162,30 @@ public class MeetingController {
   @PostMapping("/meeting/tag")
   public ResponseDto<List<MeetingResponseDto>> getMeetingByTag(@RequestBody TagMeetingRequestDto tagIds){
     return ResponseDto.success(meetingService.getMeetingByTag(tagIds));
+  }
+
+  //모임 좋아요
+  @PutMapping("/meeting/heart/{meetingId}")
+  public void addMeetingLike(@AuthenticationPrincipal UserDetailsImpl userDetails,@PathVariable Long meetingId) {
+    if(userDetails != null) {
+      meetingService.addMeetingLike(userDetails,meetingId);
+    }
+  }
+
+  //모임 좋아요 여부확인
+  @GetMapping("/meeting/heart/{meetingId}")
+  public ResponseDto<MeetingLikeResponseDto> getMeetingLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long meetingId) {
+    MeetingLikeResponseDto meetingLikeResponseDto;
+    try {
+      meetingLikeResponseDto = meetingService.getMeetingLike(userDetails,meetingId);
+    } catch (CustomErrorException e) {
+      log.error(e.getMessage());
+      return ResponseDto.fail(e.getErrorCode());
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      return ResponseDto.fail(ErrorCode.INVALID_ERROR);
+    }
+    return ResponseDto.success(meetingLikeResponseDto);
   }
 
 }
