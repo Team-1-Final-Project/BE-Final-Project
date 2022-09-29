@@ -33,7 +33,7 @@ public class BoardResponseDto extends Timestamped {
         this.boardImage = board.getBoardImage();
         this.heartBoardNums = heartBoardNums;
         super.createdAt = board.getCreatedAt();
-        this.tagBoard =  board.getTagBoardList();
+//        this.tagBoard =  board.getTagBoardList();
 //        this.commentsNum = commentsNum;
     }
     public BoardResponseDto(Board board, int heartBoardNums, List<CommentResponseDto> commentResponseDtoList){
@@ -45,7 +45,7 @@ public class BoardResponseDto extends Timestamped {
         this.boardImage = board.getBoardImage();
         this.heartBoardNums = heartBoardNums;
         super.createdAt = board.getCreatedAt();
-        this.tagBoard =  board.getTagBoardList();
+//        this.tagBoard =  board.getTagBoardList();
         this.commentResponseDtoList = commentResponseDtoList;
 //        this.commentsNum = commentsNum;
     }

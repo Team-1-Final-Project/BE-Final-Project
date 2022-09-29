@@ -76,10 +76,11 @@ public class BoardService {
 
         for(Board board : boardList){
             int heartBoardNums = heartBoardRepository.countByBoard(board);
-            String boardImage = board.getBoardImage();
-            if(!boardImage.isEmpty()){
-                boardImage = board.getBoardImage();
-            }
+            Board boardById = boardRepository.findBoardById(board.getId());
+            String boardImage = boardById.getBoardImage();
+//            if(boardImage != null || !boardImage.isEmpty()){
+//                boardImage = board.getBoardImage();
+//            }
             GetAllBoardDto getAllBoardDto = new GetAllBoardDto(board, heartBoardNums, boardImage);
             getAllBoardDtoList.add(getAllBoardDto);
         }
@@ -172,7 +173,7 @@ public class BoardService {
     @Transactional
     public ResponseDto<?> deleteBoard(Long id, UserDetailsImpl userDetails) {
         Board board = isPresentBoard(id);
-        Board boardDelete = boardRepository.deleteBoardById(id);
+
         if (null == board) {
             return ResponseDto.fail(ErrorCode.ENTITY_NOT_FOUND);
         }
@@ -182,12 +183,12 @@ public class BoardService {
             return ResponseDto.fail(ErrorCode.NOT_SAME_MEMBER);
         }
 
-        String boardImage = boardDelete.getBoardImage();
+        String boardImage = board.getBoardImage();
 
             if (boardImage != null &&!boardImage.isEmpty()) {
                 s3Upload.fileDelete(boardImage);
-
             }
+
         boardRepository.delete(board);
         return ResponseDto.success("게시글 삭제가 성공적으로 완료되었습니다.");
     }
