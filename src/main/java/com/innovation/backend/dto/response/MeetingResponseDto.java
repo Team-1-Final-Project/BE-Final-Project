@@ -29,7 +29,7 @@ public class MeetingResponseDto {
   private final int nowPeople;
   private final LocalDateTime createdAt;
   private final MemberResponseDto admin;
-
+  private Long heartNums;
   private final List<TagMeetingResponseDto> tagMeetings = new ArrayList<>();
   // private  Integer heartNums;
 
@@ -48,7 +48,7 @@ public class MeetingResponseDto {
     this.meetingImage = meeting.getMeetingImage();
     this.limitPeople = meeting.getLimitPeople();
     this.nowPeople = meeting.getNowPeople();
-
+    this.heartNums = meeting.getHeartNums();
     this.admin = new MemberResponseDto(meeting.getAdmin()); //모임장
 
     this.createdAt = meeting.getCreatedAt();

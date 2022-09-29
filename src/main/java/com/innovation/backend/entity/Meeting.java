@@ -2,26 +2,16 @@ package com.innovation.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.dto.request.MeetingRequestDto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
@@ -76,7 +66,13 @@ public class Meeting extends Timestamped{
   @Column(nullable = false)
   private int nowPeople = 1;
 
+  //모임 좋아요수
+  private Long heartNums = Long.valueOf(0);
+
   //모임 태그
+//  @ManyToOne(fetch = FetchType.LAZY)
+//  @JoinColumn(name = "TAG_MEETING",nullable = false)
+//  private TagMeeting tagMeeting;
   @OneToMany(mappedBy = "meeting",cascade = CascadeType.REMOVE,orphanRemoval = true)
   @JsonIgnore
   private Set<MeetingTagConnection> meetingTagConnectionList = new HashSet<>();
@@ -94,10 +90,8 @@ public class Meeting extends Timestamped{
   private List<Crew> crews = new ArrayList<>();
 
   // 좋아요 정보
-//  @OneToMany(mappedBy = "meetingLike", orphanRemoval = true)
-//  @JsonIgnore
-//  private List<HeartMeeting> LikeMeeting = new ArrayList<>();
-
+  @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
+  private Set<HeartMeeting> heartMeetings = new HashSet<>();
 
   //모임 생성
   public Meeting(MeetingRequestDto requestDto, Member member, String meetingImage){
@@ -167,6 +161,11 @@ public class Meeting extends Timestamped{
   // 크루 빼기
   public void deleteCrew(Crew crew) {
     this.crews.remove(crew);
+  }
+
+  //좋아요수 증가
+  public void addMeetingLike(Long heartNums){
+    this.heartNums = heartNums;
   }
 }
 
