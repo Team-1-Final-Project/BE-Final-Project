@@ -15,6 +15,6 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     Optional<Board> findAllByMember(Member member);
     List<Board> findAllByOrderByHeartBoardNumsDesc();
 
-    List<Board> findAllByTagBoard();
+//    List<Board> findAllByTagBoard();
     List<Board> findAllByOrderByCreatedAtDesc();
 }

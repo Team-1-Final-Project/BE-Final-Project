@@ -20,19 +20,19 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping(value = "/comment")
+    @PostMapping(value = "/comment", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDto<?> createComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart CommentRequestDto commentRequestDto) {
+    public ResponseDto<?> createComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart(value = "data") CommentRequestDto commentRequestDto) {
         return commentService.createComment(userDetails, commentRequestDto);
     }
 
-    @PutMapping(value = "/comment/{id}")
+    @PutMapping(value = "/comment/{commentId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseDto<?> alterComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart CommentRequestDto commentRequestDto) {
+    public ResponseDto<?> alterComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart(value = "data") CommentRequestDto commentRequestDto) {
         return commentService.alterComment(commentId, userDetails, commentRequestDto);
     }
 
-    @DeleteMapping("/comment/{id}")
+    @DeleteMapping("/comment/{commentId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseDto<?> deleteComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.deleteComment(commentId, userDetails);
