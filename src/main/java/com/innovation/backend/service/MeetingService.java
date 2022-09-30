@@ -55,6 +55,7 @@ public class MeetingService {
 
         // 모집 기한, 모임 기한 로직
         isValidateDate(requestDto);
+
         //모집인원 검증 로직
         isValidatePeopleNumber(requestDto);
 

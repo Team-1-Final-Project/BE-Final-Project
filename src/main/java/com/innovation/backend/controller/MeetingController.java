@@ -2,7 +2,6 @@ package com.innovation.backend.controller;
 
 import com.innovation.backend.dto.request.MeetingRequestDto;
 import com.innovation.backend.dto.request.TagMeetingRequestDto;
-import com.innovation.backend.dto.response.LikeResultResponseDto;
 import com.innovation.backend.dto.response.MeetingLikeResponseDto;
 import com.innovation.backend.dto.response.MeetingResponseDto;
 import com.innovation.backend.dto.response.ResponseDto;

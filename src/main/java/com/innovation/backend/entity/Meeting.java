@@ -97,6 +97,10 @@ public class Meeting extends Timestamped{
   @OneToMany(mappedBy = "meeting", cascade = CascadeType.ALL)
   private Set<HeartMeeting> heartMeetings = new HashSet<>();
 
+  //후기
+  @OneToMany(mappedBy = "meeting", cascade = CascadeType.REMOVE,orphanRemoval = true)
+  private List<Review> reviews = new ArrayList<>();
+
   //모임 생성
   public Meeting(MeetingRequestDto requestDto, Member member, String meetingImage){
     this.title = requestDto.getTitle();

@@ -43,7 +43,9 @@ public enum ErrorCode {
   WRONG_DATE("WRONG_DATE","모집일자는 모임일자보다 이전이어야 합니다."),
   WRONG_MEETING_DATE("WRONG_MEETING_DATE","모임 시작 날짜는 모임 마감 날짜와 같거나 이전이어야 합니다."),
 
-  WRONG_LIMIT_PEOPLE("WRONG_LIMIT_PEOPLE","모임 정원은 1명 초과이어야 합니다.");
+  WRONG_LIMIT_PEOPLE("WRONG_LIMIT_PEOPLE","모임 정원은 1명 초과이어야 합니다."),
+  //후기
+  NOT_FOUND_REVIEW("NOT_FOUND_REVIEW","후기를 찾을 수 없습니다.");
 
 
   private final String code;
