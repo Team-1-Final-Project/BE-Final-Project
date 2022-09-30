@@ -42,7 +42,7 @@ public enum ErrorCode {
   NOT_FOUND_JOIN_MEETING("NOT_FOUND_JOIN_MEETING","가입한 모임이 없습니다."),
   WRONG_JOIN_DATE("WRONG_JOIN_DATE","모집 시작 날짜는 모집 마감 날짜보다 이전이어야 합니다."),
   WRONG_DATE("WRONG_DATE","모집일자는 모임일자보다 이전이어야 합니다."),
-  WRONG_MEETING_DATE("WRONG_MEETING_DATE","모임 시작날짜는 모임 마감 날짜와 같거나 이전이어야 합니다."),
+  WRONG_MEETING_DATE("WRONG_MEETING_DATE","모임 시작 날짜는 모임 마감 날짜와 같거나 이전이어야 합니다."),
 
   WRONG_LIMIT_PEOPLE("WRONG_LIMIT_PEOPLE","모임 정원은 1명 초과이어야 합니다.");
 

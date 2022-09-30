@@ -55,6 +55,8 @@ public class MeetingService {
 
         // 모집 기한, 모임 기한 로직
         isValidateDate(requestDto);
+        //모집인원 검증 로직
+        isValidatePeopleNumber(requestDto);
 
         String meetingImage = null;
 
@@ -73,8 +75,6 @@ public class MeetingService {
 
         //모임 태그 추가
         addMeetingTagConnection(requestDto, meeting);
-        //모집인원 검증 로직
-        isValidatePeopleNumber(requestDto,meeting);
 
         meetingRepository.save(meeting);
         crewRepository.save(crew);
@@ -92,7 +92,7 @@ public class MeetingService {
         if (meeting.isWrittenBy(member)) {
 
             //모집인원 검증 로직
-            isValidatePeopleNumber(requestDto,meeting);
+            isValidatePeopleNumber(requestDto);
 
             // 모집 기한, 모임 기한 로직
             isValidateDate(requestDto);
@@ -343,13 +343,13 @@ public class MeetingService {
            throw new CustomErrorException(ErrorCode.WRONG_JOIN_DATE);
        }if(!requestDto.getJoinEndDate().isBefore(requestDto.getMeetingStartDate())){
            throw new CustomErrorException(ErrorCode.WRONG_DATE);
-        }if(!(requestDto.getMeetingStartDate().isBefore(requestDto.getMeetingEndDate())||requestDto.getMeetingStartDate().isEqual(requestDto.getMeetingEndDate()))){
+        }if(!(requestDto.getMeetingEndDate().isAfter(requestDto.getMeetingStartDate())||requestDto.getMeetingEndDate().isEqual(requestDto.getMeetingStartDate()))){
             throw new CustomErrorException(ErrorCode.WRONG_MEETING_DATE);
         }
     }
 
     // 모집 정원 현재 정원 검증
-    private void isValidatePeopleNumber (MeetingRequestDto requestDto, Meeting meeting){
+    private void isValidatePeopleNumber (MeetingRequestDto requestDto){
         if(requestDto.getLimitPeople()  <= 1){
             throw new CustomErrorException(ErrorCode.WRONG_LIMIT_PEOPLE);
         }
