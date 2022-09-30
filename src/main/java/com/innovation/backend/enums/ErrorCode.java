@@ -20,7 +20,7 @@ public enum ErrorCode {
   BAD_TOKEN_REQUEST("BAD_TOKEN_REQUEST", "Token이 유효하지 않습니다."),
   TOKEN_NOT_FOUND("TOKEN_NOT_FOUND", "존재하지 않는 Token 입니다."),
   DUPLICATED_EMAIL("DUPLICATED_EMAIL", "이미 가입된 회원입니다."),
-
+  NOT_FOUND_USER("NOT_FOUND_USER","유저를 찾을 수 없습니다."),
   DUPLICATED_NICKNAME("DUPLICATED_NICKNAME","중복된 닉네임입니다."),
 
   USED_EMAIL("USED_EMAIL", "중복된 회원정보입니다."),
