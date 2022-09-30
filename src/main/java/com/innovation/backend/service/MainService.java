@@ -92,6 +92,7 @@ public class MainService {
         return meetingResponseDtoList;
     }
 
+    // 주간 인기글 조회
     public List<BoardResponseDto> getHitBoard() {
         List<Board> boardList = boardRepository.findTop4ByCreatedAtBetweenOrderByHeartBoardNumsDesc(weekStartDatetime, weekEndDatetime);
         List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
