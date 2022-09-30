@@ -20,15 +20,15 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping(value = "/comment", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/comment")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDto<?> createComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart(value = "data") CommentRequestDto commentRequestDto) {
+    public ResponseDto<?> createComment(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody CommentRequestDto commentRequestDto) {
         return commentService.createComment(userDetails, commentRequestDto);
     }
 
-    @PutMapping(value = "/comment/{commentId}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/comment/{commentId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseDto<?> alterComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart(value = "data") CommentRequestDto commentRequestDto) {
+    public ResponseDto<?> alterComment(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody CommentRequestDto commentRequestDto) {
         return commentService.alterComment(commentId, userDetails, commentRequestDto);
     }
 
