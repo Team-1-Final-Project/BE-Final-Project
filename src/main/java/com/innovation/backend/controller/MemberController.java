@@ -2,6 +2,8 @@ package com.innovation.backend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.innovation.backend.config.GoogleConfigUtils;
+import com.innovation.backend.dto.response.MemberResponseDto;
+import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.service.GoogleMemberService;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.jwt.UserDetailsImpl;
@@ -63,12 +65,19 @@ public class MemberController {
 
     // 로그인한 유저정보 가져오기
     @GetMapping(value = "/login/member", produces = "application/json; charset=UTF-8")
-    public Optional<Member> getUserInfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
+    public Optional<Member> getLoginInfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
         String userId = userDetails.getUsername();
         Optional<Member> member = memberRepository.findByEmail(userId);
         return member;
     }
 
+    // 다른사람 유저정보 확인
+    @GetMapping("/member/{memberId}")
+    public ResponseDto<MemberResponseDto> getUserInfo(@PathVariable Long memberId){
+        MemberResponseDto memberResponseDto;
+        memberResponseDto = memberService.getUserInfo(memberId);
+        return ResponseDto.success(memberResponseDto);
+    }
 
 }
 
