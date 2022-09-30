@@ -4,6 +4,7 @@ import com.innovation.backend.entity.Crew;
 import com.innovation.backend.entity.Meeting;
 import com.innovation.backend.entity.MeetingTagConnection;
 import com.innovation.backend.entity.TagMeeting;
+import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.repository.TagMeetingRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,7 +30,7 @@ public class MeetingResponseDto {
   private final int nowPeople;
   private final LocalDateTime createdAt;
   private final MemberResponseDto admin;
-  private Long heartNums;
+  private final Long heartNums;
   private final List<TagMeetingResponseDto> tagMeetings = new ArrayList<>();
   // private  Integer heartNums;
 
@@ -64,5 +65,4 @@ public class MeetingResponseDto {
       tagMeetings.add(tagMeetingResponseDto);
     }
   }
-
 }

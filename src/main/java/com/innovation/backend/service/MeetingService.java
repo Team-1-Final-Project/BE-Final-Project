@@ -5,6 +5,7 @@ import com.innovation.backend.dto.request.TagMeetingRequestDto;
 import com.innovation.backend.dto.response.LikeResultResponseDto;
 import com.innovation.backend.dto.response.MeetingLikeResponseDto;
 import com.innovation.backend.dto.response.MeetingResponseDto;
+import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.Crew;
 import com.innovation.backend.entity.HeartMeeting;
 import com.innovation.backend.entity.Meeting;
@@ -51,6 +52,8 @@ public class MeetingService {
     @Transactional
     public MeetingResponseDto createMeeting(MeetingRequestDto requestDto, Member member,
         MultipartFile image) {
+        // 모집 기한, 모임 기한 로직
+        isValidateDate(requestDto);
 
         String meetingImage = null;
 
@@ -63,17 +66,14 @@ public class MeetingService {
             }
         }
 
-        Meeting meeting = new Meeting(requestDto, member, meetingImage); // 모임 객체 생성
+        Meeting meeting = new Meeting(requestDto, member, meetingImage);// 모임 객체 생성
         Crew crew = new Crew(member, meeting);// 모임장 크루에 넣기
         meeting.addCrew(crew);
-
         //모임 태그 추가
         addMeetingTagConnection(requestDto, meeting);
-
         meetingRepository.save(meeting);
         crewRepository.save(crew);
         return new MeetingResponseDto(meeting);
-
     }
 
     //모임 수정
@@ -85,6 +85,9 @@ public class MeetingService {
 
         //모임장과 같은 유저인지 확인하기
         if (meeting.isWrittenBy(member)) {
+
+            // 모집 기한, 모임 기한 로직
+            isValidateDate(requestDto);
 
             // 태그, 이미지 외 수정
             meeting.update(requestDto);
@@ -121,8 +124,6 @@ public class MeetingService {
                     }
                 }
             }
-
-
 
             // 삭제
             for (Long oldMeetingTagId : oldMeetingTagConnectionIdList) {
@@ -326,5 +327,17 @@ public class MeetingService {
         Meeting meeting = meetingRepository.findById(meetingId).orElseThrow();
         boolean MeetingLike = isMeetingLike(member,meeting);
         return new MeetingLikeResponseDto(MeetingLike);
+    }
+
+    //모집 날짜, 모임 날짜 검증
+    private void isValidateDate (MeetingRequestDto requestDto){
+       if (!requestDto.getJoinEndDate().isAfter(requestDto.getJoinStartDate())){
+           throw new CustomErrorException(ErrorCode.WRONG_JOIN_DATE);
+       }if(!requestDto.getJoinEndDate().isBefore(requestDto.getMeetingStartDate())){
+           throw new CustomErrorException(ErrorCode.WRONG_DATE);
+        }if(!(requestDto.getMeetingStartDate().isBefore(requestDto.getMeetingEndDate())||requestDto.getMeetingStartDate().isEqual(requestDto.getMeetingEndDate()))){
+            throw new CustomErrorException(ErrorCode.WRONG_MEETING_DATE);
+        }
+
     }
 }
