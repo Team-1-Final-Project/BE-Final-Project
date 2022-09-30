@@ -1,9 +1,7 @@
 package com.innovation.backend.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,4 +16,17 @@ public class HeartBoard extends Timestamped{
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "member_id")
+  private Member member;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "board_id")
+  private Board board;
+
+  public HeartBoard(Member member, Board board) {
+    this.member = member;
+    this.board = board;
+
+  }
 }

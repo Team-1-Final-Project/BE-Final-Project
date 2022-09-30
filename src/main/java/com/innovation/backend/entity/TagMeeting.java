@@ -1,10 +1,14 @@
 package com.innovation.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +27,12 @@ public class TagMeeting {
   private String name;
 
 
-//  @OneToMany(fetch = FetchType.LAZY, mappedBy = "meeting_tag", cascade = CascadeType.ALL)
-//  @JsonIgnore
-//  private List<Meeting> meetings;
+  @OneToMany(mappedBy = "tagMeeting")
+  @JsonIgnore
+  private List<MeetingTagConnection> meetingTagConnectionList = new ArrayList<>();
+
+  public TagMeeting(MeetingTagConnection meetingTagConnection){
+    this.id = meetingTagConnection.getId();
+  }
 
 }

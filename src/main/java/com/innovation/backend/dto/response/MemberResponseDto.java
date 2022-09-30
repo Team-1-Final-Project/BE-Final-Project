@@ -12,12 +12,15 @@ import lombok.Getter;
 public class MemberResponseDto {
     private  Long id;
     private  String nickname;
+    private String email;
     private  Authority authority;
     private  String profileImage;
 
     public MemberResponseDto(Member member){
         this.id = member.getId();
         this.nickname = member.getNickname();
+        this.email = member.getEmail();
+        this.authority = member.getAuthority();
         this.profileImage = member.getProfileImage();
     }
 
