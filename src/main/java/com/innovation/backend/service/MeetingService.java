@@ -305,20 +305,21 @@ public class MeetingService {
 
     //모임 좋아요
     @Transactional
-    public LikeResultResponseDto addMeetingLike(UserDetailsImpl userDetails, Long meetingId) {
+    public MeetingLikeResponseDto addMeetingLike(UserDetailsImpl userDetails, Long meetingId) {
         String userId = userDetails.getUsername();
         Member member = memberRepository.findByEmail(userId).orElseThrow();
         Meeting meeting = meetingRepository.findById(meetingId).orElseThrow();
         Long likeNums = meeting.getHeartNums();
+        boolean meetingLike = isMeetingLike(member,meeting);
         HeartMeeting heartMeeting = new HeartMeeting(member, meeting);
         if (isMeetingLike(member, meeting)) {
             heartMeetingRepository.deleteByMemberAndMeeting(member, meeting);
             meeting.addMeetingLike(likeNums - 1);
-            return new LikeResultResponseDto("모임 좋아요 취소!");
+            return new MeetingLikeResponseDto(!meetingLike);
         } else {
             heartMeetingRepository.save(heartMeeting);
             meeting.addMeetingLike(likeNums + 1);
-            return new LikeResultResponseDto("모임 좋아요 성공!");
+            return new MeetingLikeResponseDto(!meetingLike);
         }
     }
 
@@ -333,8 +334,8 @@ public class MeetingService {
         String userId = userDetails.getUsername();
         Member member = memberRepository.findByEmail(userId).orElseThrow();
         Meeting meeting = meetingRepository.findById(meetingId).orElseThrow();
-        boolean MeetingLike = isMeetingLike(member,meeting);
-        return new MeetingLikeResponseDto(MeetingLike);
+        boolean meetingLike = isMeetingLike(member,meeting);
+        return new MeetingLikeResponseDto(meetingLike);
     }
 
     //모집 날짜, 모임 날짜 검증

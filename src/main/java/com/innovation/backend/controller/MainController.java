@@ -1,5 +1,6 @@
 package com.innovation.backend.controller;
 
+import com.innovation.backend.dto.response.BoardResponseDto;
 import com.innovation.backend.dto.response.DailyMissionResponseDto;
 import com.innovation.backend.dto.response.MeetingResponseDto;
 import com.innovation.backend.dto.response.ResponseDto;
@@ -65,5 +66,18 @@ public class MainController {
             return ResponseDto.fail(ErrorCode.INVALID_ERROR);
         }
         return ResponseDto.success(meetingResponseDtoList);
+    }
+
+    // 주간 인기글 조회
+    @GetMapping("/main/hitboard")
+    public ResponseDto<List<BoardResponseDto>> getHitBoard() {
+        List<BoardResponseDto> boardResponseDtoList;
+        try {
+            boardResponseDtoList = mainService.getHitBoard();
+        } catch (Exception e) {
+            return ResponseDto.fail(ErrorCode.INVALID_ERROR);
+        }
+        return ResponseDto.success(boardResponseDtoList);
+
     }
 }

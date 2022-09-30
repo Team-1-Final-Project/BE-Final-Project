@@ -109,7 +109,8 @@ public class MeetingController {
 
   //모임 좋아요
   @PutMapping("/meeting/heart/{meetingId}")
-  public ResponseDto<LikeResultResponseDto> addMeetingLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long meetingId) {
+  public ResponseDto<MeetingLikeResponseDto> addMeetingLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long meetingId) {
+
     return ResponseDto.success(meetingService.addMeetingLike(userDetails,meetingId));
   }
 
