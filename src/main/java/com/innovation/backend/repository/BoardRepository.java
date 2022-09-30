@@ -19,4 +19,5 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
 //    List<Board> findAllByTagBoard();
     List<Board> findAllByOrderByCreatedAtDesc();
     List<Board> findTop4ByCreatedAtBetweenOrderByHeartBoardNumsDesc(LocalDateTime start, LocalDateTime end);
+    List<Board> findByMember(Member member);
 }
