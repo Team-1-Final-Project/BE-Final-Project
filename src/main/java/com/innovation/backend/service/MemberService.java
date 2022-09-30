@@ -99,7 +99,6 @@ public class MemberService {
     // 다른사람 유저정보 확인
     public MemberResponseDto getUserInfo(Long memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow();
-        System.out.println(memberId);
         System.out.println(member);
         return new MemberResponseDto(member);
     }
