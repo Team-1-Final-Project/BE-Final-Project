@@ -52,6 +52,7 @@ public class MeetingService {
     @Transactional
     public MeetingResponseDto createMeeting(MeetingRequestDto requestDto, Member member,
         MultipartFile image) {
+
         // 모집 기한, 모임 기한 로직
         isValidateDate(requestDto);
 
@@ -69,8 +70,12 @@ public class MeetingService {
         Meeting meeting = new Meeting(requestDto, member, meetingImage);// 모임 객체 생성
         Crew crew = new Crew(member, meeting);// 모임장 크루에 넣기
         meeting.addCrew(crew);
+
         //모임 태그 추가
         addMeetingTagConnection(requestDto, meeting);
+        //모집인원 검증 로직
+        isValidatePeopleNumber(requestDto,meeting);
+
         meetingRepository.save(meeting);
         crewRepository.save(crew);
         return new MeetingResponseDto(meeting);
@@ -85,6 +90,9 @@ public class MeetingService {
 
         //모임장과 같은 유저인지 확인하기
         if (meeting.isWrittenBy(member)) {
+
+            //모집인원 검증 로직
+            isValidatePeopleNumber(requestDto,meeting);
 
             // 모집 기한, 모임 기한 로직
             isValidateDate(requestDto);
@@ -338,6 +346,12 @@ public class MeetingService {
         }if(!(requestDto.getMeetingStartDate().isBefore(requestDto.getMeetingEndDate())||requestDto.getMeetingStartDate().isEqual(requestDto.getMeetingEndDate()))){
             throw new CustomErrorException(ErrorCode.WRONG_MEETING_DATE);
         }
+    }
 
+    // 모집 정원 현재 정원 검증
+    private void isValidatePeopleNumber (MeetingRequestDto requestDto, Meeting meeting){
+        if(requestDto.getLimitPeople()  <= 1){
+            throw new CustomErrorException(ErrorCode.WRONG_LIMIT_PEOPLE);
+        }
     }
 }
