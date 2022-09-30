@@ -70,9 +70,6 @@ public class Meeting extends Timestamped{
   private Long heartNums = Long.valueOf(0);
 
   //모임 태그
-//  @ManyToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "TAG_MEETING",nullable = false)
-//  private TagMeeting tagMeeting;
   @OneToMany(mappedBy = "meeting",cascade = CascadeType.REMOVE,orphanRemoval = true)
   @JsonIgnore
   private Set<MeetingTagConnection> meetingTagConnectionList = new HashSet<>();
@@ -129,10 +126,6 @@ public class Meeting extends Timestamped{
     this.limitPeople = requestDto.getLimitPeople();
   }
 
-  //모임 태그 수정
-  public void updateTags(MeetingRequestDto requestDto){
-
-  }
 
   //모임 사진 수정
   public void updateMeetingImage (String meetingImage){

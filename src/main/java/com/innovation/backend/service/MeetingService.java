@@ -5,25 +5,32 @@ import com.innovation.backend.dto.request.TagMeetingRequestDto;
 import com.innovation.backend.dto.response.LikeResultResponseDto;
 import com.innovation.backend.dto.response.MeetingLikeResponseDto;
 import com.innovation.backend.dto.response.MeetingResponseDto;
-import com.innovation.backend.dto.response.ResponseDto;
-import com.innovation.backend.entity.*;
+import com.innovation.backend.entity.Crew;
+import com.innovation.backend.entity.HeartMeeting;
+import com.innovation.backend.entity.Meeting;
+import com.innovation.backend.entity.MeetingTagConnection;
+import com.innovation.backend.entity.Member;
+import com.innovation.backend.entity.TagMeeting;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.jwt.UserDetailsImpl;
-import com.innovation.backend.repository.*;
+import com.innovation.backend.repository.CrewRepository;
+import com.innovation.backend.repository.HeartMeetingRepository;
+import com.innovation.backend.repository.MeetingRepository;
+import com.innovation.backend.repository.MeetingTagConnectionRepository;
+import com.innovation.backend.repository.MemberRepository;
+import com.innovation.backend.repository.TagMeetingRepository;
 import com.innovation.backend.util.S3Upload;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -39,12 +46,11 @@ public class MeetingService {
     private final HeartMeetingRepository heartMeetingRepository;
     private final MeetingTagConnectionRepository meetingTagConnectionRepository;
 
-    private final EntityManager entityManager;
 
     //모임 생성
     @Transactional
     public MeetingResponseDto createMeeting(MeetingRequestDto requestDto, Member member,
-                                            MultipartFile image) {
+        MultipartFile image) {
 
         String meetingImage = null;
 
@@ -75,7 +81,7 @@ public class MeetingService {
     public void updateMeeting(Long meetingId, MeetingRequestDto requestDto, Member member) {
         //해당 모임 찾기
         Meeting meeting = meetingRepository.findById(meetingId)
-                .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
+            .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
         //모임장과 같은 유저인지 확인하기
         if (meeting.isWrittenBy(member)) {
@@ -89,23 +95,34 @@ public class MeetingService {
             // 새로운 tag id 리스트
             List<Long> newTagMeetingIdList = requestDto.getTagMeetingIds();
 
-            // 기존 태그 id list
+            // 기존 태그 커넥션 id list
             List<Long> oldMeetingTagConnectionIdList = new ArrayList<>();
             for (MeetingTagConnection meetingTagConnection : oldMeetingTagConnectionList) {
                 oldMeetingTagConnectionIdList.add(meetingTagConnection.getId());
             }
 
-            for (MeetingTagConnection oldMeetingTagConnection : oldMeetingTagConnectionList) {
-                for (Long newMeetingTagId : newTagMeetingIdList) {
-                    if (oldMeetingTagConnection.getTagMeeting().getId().equals(newMeetingTagId)) {
-                        // newMeetingTagIdList에 남아 있는 건 추가할 태그
-                        newTagMeetingIdList.remove(newMeetingTagId);
+            //기존 태그 id List
+            List<Long> oldTagMeetingIdList = new ArrayList<>();
+            for(Long oldMeetingTagConnectionId : oldMeetingTagConnectionIdList){
+                MeetingTagConnection oldMeetingConnection = meetingTagConnectionRepository.findById(oldMeetingTagConnectionId).orElseThrow();
+                oldTagMeetingIdList.add(oldMeetingConnection.getTagMeeting().getId());
+            }
 
-                        // oldMeetingTagIdList에 남아 있는 건 삭제할 태그
-                        oldMeetingTagConnectionIdList.remove(oldMeetingTagConnection.getId());
+
+            for (MeetingTagConnection oldMeetingTagConnection : oldMeetingTagConnectionList) {
+                if (!newTagMeetingIdList.equals(oldTagMeetingIdList)) {
+                    for (Long newMeetingTagId : newTagMeetingIdList) {
+                        if (oldMeetingTagConnection.getTagMeeting().getId().equals(newMeetingTagId)) {
+                            // newMeetingTagIdList에 남아 있는 건 추가할 태그
+                            newTagMeetingIdList.remove(newMeetingTagId);
+                            // oldMeetingTagIdList에 남아 있는 건 삭제할 태그
+                            oldMeetingTagConnectionIdList.remove(oldMeetingTagConnection.getId());
+                        }
                     }
                 }
             }
+
+
 
             // 삭제
             for (Long oldMeetingTagId : oldMeetingTagConnectionIdList) {
@@ -119,8 +136,8 @@ public class MeetingService {
             // 추가
             for (Long newMeetingTagId : newTagMeetingIdList) {
                 TagMeeting tagMeeting
-                        = tagMeetingRepository.findById(newMeetingTagId)
-                        .orElseThrow(() -> new CustomErrorException(ErrorCode.ENTITY_NOT_FOUND));
+                    = tagMeetingRepository.findById(newMeetingTagId)
+                    .orElseThrow(() -> new CustomErrorException(ErrorCode.ENTITY_NOT_FOUND));
 
                 MeetingTagConnection meetingTagConnection = new MeetingTagConnection(meeting, tagMeeting);
                 meetingTagConnection = meetingTagConnectionRepository.save(meetingTagConnection);
@@ -135,7 +152,7 @@ public class MeetingService {
     }
 
     private MeetingTagConnection findTagId(
-            Set<MeetingTagConnection> meetingTagConnectionList, Long meetingTagConnectionId) {
+        Set<MeetingTagConnection> meetingTagConnectionList, Long meetingTagConnectionId) {
         for (MeetingTagConnection meetingTagConnection : meetingTagConnectionList) {
             if (meetingTagConnection.getId().equals(meetingTagConnectionId)) {
                 return meetingTagConnection;
@@ -151,7 +168,7 @@ public class MeetingService {
     public void updateMeetingImage(Long meetingId, Member member, MultipartFile image) {
         //해당 모임 찾기
         Meeting meeting = meetingRepository.findById(meetingId)
-                .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
+            .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
         String meetingImage = meeting.getMeetingImage();
         //모임장과 같은 유저인지 확인하기
@@ -189,7 +206,7 @@ public class MeetingService {
     public void deleteMeeting(Long meetingId, Member member) {
         //해당 모임 찾기
         Meeting meeting = meetingRepository.findById(meetingId)
-                .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
+            .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
         //모임장과 같은 유저인지 확인하기
         if (meeting.isWrittenBy(member)) {
@@ -204,7 +221,7 @@ public class MeetingService {
     public void deleteImage(Long meetingId, Member member) {
         //해당 모임 찾기
         Meeting meeting = meetingRepository.findById(meetingId)
-                .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
+            .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
         String meetingImage = meeting.getMeetingImage();
 
@@ -238,7 +255,7 @@ public class MeetingService {
     public MeetingResponseDto getMeeting(Long meetingId) {
 
         Meeting meeting = meetingRepository.findById(meetingId).orElseThrow(
-                () -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
+            () -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
         return new MeetingResponseDto(meeting);
     }
@@ -263,16 +280,12 @@ public class MeetingService {
         return meetingResponseDtoList;
     }
 
-    //참여한 모임만 조회 (사용자)
-
-
-    //좋아요한 모임만 조회 (사용자)
 
     private void addMeetingTagConnection(MeetingRequestDto requestDto, Meeting meeting) {
         Set<MeetingTagConnection> meetingTagConnectionList = new HashSet<>();
         for (Long tagId : requestDto.getTagMeetingIds()) {
             TagMeeting tagMeeting = tagMeetingRepository.findById(tagId)
-                    .orElseThrow(NullPointerException::new);
+                .orElseThrow(NullPointerException::new);
             MeetingTagConnection meetingTagConnection = new MeetingTagConnection(meeting, tagMeeting);
             meetingTagConnection = meetingTagConnectionRepository.save(meetingTagConnection);
             meetingTagConnectionList.add(meetingTagConnection);
