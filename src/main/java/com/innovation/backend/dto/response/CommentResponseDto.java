@@ -19,6 +19,7 @@ public class CommentResponseDto extends Timestamped {
         this.commentWriter = comment.getMember().getNickname();
         this.profileImage = comment.getMember().getProfileImage();
         this.content = comment.getContent();
+        super.createdAt = comment.getCreatedAt();
     }
 
 }
