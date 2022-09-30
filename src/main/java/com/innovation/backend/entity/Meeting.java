@@ -2,6 +2,8 @@ package com.innovation.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.dto.request.MeetingRequestDto;
+//import com.innovation.backend.enums.MeetingStatus;
+import com.innovation.backend.enums.MeetingStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -66,6 +68,11 @@ public class Meeting extends Timestamped{
   @Column(nullable = false)
   private int nowPeople = 1;
 
+  //모임 상태
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private MeetingStatus meetingStatus;
+
   //모임 좋아요수
   private Long heartNums = Long.valueOf(0);
 
@@ -101,6 +108,7 @@ public class Meeting extends Timestamped{
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
+    this.meetingStatus = MeetingStatus.CAN_JOIN;
     this.admin = member;
   }
 
@@ -124,6 +132,11 @@ public class Meeting extends Timestamped{
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
+    if(this.nowPeople < this.limitPeople){
+      this.meetingStatus = MeetingStatus.CAN_JOIN;
+    }else {
+      this.meetingStatus = MeetingStatus.COMPLETE_JOIN;
+    }
   }
 
 
