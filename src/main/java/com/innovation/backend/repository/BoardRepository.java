@@ -4,6 +4,7 @@ import com.innovation.backend.entity.Board;
 import com.innovation.backend.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +18,5 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
 
 //    List<Board> findAllByTagBoard();
     List<Board> findAllByOrderByCreatedAtDesc();
+    List<Board> findTop4ByCreatedAtBetweenOrderByHeartBoardNumsDesc(LocalDateTime start, LocalDateTime end);
 }

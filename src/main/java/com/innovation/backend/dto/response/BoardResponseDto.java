@@ -49,4 +49,15 @@ public class BoardResponseDto extends Timestamped {
         this.commentResponseDtoList = commentResponseDtoList;
 //        this.commentsNum = commentsNum;
     }
+
+    public BoardResponseDto(Board board) {
+        this.boardId = board.getId();
+        this.writerName = board.getMember().getNickname();
+        this.profileImage = board.getMember().getProfileImage();
+        this.title = board.getTitle();
+        this.content = board.getContent();
+        this.boardImage = board.getBoardImage();
+        this.heartBoardNums = board.getHeartBoardNums();
+        this.createdAt = board.getCreatedAt();
+    }
 }
