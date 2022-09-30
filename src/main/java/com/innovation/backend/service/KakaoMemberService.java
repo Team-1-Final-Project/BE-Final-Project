@@ -37,6 +37,7 @@ public class KakaoMemberService {
     private final TokenProvider tokenProvider;
 
     public void kakaoLogin(String code, HttpServletResponse response) throws JsonProcessingException {
+
         // 1. 인가 코드로 액세스 토큰 요청
         String accessToken = getAccessToken(code);
 
@@ -49,6 +50,8 @@ public class KakaoMemberService {
         // 4. 요청받은 유저정보 Jwt 토큰으로 생성후 헤더에 삽입
         TokenDto tokenDto = tokenProvider.generateTokenDto(kakaoUser);
         response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
+
+        // 5. 소셜 로그인 처리
         forceLogin(kakaoUser);
 
     }
@@ -80,25 +83,39 @@ public class KakaoMemberService {
                 kakaoTokenRequest,
                 String.class
         );
-        System.out.println(response);
 
         // HTTP 응답 (JSON) -> 액세스 토큰 파싱
         String responseBody = response.getBody();
-        System.out.println(responseBody);
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
-        System.out.println(jsonNode.get("access_token").asText());
         return jsonNode.get("access_token").asText();
     }
 
     // 2. 토큰으로 유저정보 요청
     private KakaoUserInfoDto getKakaoUserInfo(String accessToken) throws JsonProcessingException {
+
         // HTTP Header 생성
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer " + accessToken);
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-        // HTTP 요청 보내기
+        // 동의내역 받아오기
+        HttpEntity<MultiValueMap<String, String>> kakaoAgreedRequest = new HttpEntity<>(headers);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> kakaoAgreedResponse = restTemplate.exchange(
+                "https://kapi.kakao.com/v2/user/scopes",
+                HttpMethod.GET,
+                kakaoAgreedRequest,
+                String.class
+        );
+
+        String kakaoAgreedResponseBody = kakaoAgreedResponse.getBody();
+        ObjectMapper om = new ObjectMapper();
+        JsonNode jn = om.readTree(kakaoAgreedResponseBody);
+        String agreed = jn.get("scopes").get(1)
+                          .get("agreed").asText();
+
+        // 유저정보 받아오기
         HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
         RestTemplate rt = new RestTemplate();
         ResponseEntity<String> response = rt.exchange(
@@ -111,16 +128,20 @@ public class KakaoMemberService {
         String responseBody = response.getBody();
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(responseBody);
-        System.out.println(jsonNode);
         Long id = jsonNode.get("id").asLong();
         String nickname = jsonNode.get("properties")
                 .get("nickname").asText();
-        String profileImage = jsonNode.get("properties")
-                .get("profile_image").asText();
+        // 기본 프로필 이미지
+        String profileImage ="https://test-bucket-jaewon.s3.ap-northeast-2.amazonaws.com/images/basic.jpg";
+        // 정보제공 동의 했을경우 이미지 삽입
+        if (agreed == "true" ) {
+            profileImage = jsonNode.get("properties")
+                    .get("profile_image").asText();
+        }
+
         String email = jsonNode.get("kakao_account")
                 .get("email").asText();
 
-        System.out.println("카카오 사용자 정보: " + id + ", " + nickname + ", " + email);
         return new KakaoUserInfoDto(id, email, nickname,profileImage);
     }
 
@@ -137,7 +158,6 @@ public class KakaoMemberService {
             Authority authority = Authority.valueOf("ROLE_USER");
             String provider = "kakao";
             String profileImage = kakaoUserInfoDto.getProfileImage();
-
             String nickname = kakaoUserInfoDto.getNickname();
             kakaoUser = new Member(email, nickname, encodedPassword, profileImage, authority, provider);
 
