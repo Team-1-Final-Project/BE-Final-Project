@@ -28,8 +28,6 @@ public enum ErrorCode {
 
   MEMBER_NOT_FOUND("MEMBER_NOT_FOUND", "가입정보를 찾을 수 없습니다."),
   PASSWORDS_NOT_MATCHED("PASSWORDS_NOT_MATCHED", "비밀번호가 일치하지 않습니다."),
-  MEMBER_NOT_FOUND("MEMBER_NOT_FOUND", "로그인이 필요합니다."),
-  PASSWORDS_NOT_MATCHED("PASSWORDS_NOT_MATCHED", "회원정보가 일치하지 않습니다."),
   NOT_SAME_MEMBER("NOT_SAME_MEMBER", "작성자만 수정이 가능합니다."),
 
   //모임
