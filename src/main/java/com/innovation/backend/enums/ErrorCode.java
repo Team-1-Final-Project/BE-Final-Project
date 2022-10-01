@@ -45,7 +45,8 @@ public enum ErrorCode {
   ALREADY_PASS_DEADLINE("ALREADY_PASS_DEADLINE","이미 모집 기한이 지난 모임입니다."),
   ALREADY_COMPLETED_MEETING("ALREADY_COMPLETED_MEETING","이미 모임이 완료된 모임입니다."),
   //후기
-  NOT_FOUND_REVIEW("NOT_FOUND_REVIEW","후기를 찾을 수 없습니다.");
+  NOT_FOUND_REVIEW("NOT_FOUND_REVIEW","후기를 찾을 수 없습니다."),
+  ONLY_ONE_REVIEW("ONLY_ONE_REVIEW","후기는 한번만 작성할 수 있습니다.");
 
 
   private final String code;
