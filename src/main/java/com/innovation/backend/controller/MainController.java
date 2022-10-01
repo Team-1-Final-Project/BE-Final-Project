@@ -41,10 +41,9 @@ public class MainController {
     // 데일리 미션 성공
     @PostMapping("/main/daily")
     public ResponseDto<DailyMissionResponseDto> successMission(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        DailyMissionResponseDto dailyMissionResponseDto;
         try {
-            DailyMissionResponseDto dailyMissionResponseDto;
             dailyMissionResponseDto = mainService.successMission(userDetails);
-            return ResponseDto.success(dailyMissionResponseDto);
         } catch (
                 CustomErrorException e) {
             log.error(e.getMessage());
@@ -53,7 +52,7 @@ public class MainController {
             log.error(e.getMessage());
             return ResponseDto.fail(ErrorCode.NEED_LOGIN);
         }
-
+        return ResponseDto.success(dailyMissionResponseDto);
     }
 
     // 신규 모임 조회

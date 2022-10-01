@@ -64,6 +64,7 @@ public class SecurityConfig {
                 .antMatchers("/google","/oauth2/**", "/css/**","/images/**","/js/**","/favicon.ico/**").permitAll()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/main/**").permitAll()
+                .antMatchers("/member/**").permitAll()
                 .antMatchers("/board" , "/board/{boardTagName}").permitAll()
                 .antMatchers("/recommends").permitAll()
                 .antMatchers("/meeting/**").permitAll()
