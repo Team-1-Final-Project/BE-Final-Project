@@ -2,6 +2,7 @@ package com.innovation.backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.enums.Authority;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class Member extends Timestamped {
 
   @Id
-//  @Column(name="member_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
@@ -38,6 +38,9 @@ public class Member extends Timestamped {
   @JsonIgnore
   private List<Meeting> meetings;
 
+  //후기
+  @OneToMany(mappedBy = "member", orphanRemoval = true)
+  private List<Review> reviews = new ArrayList<>();
 
   @Column(nullable = false, unique = true)
   private String email;

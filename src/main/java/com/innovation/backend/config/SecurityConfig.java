@@ -54,24 +54,24 @@ public class SecurityConfig {
         });
 
         http.csrf().disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeRequests()
 //                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/google","/oauth2/**", "/css/**","/images/**","/js/**","/favicon.ico/**").permitAll()
-                .antMatchers("/login/**").permitAll()
-                .antMatchers("/main/**").permitAll()
-                .antMatchers("/member/**").permitAll()
-                .antMatchers("/board" , "/board/{boardTagName}").permitAll()
-                .antMatchers("/recommends").permitAll()
-                .antMatchers("/meeting/**").permitAll()
-                .antMatchers("/swagger-ui/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .apply(new JwtSecurityConfig(SECRET_KEY, tokenProvider, userDetailsService));
+            .antMatchers("/").permitAll()
+            .antMatchers("/h2-console/**").permitAll()
+            .antMatchers("/google","/oauth2/**", "/css/**","/images/**","/js/**","/favicon.ico/**").permitAll()
+            .antMatchers("/login/**").permitAll()
+            .antMatchers("/main/**").permitAll()
+            .antMatchers("/board" , "/board/{boardTagName}").permitAll()
+            .antMatchers("/recommends").permitAll()
+            .antMatchers("/meeting/**").permitAll()
+            .antMatchers("/swagger-ui/**").permitAll()
+            .antMatchers("/review/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .apply(new JwtSecurityConfig(SECRET_KEY, tokenProvider, userDetailsService));
         return http.build();
     }
 
