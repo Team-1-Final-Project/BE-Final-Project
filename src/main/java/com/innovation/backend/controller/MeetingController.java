@@ -34,12 +34,9 @@ public class MeetingController {
 
   // 모임 생성
   @PostMapping("/meeting")
-  public ResponseDto<MeetingResponseDto> createMeeting(
-      @AuthenticationPrincipal UserDetailsImpl userDetails,
-      @RequestPart("data") MeetingRequestDto requestDto,
-      @RequestPart(required = false) MultipartFile image) {
+  public ResponseDto<MeetingResponseDto> createMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart("data") MeetingRequestDto requestDto, @RequestPart(required = false) MultipartFile image) {
       Member member = userDetails.getMember();
-    MeetingResponseDto meetingResponseDto = meetingService.createMeeting(requestDto, member, image);
+    MeetingResponseDto meetingResponseDto = meetingService.createMeeting(requestDto, userDetails, image);
     return ResponseDto.success(meetingResponseDto);
   }
 
@@ -47,20 +44,18 @@ public class MeetingController {
   //모임 수정
   @PutMapping("/meeting/{meetingId}")
   public ResponseDto<String> updateMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails,
-      @PathVariable("meetingId") Long meetingId, @RequestPart("data") MeetingRequestDto requestDto,@RequestPart(required = false) MultipartFile image)
-      throws IOException {
+      @PathVariable("meetingId") Long meetingId, @RequestPart("data") MeetingRequestDto requestDto,@RequestPart(required = false) MultipartFile image) {
       Member member = userDetails.getMember();
-      meetingService.updateMeeting(meetingId, requestDto, member,image);
+      meetingService.updateMeeting(meetingId, requestDto, userDetails,image);
     return ResponseDto.success("모임이 수정되었습니다.");
   }
 
 
   //모임 삭제
   @DeleteMapping("/meeting/{meetingId}")
-  public ResponseDto<String> deleteMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails,
-      @PathVariable("meetingId") Long meetingId) {
+  public ResponseDto<String> deleteMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("meetingId") Long meetingId) {
       Member member = userDetails.getMember();
-      meetingService.deleteMeeting(meetingId, member);
+      meetingService.deleteMeeting(meetingId, userDetails);
     return ResponseDto.success("모임을 삭제하였습니다.");
 
   }
@@ -68,15 +63,13 @@ public class MeetingController {
   //모임 전체 조회
   @GetMapping("/meeting")
   public ResponseDto<List<MeetingResponseDto>> getAllMeeting() {
-    List<MeetingResponseDto> meetingResponseDtoList = meetingService.getAllMeeting();
-    return ResponseDto.success(meetingResponseDtoList);
+    return ResponseDto.success(meetingService.getAllMeeting());
   }
 
   //모임 상세 조회
   @GetMapping("/meeting/{meetingId}")
   public ResponseDto<MeetingResponseDto> getMeeting(@PathVariable("meetingId") Long meetingId) {
-    MeetingResponseDto meetingResponseDto = meetingService.getMeeting(meetingId);
-    return ResponseDto.success(meetingResponseDto);
+    return ResponseDto.success(meetingService.getMeeting(meetingId));
   }
 
   //모임 태그별 조회
@@ -88,7 +81,6 @@ public class MeetingController {
   //모임 좋아요
   @PutMapping("/meeting/heart/{meetingId}")
   public ResponseDto<MeetingLikeResponseDto> addMeetingLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long meetingId) {
-
     return ResponseDto.success(meetingService.addMeetingLike(userDetails,meetingId));
   }
 
