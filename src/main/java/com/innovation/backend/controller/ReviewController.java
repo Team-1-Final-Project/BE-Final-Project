@@ -37,12 +37,10 @@ public class ReviewController {
   //후기 수정
   @PutMapping("/review/{reviewId}")
   public ResponseDto<String> updateReview (@AuthenticationPrincipal UserDetailsImpl userDetails,
-      @PathVariable("reviewId") Long reviewId, @RequestBody ReviewRequestDto requestDto){
-    reviewService.updateReview(reviewId, requestDto,userDetails);
+      @PathVariable("reviewId") Long reviewId, @RequestPart("data") ReviewRequestDto requestDto,@RequestPart(required = false) MultipartFile image){
+    reviewService.updateReview(reviewId, requestDto,userDetails,image);
     return ResponseDto.success("후기가 수정되었습니다.");
   }
-
-  //후기 사진 수정
 
   //후기 삭제
   @DeleteMapping ("/review/{reviewId}")
@@ -68,11 +66,5 @@ public class ReviewController {
   @GetMapping("/review/meeting/{meetingId}")
   public ResponseDto<List<ReviewResponseDto>> getReviewByMeeting (@PathVariable("meetingId") Long meetingId){
     return ResponseDto.success(reviewService.getReviewByMeeting(meetingId));
-  }
-
-  //내가 작성한 후기 조회
-  @GetMapping("/mypage/review")
-  public ResponseDto<List<ReviewResponseDto>> getMyReview (@AuthenticationPrincipal UserDetailsImpl userDetails){
-    return ResponseDto.success(reviewService.getMyReview(userDetails));
   }
 }

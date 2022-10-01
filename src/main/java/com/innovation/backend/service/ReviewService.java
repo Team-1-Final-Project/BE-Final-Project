@@ -69,7 +69,7 @@ public class ReviewService {
 
   //후기 수정
   @Transactional
-  public void updateReview (Long reviewId, ReviewRequestDto requestDto,UserDetailsImpl userDetails){
+  public void updateReview (Long reviewId, ReviewRequestDto requestDto,UserDetailsImpl userDetails, MultipartFile image){
     //해당 후기 찾기
     Review review = reviewRepository.findById(reviewId)
         .orElseThrow(()->new CustomErrorException(ErrorCode.NOT_FOUND_REVIEW));
@@ -79,11 +79,31 @@ public class ReviewService {
 
     //같은 작성자인지 확인
     isWrittenBy(member,review);
-    review.updateReview(requestDto);
+
+    String reviewImage = review.getReviewImage();
+
+    if(reviewImage != null){
+      if(image.isEmpty()){
+        reviewImage = review.getReviewImage();
+      }else if (!image.isEmpty()) {
+        try{
+          s3Upload.fileDelete(reviewImage);
+          reviewImage = s3Upload.uploadFiles(image,"reviews");
+          log.info(reviewImage);
+        }catch (IOException e){
+          log.error(e.getMessage());
+        }
+      }
+    }else{
+        try{
+          reviewImage = s3Upload.uploadFiles(image,"reviews");
+        }catch (IOException e){
+          log.error(e.getMessage());
+        }
+    }
+    review.updateReview(requestDto,reviewImage);
     reviewRepository.save(review);
   }
-
-  //후기 사진 수정
 
   //후기 삭제
   @Transactional
@@ -98,7 +118,6 @@ public class ReviewService {
     //같은 작성자인지 확인
     isWrittenBy(member,review);
     reviewRepository.delete(review);
-
   }
 
   //후기 전체 조회 (전체)
@@ -127,22 +146,6 @@ public class ReviewService {
         .orElseThrow(()-> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
     List<Review> reviews = meeting.getReviews();
-    List<ReviewResponseDto> reviewResponseDtos = new ArrayList<>();
-
-    for(Review review : reviews){
-      ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
-      reviewResponseDtos.add(reviewResponseDto);
-    }
-    return reviewResponseDtos;
-  }
-
-  //작성한 후기 조회
-  public List<ReviewResponseDto> getMyReview (UserDetailsImpl userDetails){
-    //로그인 유저 정보 가져오기
-    Member member = memberRepository.findById(userDetails.getMember().getId())
-        .orElseThrow(()-> new CustomErrorException(ErrorCode.NEED_LOGIN));
-
-    List<Review> reviews = reviewRepository.findByMember(member);
     List<ReviewResponseDto> reviewResponseDtos = new ArrayList<>();
 
     for(Review review : reviews){

@@ -55,8 +55,9 @@ public class Review extends Timestamped{
   }
 
   //후기 수정
-public void updateReview(ReviewRequestDto requestDto){
+public void updateReview(ReviewRequestDto requestDto,String reviewImage){
   this.content = requestDto.getContent();
+  this.reviewImage = reviewImage;
 }
 
 
