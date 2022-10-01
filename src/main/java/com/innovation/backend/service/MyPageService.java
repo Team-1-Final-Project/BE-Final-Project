@@ -6,7 +6,7 @@ import com.innovation.backend.dto.response.ReviewResponseDto;
 import com.innovation.backend.entity.*;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.exception.CustomErrorException;
-import com.innovation.backend.jwt.UserDetailsImpl;
+import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.BoardRepository;
 import com.innovation.backend.repository.CrewRepository;
 import com.innovation.backend.repository.HeartBoardRepository;

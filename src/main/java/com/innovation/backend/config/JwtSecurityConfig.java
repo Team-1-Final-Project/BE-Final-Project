@@ -2,7 +2,7 @@ package com.innovation.backend.config;
 
 import com.innovation.backend.jwt.JwtFilter;
 import com.innovation.backend.jwt.TokenProvider;
-import com.innovation.backend.jwt.UserDetailsServiceImpl;
+import com.innovation.backend.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

@@ -1,18 +1,13 @@
 package com.innovation.backend.controller;
 
-import com.innovation.backend.dto.request.BoardRequestDto;
 import com.innovation.backend.dto.request.CommentRequestDto;
 import com.innovation.backend.dto.response.ResponseDto;
-import com.innovation.backend.jwt.UserDetailsImpl;
+import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-
-import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
