@@ -8,7 +8,7 @@ import com.innovation.backend.entity.Member;
 import com.innovation.backend.enums.Authority;
 import com.innovation.backend.jwt.TokenDto;
 import com.innovation.backend.jwt.TokenProvider;
-import com.innovation.backend.jwt.UserDetailsImpl;
+import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;

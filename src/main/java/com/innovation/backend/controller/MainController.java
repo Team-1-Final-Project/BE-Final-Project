@@ -6,7 +6,7 @@ import com.innovation.backend.dto.response.MeetingResponseDto;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.exception.CustomErrorException;
-import com.innovation.backend.jwt.UserDetailsImpl;
+import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.DailyMissionRepository;
 import com.innovation.backend.repository.MemberRepository;
 import com.innovation.backend.service.MainService;

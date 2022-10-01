@@ -3,9 +3,8 @@ package com.innovation.backend.service;
 import com.innovation.backend.dto.response.LikeResultResponseDto;
 import com.innovation.backend.entity.Board;
 import com.innovation.backend.entity.HeartBoard;
-import com.innovation.backend.entity.HeartMeeting;
 import com.innovation.backend.entity.Member;
-import com.innovation.backend.jwt.UserDetailsImpl;
+import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.BoardRepository;
 import com.innovation.backend.repository.HeartBoardRepository;
 import com.innovation.backend.repository.MemberRepository;
@@ -17,7 +16,6 @@ import com.innovation.backend.dto.response.GetAllBoardDto;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.*;
 import com.innovation.backend.enums.ErrorCode;
-import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.jwt.TokenProvider;
 
 import com.innovation.backend.repository.CommentRepository;
