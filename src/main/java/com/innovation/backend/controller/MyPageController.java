@@ -3,6 +3,7 @@ package com.innovation.backend.controller;
 import com.innovation.backend.dto.response.BoardResponseDto;
 import com.innovation.backend.dto.response.MeetingResponseDto;
 import com.innovation.backend.dto.response.ResponseDto;
+import com.innovation.backend.dto.response.ReviewResponseDto;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.exception.CustomErrorException;
@@ -24,18 +25,13 @@ public class MyPageController {
   //참여한 모임 조회
   @GetMapping("/mypage/meeting")
   public ResponseDto<List<MeetingResponseDto>> getJoinMeeting (@AuthenticationPrincipal UserDetailsImpl userDetails){
-    List<MeetingResponseDto> meetingResponseDtoList;
-    try {
-      Member member = userDetails.getMember();
-      meetingResponseDtoList = myPageService.GetJoinMeeting(member);
-    } catch (CustomErrorException e) {
-      log.error(e.getMessage());
-      return ResponseDto.fail(e.getErrorCode());
-    } catch (Exception e) {
-      log.error("error: ", e);
-      return ResponseDto.fail(ErrorCode.INVALID_ERROR);
-    }
-    return ResponseDto.success(meetingResponseDtoList);
+    return ResponseDto.success(myPageService.GetJoinMeeting(userDetails));
+  }
+
+  //내가 작성한 후기 조회
+  @GetMapping("/mypage/review")
+  public ResponseDto<List<ReviewResponseDto>> getMyReview (@AuthenticationPrincipal UserDetailsImpl userDetails){
+    return ResponseDto.success(myPageService.getMyReview(userDetails));
   }
 
   //작성한 게시글 조회

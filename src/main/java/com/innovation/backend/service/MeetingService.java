@@ -50,11 +50,14 @@ public class MeetingService {
 
     //모임 생성
     @Transactional
-    public MeetingResponseDto createMeeting(MeetingRequestDto requestDto, Member member,
-        MultipartFile image) {
+    public MeetingResponseDto createMeeting(MeetingRequestDto requestDto, UserDetailsImpl userDetails,MultipartFile image) {
+        //로그인 유저 정보 가져오기
+        Member member = memberRepository.findById(userDetails.getMember().getId())
+            .orElseThrow(()-> new CustomErrorException(ErrorCode.NEED_LOGIN));
 
         // 모집 기한, 모임 기한 로직
         isValidateDate(requestDto);
+
         //모집인원 검증 로직
         isValidatePeopleNumber(requestDto);
 
@@ -83,8 +86,10 @@ public class MeetingService {
 
     //모임 수정
     @Transactional
-    public void updateMeeting(Long meetingId, MeetingRequestDto requestDto, Member member,MultipartFile image)
-        throws IOException {
+    public void updateMeeting(Long meetingId, MeetingRequestDto requestDto, UserDetailsImpl userDetails,MultipartFile image) {
+        //로그인 유저 정보 가져오기
+        Member member = memberRepository.findById(userDetails.getMember().getId())
+            .orElseThrow(()-> new CustomErrorException(ErrorCode.NEED_LOGIN));
         //해당 모임 찾기
         Meeting meeting = meetingRepository.findById(meetingId)
             .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
@@ -150,11 +155,23 @@ public class MeetingService {
 
             String meetingImage = meeting.getMeetingImage();
 
-            if(meetingImage != null && image.isEmpty()) {
-                meetingImage = meeting.getMeetingImage();
-            } else if (meetingImage != null && !image.isEmpty()) {
-                s3Upload.fileDelete(meetingImage);
-                meetingImage = s3Upload.uploadFiles(image, "images");
+            if(meetingImage != null ){
+                if(image.isEmpty()) {
+                    meetingImage = meeting.getMeetingImage();
+                }else if (!image.isEmpty()) {
+                    try{
+                        s3Upload.fileDelete(meetingImage);
+                        meetingImage = s3Upload.uploadFiles(image, "images");
+                    }catch (IOException e){
+                        log.error(e.getMessage());
+                    }
+                }
+            }else {
+                try{
+                    meetingImage = s3Upload.uploadFiles(image, "images");
+                }catch (IOException e){
+                    log.error(e.getMessage());
+                }
             }
 
             // 수정
@@ -166,21 +183,20 @@ public class MeetingService {
         }
     }
 
-    private MeetingTagConnection findTagId(
-        Set<MeetingTagConnection> meetingTagConnectionList, Long meetingTagConnectionId) {
+    private MeetingTagConnection findTagId(Set<MeetingTagConnection> meetingTagConnectionList, Long meetingTagConnectionId) {
         for (MeetingTagConnection meetingTagConnection : meetingTagConnectionList) {
             if (meetingTagConnection.getId().equals(meetingTagConnectionId)) {
                 return meetingTagConnection;
             }
-        }
-
-        return null;
+        }return null;
     }
-
 
     //모임 삭제
     @Transactional
-    public void deleteMeeting(Long meetingId, Member member) {
+    public void deleteMeeting(Long meetingId, UserDetailsImpl userDetails) {
+        //로그인 유저 정보 가져오기
+        Member member = memberRepository.findById(userDetails.getMember().getId())
+            .orElseThrow(()-> new CustomErrorException(ErrorCode.NEED_LOGIN));
         //해당 모임 찾기
         Meeting meeting = meetingRepository.findById(meetingId)
             .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
@@ -247,7 +263,6 @@ public class MeetingService {
             meetingTagConnection = meetingTagConnectionRepository.save(meetingTagConnection);
             meetingTagConnectionList.add(meetingTagConnection);
         }
-
         meeting.setMeetingTagConnectionList(meetingTagConnectionList);
     }
 
@@ -288,10 +303,10 @@ public class MeetingService {
 
     //모집 날짜, 모임 날짜 검증
     private void isValidateDate (MeetingRequestDto requestDto){
-       if (!requestDto.getJoinEndDate().isAfter(requestDto.getJoinStartDate())){
-           throw new CustomErrorException(ErrorCode.WRONG_JOIN_DATE);
-       }if(!requestDto.getJoinEndDate().isBefore(requestDto.getMeetingStartDate())){
-           throw new CustomErrorException(ErrorCode.WRONG_DATE);
+        if (!requestDto.getJoinEndDate().isAfter(requestDto.getJoinStartDate())){
+            throw new CustomErrorException(ErrorCode.WRONG_JOIN_DATE);
+        }if(!requestDto.getJoinEndDate().isBefore(requestDto.getMeetingStartDate())){
+            throw new CustomErrorException(ErrorCode.WRONG_DATE);
         }if(!(requestDto.getMeetingEndDate().isAfter(requestDto.getMeetingStartDate())||requestDto.getMeetingEndDate().isEqual(requestDto.getMeetingStartDate()))){
             throw new CustomErrorException(ErrorCode.WRONG_MEETING_DATE);
         }
