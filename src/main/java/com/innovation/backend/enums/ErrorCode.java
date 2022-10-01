@@ -40,8 +40,10 @@ public enum ErrorCode {
   WRONG_JOIN_DATE("WRONG_JOIN_DATE","모집 시작 날짜는 모집 마감 날짜보다 이전이어야 합니다."),
   WRONG_DATE("WRONG_DATE","모집일자는 모임일자보다 이전이어야 합니다."),
   WRONG_MEETING_DATE("WRONG_MEETING_DATE","모임 시작 날짜는 모임 마감 날짜와 같거나 이전이어야 합니다."),
-
   WRONG_LIMIT_PEOPLE("WRONG_LIMIT_PEOPLE","모임 정원은 1명 초과이어야 합니다."),
+  ALREADY_COMPLETE_JOIN("ALREADY_COMPLETE_JOIN","이미 모집이 완료된 모임입니다."),
+  ALREADY_PASS_DEADLINE("ALREADY_PASS_DEADLINE","이미 모집 기한이 지난 모임입니다."),
+  ALREADY_COMPLETED_MEETING("ALREADY_COMPLETED_MEETING","이미 모임이 완료된 모임입니다."),
   //후기
   NOT_FOUND_REVIEW("NOT_FOUND_REVIEW","후기를 찾을 수 없습니다.");
 
