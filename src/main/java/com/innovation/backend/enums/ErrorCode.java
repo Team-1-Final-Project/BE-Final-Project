@@ -36,8 +36,6 @@ public enum ErrorCode {
   ALREADY_JOIN("ALREADY_JOIN","이미 참여한 모임입니다."),
   NEVER_JOIN("NEVER_JOIN","참여 신청하지 않은 모임입니다."),
   ADMIN_CANNOT_CANCEL_JOIN("ADMIN_CANNOT_CANCEL_JOIN", "모임장은 탈퇴할 수 없습니다."),
-  TAG_NOT_FOUND("TAG_NOT_FOUND","존재하지 않는 태그입니다."),
-  NOT_FOUND_JOIN_MEETING("NOT_FOUND_JOIN_MEETING","가입한 모임이 없습니다."),
   //모임 검증
   WRONG_JOIN_DATE("WRONG_JOIN_DATE","모집 시작 날짜는 모집 마감 날짜보다 이전이어야 합니다."),
   WRONG_DATE("WRONG_DATE","모집일자는 모임일자보다 이전이어야 합니다."),
