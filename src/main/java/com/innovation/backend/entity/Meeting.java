@@ -122,7 +122,7 @@ public class Meeting extends Timestamped{
   }
 
   //모임 수정
-  public void update(MeetingRequestDto requestDto){
+  public void update(MeetingRequestDto requestDto,String meetingImage){
     this.title = requestDto.getTitle();
     this.content = requestDto.getContent();
     this.meetingImage = requestDto.getMeetingImage();
@@ -132,22 +132,12 @@ public class Meeting extends Timestamped{
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
+    this.meetingImage = meetingImage;
     if(this.nowPeople < this.limitPeople){
       this.meetingStatus = MeetingStatus.CAN_JOIN;
     }else {
       this.meetingStatus = MeetingStatus.COMPLETE_JOIN;
     }
-  }
-
-
-  //모임 사진 수정
-  public void updateMeetingImage (String meetingImage){
-    this.meetingImage = meetingImage;
-  }
-
-  //모임 사진 삭제
-  public void deleteMeetingImage (){
-    this.meetingImage = null;
   }
 
   //참가자 추가

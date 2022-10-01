@@ -83,7 +83,8 @@ public class MeetingService {
 
     //모임 수정
     @Transactional
-    public void updateMeeting(Long meetingId, MeetingRequestDto requestDto, Member member) {
+    public void updateMeeting(Long meetingId, MeetingRequestDto requestDto, Member member,MultipartFile image)
+        throws IOException {
         //해당 모임 찾기
         Meeting meeting = meetingRepository.findById(meetingId)
             .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
@@ -96,9 +97,6 @@ public class MeetingService {
 
             // 모집 기한, 모임 기한 로직
             isValidateDate(requestDto);
-
-            // 태그, 이미지 외 수정
-            meeting.update(requestDto);
 
             // 기존 태그와 비교
             Set<MeetingTagConnection> oldMeetingTagConnectionList = meeting.getMeetingTagConnectionList();
@@ -128,10 +126,7 @@ public class MeetingService {
                             newTagMeetingIdList.remove(newMeetingTagId);
                             // oldMeetingTagIdList에 남아 있는 건 삭제할 태그
                             oldMeetingTagConnectionIdList.remove(oldMeetingTagConnection.getId());
-                        }
-                    }
-                }
-            }
+                        }}}}
 
             // 삭제
             for (Long oldMeetingTagId : oldMeetingTagConnectionIdList) {
@@ -139,8 +134,7 @@ public class MeetingService {
                 if (deleteMeetingTagConnection != null) {
                     oldMeetingTagConnectionList.remove(deleteMeetingTagConnection);
                     meetingTagConnectionRepository.delete(deleteMeetingTagConnection);
-                }
-            }
+                }}
 
             // 추가
             for (Long newMeetingTagId : newTagMeetingIdList) {
@@ -152,8 +146,20 @@ public class MeetingService {
                 meetingTagConnection = meetingTagConnectionRepository.save(meetingTagConnection);
                 oldMeetingTagConnectionList.add(meetingTagConnection);
             }
-
             meeting.setMeetingTagConnectionList(oldMeetingTagConnectionList);
+
+            String meetingImage = meeting.getMeetingImage();
+
+            if(meetingImage != null && image.isEmpty()) {
+                meetingImage = meeting.getMeetingImage();
+            } else if (meetingImage != null && !image.isEmpty()) {
+                s3Upload.fileDelete(meetingImage);
+                meetingImage = s3Upload.uploadFiles(image, "images");
+            }
+
+            // 수정
+            meeting.update(requestDto,meetingImage);
+            meetingRepository.save(meeting);
 
         } else {
             throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
@@ -172,44 +178,6 @@ public class MeetingService {
     }
 
 
-    //모임 이미지 수정
-    @Transactional
-    public void updateMeetingImage(Long meetingId, Member member, MultipartFile image) {
-        //해당 모임 찾기
-        Meeting meeting = meetingRepository.findById(meetingId)
-            .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
-
-        String meetingImage = meeting.getMeetingImage();
-        //모임장과 같은 유저인지 확인하기
-        if (meeting.isWrittenBy(member)) {
-            if (meetingImage != null) {
-                if (!image.isEmpty()) {
-                    try {
-                        s3Upload.fileDelete(meetingImage);
-                        meetingImage = s3Upload.uploadFiles(image, "images");
-                        System.out.println(meetingImage);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                if (!image.isEmpty()) {
-                    try {
-                        meetingImage = s3Upload.uploadFiles(image, "images");
-                        System.out.println(meetingImage);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        } else {
-            throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
-        }
-        meeting.updateMeetingImage(meetingImage);
-        meetingRepository.save(meeting);
-    }
-
-
     //모임 삭제
     @Transactional
     public void deleteMeeting(Long meetingId, Member member) {
@@ -224,26 +192,6 @@ public class MeetingService {
             throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
         }
     }
-
-    //모임 이미지 삭제
-    @Transactional
-    public void deleteImage(Long meetingId, Member member) {
-        //해당 모임 찾기
-        Meeting meeting = meetingRepository.findById(meetingId)
-            .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
-
-        String meetingImage = meeting.getMeetingImage();
-
-        //모임장과 같은 유저인지 확인하기
-        if (meeting.isWrittenBy(member)) {
-            meeting.deleteMeetingImage();//db에서 null로 바꿔줌
-            s3Upload.fileDelete(meetingImage);//S3에서 사진 삭제
-        } else {
-            throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
-        }
-
-    }
-
 
     //모임 전체 조회 (전체)
     public List<MeetingResponseDto> getAllMeeting() {
