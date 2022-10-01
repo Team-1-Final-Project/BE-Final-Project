@@ -8,6 +8,7 @@ import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.jwt.UserDetailsImpl;
 import com.innovation.backend.service.MeetingService;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,33 +47,11 @@ public class MeetingController {
   //모임 수정
   @PutMapping("/meeting/{meetingId}")
   public ResponseDto<String> updateMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails,
-      @PathVariable("meetingId") Long meetingId, @RequestBody MeetingRequestDto requestDto) {
+      @PathVariable("meetingId") Long meetingId, @RequestPart("data") MeetingRequestDto requestDto,@RequestPart(required = false) MultipartFile image)
+      throws IOException {
       Member member = userDetails.getMember();
-      meetingService.updateMeeting(meetingId, requestDto, member);
+      meetingService.updateMeeting(meetingId, requestDto, member,image);
     return ResponseDto.success("모임이 수정되었습니다.");
-  }
-
-  //모임 이미지 수정
-  @PutMapping("/meeting/{meetingId}/image")
-  public ResponseDto<String> updateMeetingImage(
-      @AuthenticationPrincipal UserDetailsImpl userDetails,
-      @PathVariable("meetingId") Long meetingId,
-      @RequestPart(required = false) MultipartFile image) {
-      Member member = userDetails.getMember();
-      meetingService.updateMeetingImage(meetingId, member, image);
-    return ResponseDto.success("모임 사진이 수정되었습니다.");
-
-  }
-
-  //모임 이미지 삭제
-  @DeleteMapping("/meeting/{meetingId}/image")
-  public ResponseDto<String> deleteMeetingImage(
-      @AuthenticationPrincipal UserDetailsImpl userDetails,
-      @PathVariable("meetingId") Long meetingId) {
-      Member member = userDetails.getMember();
-      meetingService.deleteImage(meetingId, member);
-    return ResponseDto.success("모임 사진이 삭제 되었습니다.");
-
   }
 
 

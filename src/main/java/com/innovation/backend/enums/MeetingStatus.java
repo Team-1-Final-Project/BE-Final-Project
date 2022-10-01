@@ -7,10 +7,10 @@ import lombok.Getter;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum MeetingStatus {
 
-  CAN_JOIN ("CAN_JOIN","모집 중인 모임입니다."),
-  COMPLETE_JOIN("COMPLETE_JOIN","모집 완료된 모임입니다."),
-  PASS_DEADLINE("PASS_DEADLINE","모집 기한이 지난 모임입니다."),
-  COMPLETED_MEETING("COMPLETED_MEETING","모임이 완료된 모임입니다.");
+  CAN_JOIN ("CAN_JOIN","모집 중"),
+  COMPLETE_JOIN("COMPLETE_JOIN","모집 완료"),
+  PASS_DEADLINE("PASS_DEADLINE","모집 기한이 지난 모임"),
+  COMPLETED_MEETING("COMPLETED_MEETING","모임이 완료");
 
   private final String code;
   private final String message;

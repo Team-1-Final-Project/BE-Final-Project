@@ -31,7 +31,6 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
-
     public ResponseDto<?> createMember(MemberRequestDto requestDto) {
 
         if(memberRepository.findByEmail(requestDto.getEmail()).isPresent()) {
@@ -95,6 +94,13 @@ public class MemberService {
         response.addHeader("Authorization", "Bearer " + tokenDto.getAccessToken());
         response.addHeader("Refresh-Token", tokenDto.getRefreshToken());
         response.addHeader("Access-Token-Expire-Time", tokenDto.getAccessTokenExpiresIn().toString());
+    }
+
+    // 다른사람 유저정보 확인
+    public MemberResponseDto getUserInfo(Long memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow();
+        System.out.println(member);
+        return new MemberResponseDto(member);
     }
 }
 

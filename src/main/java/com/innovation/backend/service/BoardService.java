@@ -160,7 +160,9 @@ public class BoardService {
 
         String boardImage = boardAlter.getBoardImage();
 
-            if (boardImage != null &&!boardImage.isEmpty()) {
+            if(boardImage != null && uploadImage.isEmpty()) {
+                boardImage = board.getBoardImage();
+            } else if (boardImage != null && !uploadImage.isEmpty()) {
                     s3Upload.fileDelete(boardImage);
                     boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
             }
