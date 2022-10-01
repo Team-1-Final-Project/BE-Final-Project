@@ -28,6 +28,7 @@ out/
 !**/src/test/**/out/
 **/application-s3.properties
 **/application.properties
+application.properties
 
 ### NetBeans ###
 /nbproject/private/
