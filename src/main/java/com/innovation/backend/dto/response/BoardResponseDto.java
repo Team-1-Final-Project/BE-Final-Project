@@ -1,12 +1,10 @@
 package com.innovation.backend.dto.response;
 
-import com.innovation.backend.entity.Board;
-import com.innovation.backend.entity.Comment;
-import com.innovation.backend.entity.TagBoard;
-import com.innovation.backend.entity.Timestamped;
+import com.innovation.backend.entity.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -19,12 +17,12 @@ public class BoardResponseDto extends Timestamped {
     private String content;
     private String boardImage;
     private int heartBoardNums;
-//    private Long commentsNum;
-    private List<TagBoard> tagBoard;
+    //    private Long commentsNum;
+    private final List<TagBoardResponseDto> tagBoards = new ArrayList<>();
     private List<CommentResponseDto> commentResponseDtoList;
 
 
-    public BoardResponseDto(Board board, int heartBoardNums){
+    public BoardResponseDto(Board board, int heartBoardNums) {
         this.boardId = board.getId();
         this.writerName = board.getMember().getNickname();
         this.profileImage = board.getMember().getProfileImage();
@@ -33,10 +31,17 @@ public class BoardResponseDto extends Timestamped {
         this.boardImage = board.getBoardImage();
         this.heartBoardNums = heartBoardNums;
         super.createdAt = board.getCreatedAt();
+
+        for (BoardTagConnection boardTagConnection : board.getBoardTagConnectionList()) {
+            TagBoard tagBoard = boardTagConnection.getTagBoard();
+            TagBoardResponseDto tagBoardResponseDto = new TagBoardResponseDto(tagBoard);
+            tagBoards.add(tagBoardResponseDto);
+        }
 //        this.tagBoard =  board.getTagBoardList();
 //        this.commentsNum = commentsNum;
     }
-    public BoardResponseDto(Board board, int heartBoardNums, List<CommentResponseDto> commentResponseDtoList){
+
+    public BoardResponseDto(Board board, int heartBoardNums, List<CommentResponseDto> commentResponseDtoList) {
         this.boardId = board.getId();
         this.writerName = board.getMember().getNickname();
         this.profileImage = board.getMember().getProfileImage();
@@ -46,8 +51,13 @@ public class BoardResponseDto extends Timestamped {
         this.heartBoardNums = heartBoardNums;
         super.createdAt = board.getCreatedAt();
 //        this.tagBoard =  board.getTagBoardList();
-        this.commentResponseDtoList = commentResponseDtoList;
+        for (BoardTagConnection boardTagConnection : board.getBoardTagConnectionList()) {
+            TagBoard tagBoard = boardTagConnection.getTagBoard();
+            TagBoardResponseDto tagBoardResponseDto = new TagBoardResponseDto(tagBoard);
+            tagBoards.add(tagBoardResponseDto);
+            this.commentResponseDtoList = commentResponseDtoList;
 //        this.commentsNum = commentsNum;
+        }
     }
 
     public BoardResponseDto(Board board) {
@@ -61,3 +71,4 @@ public class BoardResponseDto extends Timestamped {
         this.createdAt = board.getCreatedAt();
     }
 }
+
