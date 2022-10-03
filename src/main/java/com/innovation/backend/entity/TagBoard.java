@@ -1,13 +1,14 @@
 package com.innovation.backend.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -21,5 +22,13 @@ public class TagBoard {
 
   @Column(nullable = false)
   private String tagName;
+
+  @OneToMany(mappedBy = "tagBoard")
+  @JsonIgnore
+  private List<BoardTagConnection> boardTagConnectionList = new ArrayList<>();
+
+  public TagBoard(BoardTagConnection boardTagConnection) {
+    this.id = boardTagConnection.getId();
+  }
 
 }

@@ -13,6 +13,6 @@ public class BoardRequestDto {
     private String title;
     private String content;
 //    private String boardImage;
-//    private List<String> tagBoard;
+    private List<Long> tagBoardIds;
 
 }
