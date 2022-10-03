@@ -8,7 +8,6 @@ import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.BoardRepository;
 import com.innovation.backend.repository.HeartBoardRepository;
 import com.innovation.backend.repository.MemberRepository;
-import com.innovation.backend.jwt.UserDetailsImpl;
 import com.innovation.backend.repository.*;
 
 import com.innovation.backend.dto.request.BoardRequestDto;
@@ -161,6 +160,16 @@ public class BoardService {
             return ResponseDto.fail(ErrorCode.NOT_SAME_MEMBER);
         }
 
+        int commentNums = commentRepository.countCommentsByBoard(board);
+
+        List<Comment> commentList = commentRepository.findAllByBoardOrderByCreatedAtDesc(board);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+        for(Comment comment : commentList){
+            CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
+            commentResponseDtoList.add(commentResponseDto);
+        }
+
         String boardImage = boardAlter.getBoardImage();
 
             if(boardImage != null && uploadImage.isEmpty()) {
@@ -170,7 +179,7 @@ public class BoardService {
                     boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
             }
         board.alter(boardRequestDto, boardImage);
-        BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums());
+        BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums(), commentNums, commentResponseDtoList);
         return ResponseDto.success(boardResponseDto);
     }
 
