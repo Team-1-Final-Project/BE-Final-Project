@@ -10,7 +10,7 @@ public enum MeetingStatus {
   CAN_JOIN ("CAN_JOIN","모집 중"),
   COMPLETE_JOIN("COMPLETE_JOIN","모집 완료"),
   PASS_DEADLINE("PASS_DEADLINE","모집 기한이 지난 모임"),
-  COMPLETED_MEETING("COMPLETED_MEETING","모임이 완료");
+  COMPLETED_MEETING("COMPLETED_MEETING","모임 완료");
 
   private final String code;
   private final String message;

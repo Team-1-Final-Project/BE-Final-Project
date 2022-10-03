@@ -167,6 +167,11 @@ public class Meeting extends Timestamped{
   public void addMeetingLike(Long heartNums){
     this.heartNums = heartNums;
   }
+
+  //모임상태 변경
+  public void setMeetingStatus (MeetingStatus meetingStatus){
+    this.meetingStatus = meetingStatus;
+  }
 }
 
 

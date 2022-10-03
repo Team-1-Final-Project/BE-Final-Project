@@ -7,7 +7,7 @@ import com.innovation.backend.entity.Board;
 import com.innovation.backend.entity.Comment;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.enums.ErrorCode;
-import com.innovation.backend.jwt.UserDetailsImpl;
+import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.BoardRepository;
 import com.innovation.backend.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
