@@ -73,12 +73,13 @@ public class BoardService {
 
         for(Board board : boardList){
             int heartBoardNums = heartBoardRepository.countByBoard(board);
+            int commentNums = commentRepository.countCommentsByBoard(board);
             Board boardById = boardRepository.findBoardById(board.getId());
             String boardImage = boardById.getBoardImage();
 //            if(boardImage != null || !boardImage.isEmpty()){
 //                boardImage = board.getBoardImage();
 //            }
-            GetAllBoardDto getAllBoardDto = new GetAllBoardDto(board, heartBoardNums, boardImage);
+            GetAllBoardDto getAllBoardDto = new GetAllBoardDto(board, heartBoardNums, commentNums, boardImage);
             getAllBoardDtoList.add(getAllBoardDto);
         }
         return ResponseDto.success(getAllBoardDtoList);
@@ -121,6 +122,7 @@ public class BoardService {
         if(null == board) {
             return ResponseDto.fail(ErrorCode.ENTITY_NOT_FOUND);
         }
+        int commentNums = commentRepository.countCommentsByBoard(board);
 
 //        List<TagBoard> tagBoardList = tagBoardRepository.findAllByBoard(board);
 //        List<String> tagNameList = new ArrayList<>();
@@ -137,7 +139,7 @@ public class BoardService {
             commentResponseDtoList.add(commentResponseDto);
         }
 
-        BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums(), commentResponseDtoList);
+        BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums(), commentNums, commentResponseDtoList);
         return ResponseDto.success(boardResponseDto);
     }
 
