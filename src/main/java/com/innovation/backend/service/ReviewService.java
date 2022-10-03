@@ -8,7 +8,7 @@ import com.innovation.backend.entity.Member;
 import com.innovation.backend.entity.Review;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.exception.CustomErrorException;
-import com.innovation.backend.jwt.UserDetailsImpl;
+import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.CrewRepository;
 import com.innovation.backend.repository.MeetingRepository;
 import com.innovation.backend.repository.MemberRepository;
@@ -49,6 +49,9 @@ public class ReviewService {
     //가입했던 모임인지 검증
     isJoinedMeeting(member,meeting);
 
+    //이전에 쓴 적 없는지 검증
+    isAlreadyWrite(member,meeting);
+
     String reviewImage = null;
 
     if (image != null && !image.isEmpty()) {
@@ -57,8 +60,7 @@ public class ReviewService {
         log.info(reviewImage);
       } catch (IOException e) {
         log.error(e.getMessage());
-      }
-    }
+      }}
 
     Review review = new Review(requestDto, member, meeting,reviewImage);
     reviewRepository.save(review);
@@ -92,15 +94,13 @@ public class ReviewService {
           log.info(reviewImage);
         }catch (IOException e){
           log.error(e.getMessage());
-        }
-      }
+        }}
     }else{
         try{
           reviewImage = s3Upload.uploadFiles(image,"reviews");
         }catch (IOException e){
           log.error(e.getMessage());
-        }
-    }
+        }}
     review.updateReview(requestDto,reviewImage);
     reviewRepository.save(review);
   }
@@ -169,4 +169,12 @@ public class ReviewService {
       throw new CustomErrorException(ErrorCode.NOT_SAME_MEMBER);
     }
   }
+  //이전에 쓴 적 없는지 검증
+  public void isAlreadyWrite (Member member,Meeting meeting){
+    List<Review> reviews = reviewRepository.findByMember(member);
+
+    for(Review review : reviews){
+      if(review.getMeeting() == meeting){
+        throw new CustomErrorException(ErrorCode.ONLY_ONE_REVIEW);
+      }}}
 }

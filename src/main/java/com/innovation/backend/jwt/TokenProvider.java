@@ -7,6 +7,7 @@ import com.innovation.backend.enums.Authority;
 import com.innovation.backend.enums.ErrorCode;
 
 import com.innovation.backend.repository.RefreshTokenRepository;
+import com.innovation.backend.security.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

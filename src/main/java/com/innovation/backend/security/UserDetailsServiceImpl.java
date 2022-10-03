@@ -1,7 +1,8 @@
-package com.innovation.backend.jwt;
+package com.innovation.backend.security;
 
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.repository.MemberRepository;
+import com.innovation.backend.security.UserDetailsImpl;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
