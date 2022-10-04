@@ -292,10 +292,13 @@ public class MeetingService {
     //모임 좋아요 여부확인
     @Transactional
     public MeetingLikeResponseDto getMeetingLike(UserDetailsImpl userDetails, Long meetingId) {
+        boolean meetingLike = false;
+        if (userDetails != null) {
         String userId = userDetails.getUsername();
         Member member = memberRepository.findByEmail(userId).orElseThrow();
         Meeting meeting = meetingRepository.findById(meetingId).orElseThrow();
-        boolean meetingLike = isMeetingLike(member,meeting);
+            meetingLike = isMeetingLike(member,meeting);
+        }
         return new MeetingLikeResponseDto(meetingLike);
     }
 

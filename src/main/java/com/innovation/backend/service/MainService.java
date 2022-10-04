@@ -9,11 +9,11 @@ import com.innovation.backend.entity.Meeting;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.exception.CustomErrorException;
-import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.BoardRepository;
 import com.innovation.backend.repository.DailyMissionRepository;
 import com.innovation.backend.repository.MeetingRepository;
 import com.innovation.backend.repository.MemberRepository;
+import com.innovation.backend.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +64,7 @@ public class MainService {
         String userEmail = userDetails.getUsername();
         Member member = memberRepository.findByEmail(userEmail).orElseThrow();
         Boolean isDaily = dailyMissionRepository.existsByMemberAndCreatedAtBetween(member, startDatetime, endDatetime);
+        Long clearCount = 0L;
         DailyMission getDailyMission = dailyMissionRepository.findFirstByOrderByIdDesc();
         String missionContent = getDailyMission.getMission();
         DailyMission dailyMission = new DailyMission(missionContent, member);
@@ -71,12 +72,13 @@ public class MainService {
         if (isDaily == false) {
             dailyMissionRepository.save(dailyMission);
             isDaily = true;
+            clearCount = dailyMissionRepository.countByCreatedAtBetween(startDatetime, endDatetime) - 1;
         } else {
             // 이미 성공한 미션을 요청할경우 예외처리
             throw new CustomErrorException(ErrorCode.DUPLICATED_MISSION);
         }
 
-        return new DailyMissionResponseDto(dailyMission, isDaily);
+        return new DailyMissionResponseDto(dailyMission, clearCount, isDaily);
     }
 
     // 신규 모임 조회
