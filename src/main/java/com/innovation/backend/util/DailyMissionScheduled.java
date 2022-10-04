@@ -8,7 +8,6 @@ import com.innovation.backend.repository.MissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
@@ -20,7 +19,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DailyMissionScheduled {
 
-
     private final MissionRepository missionRepository;
     private final DailyMissionRepository dailyMissionRepository;
     private final MemberRepository memberRepository;
@@ -29,13 +27,15 @@ public class DailyMissionScheduled {
     LocalDateTime endDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
 
     @PostConstruct
-    public void init() {
+    public void initMission() {
+
         Long count = missionRepository.count();
         if (count == 0) {
             String basicMission = "중고 거래하기";
             Mission mission = new Mission(basicMission);
             missionRepository.save(mission);
         }
+
         Mission mission = missionRepository.findFirstByOrderByIdDesc();
         String missionContent = mission.getMission();
         boolean isDaily = dailyMissionRepository.existsByMissionAndCreatedAtBetween(missionContent, startDatetime, endDatetime);
@@ -45,9 +45,8 @@ public class DailyMissionScheduled {
         }
     }
 
-    @Transactional
     @Scheduled(cron = "0 0 0 * * *")
-    public void test() throws InterruptedException {
+    public void dailyMission() {
 
         Long count = missionRepository.count();
         if (missionId > count) {
@@ -58,9 +57,11 @@ public class DailyMissionScheduled {
 
         Optional<Mission> mission = missionRepository.findById(missionId);
         String missionContent = mission.get().getMission();
-        DailyMission dailyMission = new DailyMission(missionContent, null);
-        dailyMissionRepository.save(dailyMission);
-
+        boolean isDaily = dailyMissionRepository.existsByMissionAndCreatedAtBetween(missionContent, startDatetime, endDatetime);
+        if (isDaily == false) {
+            DailyMission dailyMission = new DailyMission(missionContent, null);
+            dailyMissionRepository.save(dailyMission);
+        }
 
     }
 }

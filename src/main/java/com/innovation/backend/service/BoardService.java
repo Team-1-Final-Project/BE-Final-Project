@@ -1,6 +1,6 @@
 package com.innovation.backend.service;
 
-import com.innovation.backend.dto.response.LikeResultResponseDto;
+import com.innovation.backend.dto.response.*;
 import com.innovation.backend.entity.Board;
 import com.innovation.backend.entity.HeartBoard;
 import com.innovation.backend.entity.Member;
@@ -11,10 +11,6 @@ import com.innovation.backend.repository.MemberRepository;
 import com.innovation.backend.repository.*;
 
 import com.innovation.backend.dto.request.BoardRequestDto;
-import com.innovation.backend.dto.response.BoardResponseDto;
-import com.innovation.backend.dto.response.CommentResponseDto;
-import com.innovation.backend.dto.response.GetAllBoardDto;
-import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.*;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.jwt.TokenProvider;
@@ -44,26 +40,40 @@ public class BoardService {
 
     //게시글 좋아요
     @Transactional
-    public LikeResultResponseDto addBoardLike(UserDetailsImpl userDetails, Long boardId) {
+    public BoardLikeResponseDto addBoardLike(UserDetailsImpl userDetails, Long boardId) {
         String userId = userDetails.getUsername();
         Member member = memberRepository.findByEmail(userId).orElseThrow();
         Board board = boardRepository.findById(boardId).orElseThrow();
         int likeNums = board.getHeartBoardNums();
+        boolean boardLike = isBoardLike(member,board);
         HeartBoard heartBoard = new HeartBoard(member,board);
-        if (isMeetingLike(member, board)) {
+        if (isBoardLike(member, board)) {
             heartBoardRepository.deleteByMemberAndBoard(member, board);
             board.addBoardLike(likeNums - 1);
-            return new LikeResultResponseDto("게시글 좋아요 취소!");
+            return new BoardLikeResponseDto(!boardLike);
         } else {
             heartBoardRepository.save(heartBoard);
             board.addBoardLike(likeNums + 1);
-            return new LikeResultResponseDto("게시글 좋아요 성공!");
+            return new BoardLikeResponseDto(!boardLike);
         }
     }
 
-    // 좋아요 중복방지
-    private boolean isMeetingLike(Member member, Board board) {
+    //좋아요 중복방지
+    private boolean isBoardLike(Member member, Board board) {
         return heartBoardRepository.existsByMemberAndBoard(member, board);
+    }
+
+    //게시글 좋아요 확인
+    @Transactional
+    public BoardLikeResponseDto getBoardLike(UserDetailsImpl userDetails, Long boardId) {
+        boolean boardLike = false;
+        if (userDetails != null) {
+            String userId = userDetails.getUsername();
+            Member member = memberRepository.findByEmail(userId).orElseThrow();
+            Board board = boardRepository.findById(boardId).orElseThrow();
+            boardLike = isBoardLike(member,board);
+        }
+        return new BoardLikeResponseDto(boardLike);
     }
 
     //게시글 전체 최신순으로 정렬
