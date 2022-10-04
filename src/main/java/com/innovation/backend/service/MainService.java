@@ -9,7 +9,7 @@ import com.innovation.backend.entity.Meeting;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.exception.CustomErrorException;
-import com.innovation.backend.jwt.UserDetailsImpl;
+import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.BoardRepository;
 import com.innovation.backend.repository.DailyMissionRepository;
 import com.innovation.backend.repository.MeetingRepository;

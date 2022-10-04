@@ -8,7 +8,7 @@ import com.innovation.backend.entity.Member;
 import com.innovation.backend.entity.Review;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.exception.CustomErrorException;
-import com.innovation.backend.jwt.UserDetailsImpl;
+import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.CrewRepository;
 import com.innovation.backend.repository.MeetingRepository;
 import com.innovation.backend.repository.MemberRepository;

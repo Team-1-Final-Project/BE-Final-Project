@@ -6,9 +6,8 @@ import com.innovation.backend.dto.response.MeetingLikeResponseDto;
 import com.innovation.backend.dto.response.MeetingResponseDto;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.Member;
-import com.innovation.backend.jwt.UserDetailsImpl;
+import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.service.MeetingService;
-import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,9 +34,7 @@ public class MeetingController {
   // 모임 생성
   @PostMapping("/meeting")
   public ResponseDto<MeetingResponseDto> createMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart("data") MeetingRequestDto requestDto, @RequestPart(required = false) MultipartFile image) {
-      Member member = userDetails.getMember();
-    MeetingResponseDto meetingResponseDto = meetingService.createMeeting(requestDto, userDetails, image);
-    return ResponseDto.success(meetingResponseDto);
+    return ResponseDto.success(meetingService.createMeeting(requestDto, userDetails, image));
   }
 
 
@@ -45,7 +42,6 @@ public class MeetingController {
   @PutMapping("/meeting/{meetingId}")
   public ResponseDto<String> updateMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails,
       @PathVariable("meetingId") Long meetingId, @RequestPart("data") MeetingRequestDto requestDto,@RequestPart(required = false) MultipartFile image) {
-      Member member = userDetails.getMember();
       meetingService.updateMeeting(meetingId, requestDto, userDetails,image);
     return ResponseDto.success("모임이 수정되었습니다.");
   }
@@ -87,7 +83,6 @@ public class MeetingController {
   //모임 좋아요 여부확인
   @GetMapping("/meeting/heart/{meetingId}")
   public ResponseDto<MeetingLikeResponseDto> getMeetingLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long meetingId) {
-    MeetingLikeResponseDto meetingLikeResponseDto = meetingService.getMeetingLike(userDetails,meetingId);
-    return ResponseDto.success(meetingLikeResponseDto);
+    return ResponseDto.success(meetingService.getMeetingLike(userDetails,meetingId));
   }
 }

@@ -3,12 +3,12 @@ package com.innovation.backend.service;
 import com.innovation.backend.dto.response.LikeResultResponseDto;
 import com.innovation.backend.entity.Board;
 import com.innovation.backend.entity.HeartBoard;
-import com.innovation.backend.entity.HeartMeeting;
 import com.innovation.backend.entity.Member;
-import com.innovation.backend.jwt.UserDetailsImpl;
+import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.BoardRepository;
 import com.innovation.backend.repository.HeartBoardRepository;
 import com.innovation.backend.repository.MemberRepository;
+import com.innovation.backend.repository.*;
 
 import com.innovation.backend.dto.request.BoardRequestDto;
 import com.innovation.backend.dto.response.BoardResponseDto;
@@ -17,10 +17,8 @@ import com.innovation.backend.dto.response.GetAllBoardDto;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.entity.*;
 import com.innovation.backend.enums.ErrorCode;
-import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.jwt.TokenProvider;
 
-import com.innovation.backend.repository.CommentRepository;
 import com.innovation.backend.util.S3Upload;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,9 +26,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +39,9 @@ public class BoardService {
     private final UserDetailsImpl userDetails;
     private final CommentRepository commentRepository;
     private final S3Upload s3Upload;
-    
+    private final TagBoardRepository tagBoardRepository;
+    private final BoardTagConnectionRepository boardTagConnectionRepository;
+
     //게시글 좋아요
     @Transactional
     public LikeResultResponseDto addBoardLike(UserDetailsImpl userDetails, Long boardId) {
@@ -76,12 +74,13 @@ public class BoardService {
 
         for(Board board : boardList){
             int heartBoardNums = heartBoardRepository.countByBoard(board);
+            int commentNums = commentRepository.countCommentsByBoard(board);
             Board boardById = boardRepository.findBoardById(board.getId());
             String boardImage = boardById.getBoardImage();
 //            if(boardImage != null || !boardImage.isEmpty()){
 //                boardImage = board.getBoardImage();
 //            }
-            GetAllBoardDto getAllBoardDto = new GetAllBoardDto(board, heartBoardNums, boardImage);
+            GetAllBoardDto getAllBoardDto = new GetAllBoardDto(board, heartBoardNums, commentNums, boardImage);
             getAllBoardDtoList.add(getAllBoardDto);
         }
         return ResponseDto.success(getAllBoardDtoList);
@@ -108,6 +107,8 @@ public class BoardService {
         }
 
         Board board = new Board(boardRequestDto, member, boardImage);
+        addBoardTagConnection(boardRequestDto, board);
+
         boardRepository.save(board);
 //        List<String> tagBoardList = boardRequestDto.getTagBoard();
         BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums());
@@ -122,6 +123,7 @@ public class BoardService {
         if(null == board) {
             return ResponseDto.fail(ErrorCode.ENTITY_NOT_FOUND);
         }
+        int commentNums = commentRepository.countCommentsByBoard(board);
 
 //        List<TagBoard> tagBoardList = tagBoardRepository.findAllByBoard(board);
 //        List<String> tagNameList = new ArrayList<>();
@@ -138,7 +140,7 @@ public class BoardService {
             commentResponseDtoList.add(commentResponseDto);
         }
 
-        BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums(), commentResponseDtoList);
+        BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums(), commentNums, commentResponseDtoList);
         return ResponseDto.success(boardResponseDto);
     }
 
@@ -158,6 +160,16 @@ public class BoardService {
             return ResponseDto.fail(ErrorCode.NOT_SAME_MEMBER);
         }
 
+        int commentNums = commentRepository.countCommentsByBoard(board);
+
+        List<Comment> commentList = commentRepository.findAllByBoardOrderByCreatedAtDesc(board);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
+        for(Comment comment : commentList){
+            CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
+            commentResponseDtoList.add(commentResponseDto);
+        }
+
         String boardImage = boardAlter.getBoardImage();
 
             if(boardImage != null && uploadImage.isEmpty()) {
@@ -167,7 +179,7 @@ public class BoardService {
                     boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
             }
         board.alter(boardRequestDto, boardImage);
-        BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums());
+        BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums(), commentNums, commentResponseDtoList);
         return ResponseDto.success(boardResponseDto);
     }
 
@@ -199,6 +211,18 @@ public class BoardService {
     public Board isPresentBoard(Long id) {
         Optional<Board> optionalBoard = boardRepository.findById(id);
         return optionalBoard.orElse(null);
+    }
+
+    private void addBoardTagConnection(BoardRequestDto boardrequestDto, Board board) {
+        Set<BoardTagConnection> boardTagConnectionList = new HashSet<>();
+        for (Long tagId : boardrequestDto.getTagBoardIds()) {
+            TagBoard tagBoard = tagBoardRepository.findById(tagId)
+                    .orElseThrow(NullPointerException::new);
+            BoardTagConnection boardTagConnection = new BoardTagConnection(board, tagBoard);
+            boardTagConnection = boardTagConnectionRepository.save(boardTagConnection);
+            boardTagConnectionList.add(boardTagConnection);
+        }
+        board.setBoardTagConnectionList(boardTagConnectionList);
     }
 
 }

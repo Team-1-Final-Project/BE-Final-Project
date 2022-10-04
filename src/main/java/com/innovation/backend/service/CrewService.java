@@ -5,10 +5,12 @@ import com.innovation.backend.entity.Crew;
 import com.innovation.backend.entity.Meeting;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.enums.ErrorCode;
+import com.innovation.backend.enums.MeetingStatus;
 import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.repository.CrewRepository;
 import com.innovation.backend.repository.MeetingRepository;
 import com.innovation.backend.repository.MemberRepository;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -32,6 +34,9 @@ public class CrewService {
     Meeting meeting = meetingRepository.findById(meetingId)
         .orElseThrow(()-> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
+    //참여가능한 모임인지 확인
+    isValidateMeeting(meeting);
+
     //이미 참여한 멤버인지 확인
     crewRepository.findByMemberAndMeeting(member,meeting)
         .ifPresent(e->{throw new CustomErrorException(ErrorCode.ALREADY_JOIN);});
@@ -40,8 +45,13 @@ public class CrewService {
     meeting.addCrew(crew);
     meeting.addNowPeople();
 
-    crewRepository.save(crew);
+    //모임 참여자 수가 정원과 같으면 모임 상태 변경
+    if(meeting.getCrews().size() == meeting.getLimitPeople()){
+      meeting.setMeetingStatus(MeetingStatus.COMPLETE_JOIN);
+    }
 
+    crewRepository.save(crew);
+    meetingRepository.save(meeting);
   }
 
   //모임 참여 취소
@@ -66,6 +76,11 @@ public class CrewService {
     meeting.minusNowPeople();
     meeting.deleteCrew(crew);
 
+    //참여자 수가 정원 보다 적은 경우 모임 상태 변경
+    if(meeting.getCrews().size() < meeting.getLimitPeople()){
+      meeting.setMeetingStatus(MeetingStatus.CAN_JOIN);
+    }
+    meetingRepository.save(meeting);
   }
 
   //모임 참여 유저 리스트 조회
@@ -81,5 +96,20 @@ public class CrewService {
       crewResponseDtoList.add(crewResponseDto);
     }
     return crewResponseDtoList;
+  }
+
+  public void isValidateMeeting (Meeting meeting){
+    if(meeting.getMeetingStatus() == MeetingStatus.COMPLETE_JOIN){
+      throw new CustomErrorException(ErrorCode.ALREADY_COMPLETE_JOIN);
+    }
+    if(meeting.getMeetingStatus() == MeetingStatus.PASS_DEADLINE){
+      throw new CustomErrorException(ErrorCode.ALREADY_PASS_DEADLINE);
+    }
+    if(meeting.getMeetingStatus() == MeetingStatus.COMPLETED_MEETING){
+      throw new CustomErrorException(ErrorCode.ALREADY_COMPLETED_MEETING);
+    }
+    if(meeting.getJoinEndDate().isBefore(LocalDate.now())){
+      throw new CustomErrorException(ErrorCode.ALREADY_PASS_DEADLINE);
+    }
   }
 }
