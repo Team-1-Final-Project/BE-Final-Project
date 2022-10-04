@@ -71,7 +71,6 @@ public class MainService {
 
         if (isDaily == false) {
             dailyMissionRepository.save(dailyMission);
-            isDaily = true;
             clearCount = dailyMissionRepository.countByCreatedAtBetween(startDatetime, endDatetime) - 1;
         } else {
             // 이미 성공한 미션을 요청할경우 예외처리
