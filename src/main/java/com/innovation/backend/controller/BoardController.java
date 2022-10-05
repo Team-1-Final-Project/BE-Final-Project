@@ -1,9 +1,9 @@
 package com.innovation.backend.controller;
 
-import com.innovation.backend.dto.response.BoardLikeResponseDto;
-import com.innovation.backend.dto.response.LikeResultResponseDto;
+import com.innovation.backend.dto.request.TagBoardRequestDto;
+import com.innovation.backend.dto.request.TagMeetingRequestDto;
+import com.innovation.backend.dto.response.*;
 import com.innovation.backend.dto.request.BoardRequestDto;
-import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.enums.ErrorCode;
 import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.security.UserDetailsImpl;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 
 @Slf4j
@@ -79,6 +80,12 @@ public class BoardController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseDto<?> deleteBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.deleteBoard(id, userDetails);
+    }
+
+    //게시글 태그별 조회
+    @PostMapping("/board/tag")
+    public ResponseDto<List<BoardResponseDto>> getBoardByTag(@RequestBody TagBoardRequestDto tagBoardRequestDto){
+        return ResponseDto.success(boardService.getBoardByTag(tagBoardRequestDto));
     }
 
 }
