@@ -328,7 +328,7 @@ public class MeetingService {
         if(meeting.getMeetingStatus() != MeetingStatus.CAN_JOIN){
             if(meeting.getNowPeople() > 1){
                 throw new CustomErrorException(ErrorCode.CAN_NOT_UPDATE_MEETING);
-            }
+            }throw new CustomErrorException(ErrorCode.CAN_NOT_UPDATE_MEETING2);
         }
     }
 }
