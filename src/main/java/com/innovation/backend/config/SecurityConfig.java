@@ -63,7 +63,7 @@ public class SecurityConfig {
             .antMatchers("/google","/oauth2/**", "/css/**","/images/**","/js/**","/favicon.ico/**").permitAll()
             .antMatchers("/login/**").permitAll()
             .antMatchers("/main/**").permitAll()
-            .antMatchers("/board" , "/board/{boardTagName}").permitAll()
+            .antMatchers("/board" , "/board/{boardTagName}","/board/heart/{boardId}").permitAll()
             .antMatchers("/recommends").permitAll()
             .antMatchers("/meeting/**").permitAll()
             .antMatchers("/swagger-ui/**").permitAll()

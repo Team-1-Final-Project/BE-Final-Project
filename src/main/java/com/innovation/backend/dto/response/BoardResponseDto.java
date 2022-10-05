@@ -73,6 +73,11 @@ public class BoardResponseDto extends Timestamped {
         this.boardImage = board.getBoardImage();
         this.heartBoardNums = board.getHeartBoardNums();
         this.createdAt = board.getCreatedAt();
+        for (BoardTagConnection boardTagConnection : board.getBoardTagConnectionList()) {
+            TagBoard tagBoard = boardTagConnection.getTagBoard();
+            TagBoardResponseDto tagBoardResponseDto = new TagBoardResponseDto(tagBoard);
+            tagBoards.add(tagBoardResponseDto);
+        }
     }
 }
 
