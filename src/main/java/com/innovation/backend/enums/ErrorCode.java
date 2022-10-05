@@ -44,7 +44,8 @@ public enum ErrorCode {
   ALREADY_COMPLETE_JOIN("ALREADY_COMPLETE_JOIN","이미 모집이 완료된 모임입니다."),
   ALREADY_PASS_DEADLINE("ALREADY_PASS_DEADLINE","이미 모집 기한이 지난 모임입니다."),
   ALREADY_COMPLETED_MEETING("ALREADY_COMPLETED_MEETING","이미 모임이 완료된 모임입니다."),
-  CAN_NOT_UPDATE_MEETING ("CAN_NOT_UPDATE_MEETING","참여 인원이 2명 이상이거나 모집 종료시에는 수정이 불가능합니다."),
+  CAN_NOT_UPDATE_MEETING ("CAN_NOT_UPDATE_MEETING","참여 인원이 2명 이상시에는 수정이 불가능합니다."),
+  CAN_NOT_UPDATE_MEETING2("CAN_NOT_UPDATE_MEETING2","모집 중 상태일 때만 수정이 가능합니다."),
   //후기
   NOT_FOUND_REVIEW("NOT_FOUND_REVIEW","후기를 찾을 수 없습니다."),
   ONLY_ONE_REVIEW("ONLY_ONE_REVIEW","후기는 한번만 작성할 수 있습니다."),
