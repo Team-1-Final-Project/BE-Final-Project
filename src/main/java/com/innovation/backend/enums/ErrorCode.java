@@ -18,6 +18,10 @@ public enum ErrorCode {
   //회원정보
   NEED_LOGIN("NEED_LOGIN","로그인이 필요합니다."),
   BAD_TOKEN_REQUEST("BAD_TOKEN_REQUEST", "Token이 유효하지 않습니다."),
+  EXPIRED_TOKEN("EXPIRED_TOKEN","만료된 Token입니다."),
+  INVALID_TOKEN("INVALID_TOKEN","유효하지 않은 Token 입니다."),
+  UNSUPPORTED_TOKEN("UNSUPPORTED_TOKEN","지원하지 않는 Token입니다."),
+  WRONG_TOKEN("WRONG_TOKEN","잘못된 Token 입니다."),
   TOKEN_NOT_FOUND("TOKEN_NOT_FOUND", "존재하지 않는 Token 입니다."),
   DUPLICATED_EMAIL("DUPLICATED_EMAIL", "이미 가입된 회원입니다."),
   NOT_FOUND_USER("NOT_FOUND_USER","유저를 찾을 수 없습니다."),

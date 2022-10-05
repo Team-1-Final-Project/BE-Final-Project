@@ -1,12 +1,14 @@
 package com.innovation.backend.config;
 
 
+import com.innovation.backend.exception.CustomAuthenticationEntryPoint;
 import com.innovation.backend.jwt.TokenProvider;
 import com.innovation.backend.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -65,10 +67,13 @@ public class SecurityConfig {
             .antMatchers("/main/**").permitAll()
             .antMatchers("/board" , "/board/{boardTagName}","/board/heart/{boardId}").permitAll()
             .antMatchers("/recommends").permitAll()
-            .antMatchers("/meeting/**").permitAll()
+            .antMatchers(HttpMethod.GET,"/meeting/**").permitAll()
             .antMatchers("/swagger-ui/**").permitAll()
-            .antMatchers("/review/**").permitAll()
+            .antMatchers(HttpMethod.GET,"/review/**").permitAll()
             .anyRequest().authenticated()
+            .and()
+            .exceptionHandling()
+            .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
             .and()
             .apply(new JwtSecurityConfig(SECRET_KEY, tokenProvider, userDetailsService));
         return http.build();
