@@ -2,6 +2,7 @@ package com.innovation.backend.entity;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.dto.request.BoardRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,12 +27,6 @@ public class Board extends Timestamped{
   @ManyToOne(fetch = FetchType.LAZY)
   private Member member;
 
-//  @JoinColumn(name = "member_nickname", nullable = false)
-//  private String writer;
-//
-//  @JoinColumn(name = "member_profile_image")
-//  private String profileImage;
-
   @Column(nullable = false)
   private String title;
 
@@ -46,7 +41,6 @@ public class Board extends Timestamped{
   @Column
   private String boardImage;
 
-
   /// 좋아요 부분
   @Column
   private int heartBoardNums = 0;
@@ -59,6 +53,12 @@ public class Board extends Timestamped{
     this.heartBoardNums = heartBoardNums;
   }
 
+  //게시글 태그
+  @OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE,orphanRemoval = true)
+  @JsonIgnore
+  private Set<BoardTagConnection> boardTagConnectionList = new HashSet<>();
+
+
 //  @Column
 //  private int heartBoardNums;
 
@@ -67,6 +67,7 @@ public class Board extends Timestamped{
 
 //  @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 //  private List<TagBoard> tagBoardList;
+
 
   @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Comment> commentList;
@@ -77,6 +78,10 @@ public class Board extends Timestamped{
     this.content = boardRequestDto.getContent();
     this.boardImage = boardImage;
     this.member = member;
+  }
+
+  public void setBoardTagConnectionList (Set<BoardTagConnection> boardTagConnections){
+    this.boardTagConnectionList = boardTagConnections;
   }
 
   public void alter(BoardRequestDto boardRequestDto, String boardImageAlter){

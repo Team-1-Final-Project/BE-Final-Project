@@ -15,4 +15,6 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
     void deleteById(Long commentId);
     Optional<Comment> findAllByMember(Comment comment);
     List<Comment> findAllByOrderByCreatedAtDesc();
+
+    int countCommentsByBoard(Board board);
 }
