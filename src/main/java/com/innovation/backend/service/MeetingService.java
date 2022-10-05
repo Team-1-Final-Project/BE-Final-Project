@@ -11,6 +11,7 @@ import com.innovation.backend.entity.MeetingTagConnection;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.entity.TagMeeting;
 import com.innovation.backend.enums.ErrorCode;
+import com.innovation.backend.enums.MeetingStatus;
 import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.CrewRepository;
@@ -91,6 +92,9 @@ public class MeetingService {
         //해당 모임 찾기
         Meeting meeting = meetingRepository.findById(meetingId)
             .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
+        // 수정 가능한 모임인지 확인
+        isValidateStatus(meeting);
+
 
         //모임장과 같은 유저인지 확인하기
         if (meeting.isWrittenBy(member)) {
@@ -313,6 +317,15 @@ public class MeetingService {
     private void isValidatePeopleNumber (MeetingRequestDto requestDto){
         if(requestDto.getLimitPeople()  <= 1){
             throw new CustomErrorException(ErrorCode.WRONG_LIMIT_PEOPLE);
+        }
+    }
+
+    //수정 가능한 모임 상태 인지 확인
+    private void isValidateStatus (Meeting meeting){
+        if(meeting.getMeetingStatus() != MeetingStatus.CAN_JOIN){
+            if(meeting.getNowPeople() > 1){
+                throw new CustomErrorException(ErrorCode.CAN_NOT_UPDATE_MEETING);
+            }
         }
     }
 }
