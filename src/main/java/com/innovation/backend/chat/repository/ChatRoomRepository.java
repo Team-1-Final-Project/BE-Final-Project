@@ -1,4 +1,7 @@
 package com.innovation.backend.chat.repository;
 
-public interface ChatRoomRepository {
+import com.innovation.backend.chat.entity.ChatRoom;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ChatRoomRepository extends JpaRepository <ChatRoom, Long> {
 }

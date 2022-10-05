@@ -6,10 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 
-
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Message {
+public class ChatRoom {
 }
