@@ -154,7 +154,7 @@ public class MeetingService {
             String meetingImage = meeting.getMeetingImage();
 
             if(meetingImage != null ){
-                if(image.isEmpty()) {
+                if(image == null || image.isEmpty()) {
                     meetingImage = meeting.getMeetingImage();
                 }else if (!image.isEmpty()) {
                     try{
@@ -174,7 +174,6 @@ public class MeetingService {
 
             // 수정
             meeting.update(requestDto,meetingImage);
-            meetingRepository.save(meeting);
 
         } else {
             throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
