@@ -7,6 +7,7 @@ import com.innovation.backend.entity.Meeting;
 import com.innovation.backend.entity.Member;
 import com.innovation.backend.entity.Review;
 import com.innovation.backend.enums.ErrorCode;
+import com.innovation.backend.enums.MeetingStatus;
 import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.repository.CrewRepository;
@@ -45,6 +46,9 @@ public class ReviewService {
     //로그인 유저 정보 가져오기
     Member member = memberRepository.findById(userDetails.getMember().getId())
         .orElseThrow(()-> new CustomErrorException(ErrorCode.NEED_LOGIN));
+
+    //모임마감된 모임인지 검증
+    isCompletedMeeting(meeting);
 
     //가입했던 모임인지 검증
     isJoinedMeeting(member,meeting);
@@ -85,7 +89,7 @@ public class ReviewService {
     String reviewImage = review.getReviewImage();
 
     if(reviewImage != null){
-      if(image.isEmpty()){
+      if(image == null || image.isEmpty()){
         reviewImage = review.getReviewImage();
       }else if (!image.isEmpty()) {
         try{
@@ -162,6 +166,7 @@ public class ReviewService {
       throw new CustomErrorException(ErrorCode.NEVER_JOIN);
     }
   }
+
   // 작성자와 같은 유저인지 확인하기
   public void isWrittenBy (Member member, Review review){
     Member author = review.getMember();
@@ -169,6 +174,7 @@ public class ReviewService {
       throw new CustomErrorException(ErrorCode.NOT_SAME_MEMBER);
     }
   }
+
   //이전에 쓴 적 없는지 검증
   public void isAlreadyWrite (Member member,Meeting meeting){
     List<Review> reviews = reviewRepository.findByMember(member);
@@ -177,4 +183,12 @@ public class ReviewService {
       if(review.getMeeting() == meeting){
         throw new CustomErrorException(ErrorCode.ONLY_ONE_REVIEW);
       }}}
+
+  //모임마감된 모임인지 검증
+  public void isCompletedMeeting (Meeting meeting){
+    if (meeting.getMeetingStatus() != MeetingStatus.COMPLETED_MEETING){
+      throw new CustomErrorException(ErrorCode.CAN_WRITE_COMPLETED_MEETING);
+    }
+  }
+
 }
