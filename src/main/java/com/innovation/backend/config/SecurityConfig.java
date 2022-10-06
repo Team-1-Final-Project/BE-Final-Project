@@ -66,7 +66,7 @@ public class SecurityConfig {
             .antMatchers("/login/**").permitAll()
             .antMatchers("/main/**").permitAll()
             .antMatchers("/board" , "/board/{boardTagName}","/board/heart/{boardId}").permitAll()
-            .antMatchers("/recommends").permitAll()
+            .antMatchers("/zeroshop/offline").permitAll()
             .antMatchers(HttpMethod.GET,"/meeting/**").permitAll()
             .antMatchers("/swagger-ui/**").permitAll()
             .antMatchers(HttpMethod.GET,"/review/**").permitAll()
