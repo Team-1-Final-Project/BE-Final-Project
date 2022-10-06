@@ -6,4 +6,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class MessageResponseDto {
+    public enum MessageType {
+        ENTER,
+        TALK
+    }
 }
