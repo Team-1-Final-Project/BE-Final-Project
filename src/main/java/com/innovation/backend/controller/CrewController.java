@@ -27,49 +27,20 @@ public class CrewController {
   //모임 참여하기
   @PostMapping("/meeting/join/{meetingId}")
   public ResponseDto<String> joinMeeting (@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("meetingId") Long meetingId){
-    try{
-      Member member = userDetails.getMember();
-      crewService.join(meetingId,member.getId());
-    }catch(CustomErrorException e) {
-      log.error(e.getMessage());
-      return ResponseDto.fail(e.getErrorCode());
-    }catch (Exception e) {
-      log.error("error: ", e);
-      return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
-    }
+      crewService.join(meetingId,userDetails.getMember().getId());
     return ResponseDto.success("모임 참여 완료");
   }
 
   //모임 참여 취소하기
   @DeleteMapping ("/meeting/join/{meetingId}")
   public ResponseDto<String> cancelJoinMeeting (@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("meetingId") Long meetingId){
-    try{
-      Member member = userDetails.getMember();
-      crewService.cancelJoin(meetingId, member.getId());
-    }catch(CustomErrorException e) {
-      log.error(e.getMessage());
-      return ResponseDto.fail(e.getErrorCode());
-    }catch (Exception e) {
-      log.error("error: ", e);
-      return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
-    }
+      crewService.cancelJoin(meetingId, userDetails.getMember().getId());
     return ResponseDto.success("모임 참여 취소 완료");
   }
 
   //모임 참여 유저 조회 (전체)
   @GetMapping("/meeting/crew/{meetingId}")
   public ResponseDto<List<CrewResponseDto>> getCrewList ( @PathVariable("meetingId") Long meetingId){
-    List<CrewResponseDto> crewResponseDtoList;
-    try{
-      crewResponseDtoList = crewService.getCrewList(meetingId);
-    }catch(CustomErrorException e) {
-      log.error(e.getMessage());
-      return ResponseDto.fail(e.getErrorCode());
-    }catch (Exception e) {
-      log.error("error: ", e);
-      return  ResponseDto.fail(ErrorCode.INVALID_ERROR);
-    }
-    return ResponseDto.success(crewResponseDtoList);
+    return ResponseDto.success(crewService.getCrewList(meetingId));
   }
-
 }
