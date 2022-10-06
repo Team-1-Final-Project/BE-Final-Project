@@ -72,6 +72,9 @@ public class CrewService {
       throw new CustomErrorException(ErrorCode.ADMIN_CANNOT_CANCEL_JOIN);
     }
 
+    //참여취소 가능한 모임인지 확인
+    isValidateCancelMeeting(meeting);
+
     crewRepository.deleteByMemberAndMeeting(member,meeting);
     meeting.minusNowPeople();
     meeting.deleteCrew(crew);
@@ -98,11 +101,17 @@ public class CrewService {
     return crewResponseDtoList;
   }
 
+  // 모임참여시 모임 검증
   public void isValidateMeeting (Meeting meeting){
     if(meeting.getMeetingStatus() == MeetingStatus.COMPLETE_JOIN){
       throw new CustomErrorException(ErrorCode.ALREADY_COMPLETE_JOIN);
     }
-    if(meeting.getMeetingStatus() == MeetingStatus.PASS_DEADLINE){
+    isValidateCancelMeeting(meeting);
+  }
+
+  //모임 참여 취소시
+  public void isValidateCancelMeeting (Meeting meeting){
+    if (meeting.getMeetingStatus() == MeetingStatus.PASS_DEADLINE){
       throw new CustomErrorException(ErrorCode.ALREADY_PASS_DEADLINE);
     }
     if(meeting.getMeetingStatus() == MeetingStatus.COMPLETED_MEETING){

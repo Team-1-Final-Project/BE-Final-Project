@@ -31,7 +31,7 @@ public class Meeting extends Timestamped{
   private String title;
 
   //모임 내용
-  @Column(nullable = false)
+  @Column(nullable = false,columnDefinition = "TEXT")
   private String content;
 
   //모임 이미지
