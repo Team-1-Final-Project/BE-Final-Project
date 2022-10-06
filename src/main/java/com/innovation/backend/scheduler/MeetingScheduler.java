@@ -34,5 +34,11 @@ public class MeetingScheduler {
         meeting.setMeetingStatus(MeetingStatus.COMPLETED_MEETING);
       }
     }
+
+    for (Meeting meeting : meetingList){
+      if(meeting.getJoinStartDate().equals(LocalDate.now())){
+        meeting.setMeetingStatus(MeetingStatus.CAN_JOIN);
+      }
+    }
   }
 }

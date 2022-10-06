@@ -117,6 +117,9 @@ public class CrewService {
     if(meeting.getMeetingStatus() == MeetingStatus.COMPLETED_MEETING){
       throw new CustomErrorException(ErrorCode.ALREADY_COMPLETED_MEETING);
     }
+    if(meeting.getMeetingStatus() == MeetingStatus.READY_FOR_JOIN){
+      throw new CustomErrorException(ErrorCode.READY_FOR_JOIN);
+    }
     if(meeting.getJoinEndDate().isBefore(LocalDate.now())){
       throw new CustomErrorException(ErrorCode.ALREADY_PASS_DEADLINE);
     }
