@@ -112,7 +112,11 @@ public class Meeting extends Timestamped{
     this.meetingEndDate = requestDto.getMeetingEndDate();
     this.location = requestDto.getLocation();
     this.limitPeople = requestDto.getLimitPeople();
-    this.meetingStatus = MeetingStatus.CAN_JOIN;
+    if(requestDto.getJoinStartDate().equals(LocalDate.now()) || requestDto.getJoinStartDate().isBefore(LocalDate.now())){
+      this.meetingStatus = MeetingStatus.CAN_JOIN;
+    }else if(requestDto.getJoinStartDate().isAfter(LocalDate.now())){
+      this.meetingStatus = MeetingStatus.READY_FOR_JOIN;
+    }
     this.admin = member;
   }
 
