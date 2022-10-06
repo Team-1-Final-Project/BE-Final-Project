@@ -48,31 +48,31 @@
 ## 🚀 Trouble Shooting
 > ### Selenium
  * 도입이유
-   + 사용자에게 오프라인 매장 추천 리스트를 보여주는데 직접 db에 데이터를 넣기보다는 크롤링 하기로 함
+   + 사용자에게 오프라인 매장 추천 리스트를 보여주는데 직접 db에 데이터를 삽입하기보다는 크롤링으로 결정하였습니다.
 
  * 문제상황
-   + Jsoup 라이브러리로 읽어오려 했으나 javascript로 이루어진 동적 데이터라 읽어올 수 없음
+   + Jsoup 라이브러리로 읽어오려 했으나 JavaScript로 이루어진 동적 데이터라 읽어들일 수 없었습니다. 
 
  * 해결방안
-   + 자동화 테스트 프레임워크인 Selenium을 활용해서 크롤링을 해서 해결함
+   + 자동화 테스트 프레임워크인 Selenium을 활용해서 크롤링을 해서 해결하였습니다.
 
 
 > ### 카카오 로그인 : 동의내역을 확인하는 API 요청
 
 * 도입이유
-  + 사용자가 로그인을 할 때 동의한 내역을 받기 위해서 api를 요청함
+  + 사용자가 로그인을 할 때 동의한 내역을 받기 위해서 API를 요청합니다.
 
 * 문제상황
-  + 로그인 시 프로필 이미지 수집을 동의하지 않으면 프로필 이미지가 없어 에러가 발생함
+  + 로그인 시 프로필 이미지 수집을 동의하지 않으면 프로필 이미지가 없어 에러가 발생하였습니다.
 
 * 해결방안
-  + 동의 내역을 받아와서 동의하지 않은 사용자일 경우 s3에 업로드된 이미지를 기본 프로필 이미지로 설정되도록 변경함
+  + 동의 내역을 받아와서 동의하지 않은 사용자일 경우 S3에 업로드하여 지정한 이미지를 기본 프로필 이미지로 설정되도록 수정하였습니다.
 
 
 
 
 ## 📚 Technique Stacks
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white) <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white) <img src="https://img.shields.io/badge/apache tomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=white"> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white"> <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white) <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> ![Microsoft Excel](https://img.shields.io/badge/Microsoft_Excel-217346?style=for-the-badge&logo=microsoft-excel&logoColor=white) <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white"> <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white"> <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white"> <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white"> <img src="https://img.shields.io/badge/Ubuntu-D4911E?style=for-the-badge&logo=Ubuntu&logoColor=white"> <img src="https://img.shields.io/badge/intelliJ IDEA-7A1FA2?style=for-the-badge&logo=intelliJIDEA&logoColor=white">
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white) <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white) <img src="https://img.shields.io/badge/apache tomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=white"> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white"> <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white) <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white"> <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white"> <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white"> <img src="https://img.shields.io/badge/Ubuntu-D4911E?style=for-the-badge&logo=Ubuntu&logoColor=white"> <img src="https://img.shields.io/badge/intelliJ IDEA-7A1FA2?style=for-the-badge&logo=intelliJIDEA&logoColor=white">
 
 
 
