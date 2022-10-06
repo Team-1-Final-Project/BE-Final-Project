@@ -28,7 +28,7 @@ public class Review extends Timestamped{
   private Long id;
 
   //후기 내용
-  @Column(nullable = false, length = 1000)
+  @Column(nullable = false,columnDefinition = "TEXT")
   private String content;
 
   //후기 사진
