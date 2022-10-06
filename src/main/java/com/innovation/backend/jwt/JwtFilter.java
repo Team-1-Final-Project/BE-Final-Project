@@ -3,6 +3,7 @@ package com.innovation.backend.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.enums.ErrorCode;
+import com.innovation.backend.exception.CustomErrorException;
 import com.innovation.backend.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -46,38 +47,45 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
 
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        Key key = Keys.hmacShaKeyFor(keyBytes);
+        try {
+            byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+            Key key = Keys.hmacShaKeyFor(keyBytes);
 
-        String jwt = resolveToken(request);
+            String jwt = resolveToken(request);
 
-        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-            Claims claims;
-            try {
-                claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
-            } catch (ExpiredJwtException e) {
-                claims = e.getClaims();
-            }
+            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+                Claims claims;
+                try {
+                    claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt)
+                        .getBody();
+                } catch (ExpiredJwtException e) {
+                    claims = e.getClaims();
+                    request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN);
+                }
 
-            if (claims.getExpiration().toInstant().toEpochMilli() < Instant.now().toEpochMilli()) {
-                response.setContentType("application/json;charset=UTF-8");
-                response.getWriter().println(
+                if (claims.getExpiration().toInstant().toEpochMilli() < Instant.now()
+                    .toEpochMilli()) {
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().println(
                         new ObjectMapper().writeValueAsString(
-                                ResponseDto.fail(ErrorCode.BAD_TOKEN_REQUEST)));
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            }
+                            ResponseDto.fail(ErrorCode.BAD_TOKEN_REQUEST)));
+                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                }
 
-
-            String subject = claims.getSubject();
-            Collection<? extends GrantedAuthority> authorities =
+                String subject = claims.getSubject();
+                Collection<? extends GrantedAuthority> authorities =
                     Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                            .map(SimpleGrantedAuthority::new)
-                            .collect(Collectors.toList());
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
 
-            UserDetails principal = userDetailsService.loadUserByUsername(subject);
+                UserDetails principal = userDetailsService.loadUserByUsername(subject);
 
-            Authentication authentication = new UsernamePasswordAuthenticationToken(principal, jwt, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(principal,
+                    jwt, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        }catch (CustomErrorException e) {
+            request.setAttribute("exception", e.getErrorCode());
         }
 
         filterChain.doFilter(request, response);

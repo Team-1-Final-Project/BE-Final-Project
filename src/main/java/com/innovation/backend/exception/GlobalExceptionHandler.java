@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
   @ExceptionHandler
-  public ResponseEntity<ResponseDto> customExceptionHandler(CustomErrorException exception) {
+  public ResponseEntity<ResponseDto<?>> customExceptionHandler(CustomErrorException exception) {
     log.error(exception.getMessage());
     return new ResponseEntity<>(ResponseDto.fail(exception.getErrorCode()), HttpStatus.BAD_REQUEST);
   }
