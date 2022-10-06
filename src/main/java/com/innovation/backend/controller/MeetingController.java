@@ -50,7 +50,6 @@ public class MeetingController {
   //모임 삭제
   @DeleteMapping("/meeting/{meetingId}")
   public ResponseDto<String> deleteMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("meetingId") Long meetingId) {
-      Member member = userDetails.getMember();
       meetingService.deleteMeeting(meetingId, userDetails);
     return ResponseDto.success("모임을 삭제하였습니다.");
 

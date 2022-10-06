@@ -100,11 +100,16 @@ public class ReviewService {
           log.error(e.getMessage());
         }}
     }else{
+      if(image == null || image.isEmpty()){
+        reviewImage = null;
+      }else if (!image.isEmpty()){
         try{
           reviewImage = s3Upload.uploadFiles(image,"reviews");
         }catch (IOException e){
           log.error(e.getMessage());
-        }}
+        }
+      }
+    }
     review.updateReview(requestDto,reviewImage);
     reviewRepository.save(review);
   }
