@@ -15,7 +15,6 @@ import com.innovation.backend.domain.Board.domain.Board;
 import com.innovation.backend.domain.Board.dto.request.BoardRequestDto;
 import com.innovation.backend.domain.Board.repository.BoardRepository;
 import com.innovation.backend.domain.Board.repository.HeartBoardRepository;
-import com.innovation.backend.dto.response.*;
 import com.innovation.backend.domain.Board.domain.HeartBoard;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.global.common.response.ResponseDto;
