@@ -169,13 +169,16 @@ public class MeetingService {
                     }
                 }
             }else {
-                try{
-                    meetingImage = s3Upload.uploadFiles(image, "images");
-                }catch (IOException e){
-                    log.error(e.getMessage());
+                if (image == null || image.isEmpty()) {
+                    meetingImage = null;
+                } else if (!image.isEmpty()) {
+                    try {
+                        meetingImage = s3Upload.uploadFiles(image, "images");
+                    } catch (IOException e) {
+                        log.error(e.getMessage());
+                    }
                 }
             }
-
             // 수정
             meeting.update(requestDto,meetingImage);
 
@@ -297,9 +300,9 @@ public class MeetingService {
     public MeetingLikeResponseDto getMeetingLike(UserDetailsImpl userDetails, Long meetingId) {
         boolean meetingLike = false;
         if (userDetails != null) {
-        String userId = userDetails.getUsername();
-        Member member = memberRepository.findByEmail(userId).orElseThrow();
-        Meeting meeting = meetingRepository.findById(meetingId).orElseThrow();
+            String userId = userDetails.getUsername();
+            Member member = memberRepository.findByEmail(userId).orElseThrow();
+            Meeting meeting = meetingRepository.findById(meetingId).orElseThrow();
             meetingLike = isMeetingLike(member,meeting);
         }
         return new MeetingLikeResponseDto(meetingLike);
