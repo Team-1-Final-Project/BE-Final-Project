@@ -4,8 +4,8 @@
 
 
 ## 🔎 group info
-  * BE : 강윤주 / 전혜진 / 안재원
-  * FE : 심유선 / 김민석 / 박세은A / 오정진 [Front-End GitHub](https://github.com/Team-1-Final-Project/FE-Final-Project) (링크)
+   * BE : 강윤주 (Team Leader) / 전혜진 / 안재원
+   * FE : 심유선 (Deputy Team Leader) / 김민석 / 박세은A / 오정진 [Front-End GitHub](https://github.com/Team-1-Final-Project/FE-Final-Project) (링크)
 
 
 ## 💡 핵심기능
