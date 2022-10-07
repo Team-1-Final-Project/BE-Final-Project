@@ -47,7 +47,7 @@ public class SecurityConfig {
         http.cors();
         http.cors().configurationSource(request -> {
             var cors = new CorsConfiguration();
-            cors.setAllowedOrigins(List.of("http://localhost:3000","https://accounts.google.com/o/oauth2/v2/**")); // 허용할 URL
+            cors.setAllowedOrigins(List.of("http://earth-us.s3-website.ap-northeast-2.amazonaws.com","http://localhost:3000","https://accounts.google.com/o/oauth2/v2/**")); // 허용할 URL
             cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS")); // 허용할 Http Method
             cors.setAllowedHeaders(List.of("*")); // 허용할 Header
             cors.addExposedHeader("Authorization");
