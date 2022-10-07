@@ -1,26 +1,31 @@
 package com.innovation.backend.domain.Board.controller;
 
+import com.innovation.backend.domain.Board.dto.request.BoardRequestDto;
 import com.innovation.backend.domain.Board.dto.request.TagBoardRequestDto;
 import com.innovation.backend.domain.Board.dto.response.BoardLikeResponseDto;
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
-import com.innovation.backend.domain.Board.dto.request.BoardRequestDto;
 import com.innovation.backend.domain.Board.service.BoardService;
-import com.innovation.backend.dto.response.*;
+import com.innovation.backend.global.common.response.ResponseDto;
 import com.innovation.backend.global.enums.ErrorCode;
 import com.innovation.backend.global.exception.CustomErrorException;
-import com.innovation.backend.global.common.response.ResponseDto;
 import com.innovation.backend.security.UserDetailsImpl;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Slf4j
