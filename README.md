@@ -1,5 +1,5 @@
 
-## 🖥 Preiview
+## 🖥 Preview
 ![earthUs](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FlyIQp%2FbtrNZoERCaJ%2Fxwv1DFpGK3kI4CisP09dLk%2Fimg.png)
 
 
