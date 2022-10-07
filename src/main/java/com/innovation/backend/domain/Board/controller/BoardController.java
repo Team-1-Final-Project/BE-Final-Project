@@ -5,7 +5,6 @@ import com.innovation.backend.domain.Board.dto.response.BoardLikeResponseDto;
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
 import com.innovation.backend.domain.Board.dto.request.BoardRequestDto;
 import com.innovation.backend.domain.Board.service.BoardService;
-import com.innovation.backend.dto.response.*;
 import com.innovation.backend.global.enums.ErrorCode;
 import com.innovation.backend.global.exception.CustomErrorException;
 import com.innovation.backend.global.common.response.ResponseDto;
