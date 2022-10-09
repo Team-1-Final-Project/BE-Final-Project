@@ -96,8 +96,8 @@ public class BoardService {
     public ResponseDto<?> getAllBoard(Long id){
         List<Board> boardList = boardRepository.findAllByOrderByCreatedAtDesc();
         List<GetAllBoardDto> getAllBoardDtoList = new ArrayList<>();
-        PageRequest pageRequest = PageRequest.of(0,10, Sort.by(Sort.Direction.DESC));
-        Slice<Board> page = boardRepository.findByIdLessThanAndOrderByIdDesc(id,pageRequest);
+        PageRequest pageRequest = PageRequest.of(0,10, Sort.by(Sort.Direction.DESC,"id"));
+        Slice<Board> page = boardRepository.findByIdLessThanAndOrderByIdDesc(id, pageRequest);
 
         for(Board board : boardList){
             int heartBoardNums = heartBoardRepository.countByBoard(board);
