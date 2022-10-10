@@ -54,7 +54,7 @@ public class ReviewController {
 
   //후기 전체 조회
   @GetMapping("/review")
-  public ResponseDto<Page<ReviewResponseDto>> getAllReview(@PageableDefault(size = 10) Pageable pageable){
+  public ResponseDto<Page<ReviewResponseDto>> getAllReview(@PageableDefault(size = 12) Pageable pageable){
     return ResponseDto.success(reviewService.getAllReview(pageable));
   }
 
