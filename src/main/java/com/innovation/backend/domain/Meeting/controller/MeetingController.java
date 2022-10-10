@@ -59,7 +59,7 @@ public class MeetingController {
 
   //모임 전체 조회
   @GetMapping("/meeting")
-  public ResponseDto<Page<MeetingResponseDto>> getAllMeeting(@PageableDefault(size = 12) Pageable pageable) {
+  public ResponseDto<Page<MeetingResponseDto>> getAllMeeting(@PageableDefault(size = 10) Pageable pageable) {
     return ResponseDto.success(meetingService.getAllMeeting(pageable));
   }
 
