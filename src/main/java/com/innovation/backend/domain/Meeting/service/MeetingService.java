@@ -217,9 +217,9 @@ public class MeetingService {
     }
 
     //모임 전체 조회 (전체)
-    public Page<MeetingResponseDto> getAllMeeting(Pageable pageable) {
+    public List<MeetingResponseDto> getAllMeeting() {
 
-        Page<Meeting> meetingList = meetingRepository.findAllByOrderByCreatedAtDesc(pageable);
+        List<Meeting> meetingList = meetingRepository.findAllByOrderByCreatedAtDesc();
         List<MeetingResponseDto> meetingResponseDtoList = new ArrayList<>();
 
         for (Meeting meeting : meetingList) {
@@ -227,7 +227,7 @@ public class MeetingService {
             meetingResponseDtoList.add(meetingResponseDto);
         }
 
-        return new PageImpl<>(meetingResponseDtoList, pageable, meetingList.getTotalElements());
+        return meetingResponseDtoList;
     }
 
 
