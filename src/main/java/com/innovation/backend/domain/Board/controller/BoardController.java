@@ -53,8 +53,8 @@ public class BoardController {
 
     @GetMapping("/board")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto<?> getAllBoards() {
-        return boardService.getAllBoard();
+    public ResponseDto<?> getAllBoards(Long id) {
+        return boardService.getAllBoard(id);
     }
 
     @PostMapping(value = "/board", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
