@@ -22,6 +22,9 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -130,15 +133,16 @@ public class ReviewService {
   }
 
   //후기 전체 조회 (전체)
-  public List<ReviewResponseDto> getAllReview(){
-    List<Review> reviews = reviewRepository.findAllByOrderByCreatedAtDesc();
+  public Page<ReviewResponseDto> getAllReview(Pageable pageable){
+
+    Page<Review> reviews = reviewRepository.findAllByOrderByCreatedAtDesc(pageable);
     List<ReviewResponseDto> reviewResponseDtos = new ArrayList<>();
 
     for(Review review : reviews){
       ReviewResponseDto reviewResponseDto = new ReviewResponseDto(review);
       reviewResponseDtos.add(reviewResponseDto);
     }
-    return reviewResponseDtos;
+    return new PageImpl<>(reviewResponseDtos, pageable, reviews.getTotalElements());
   }
 
   //후기 상세 조회
