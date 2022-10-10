@@ -30,6 +30,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -88,9 +93,11 @@ public class BoardService {
 
     //게시글 전체 최신순으로 정렬
     @Transactional
-    public ResponseDto<?> getAllBoard(){
+    public ResponseDto<?> getAllBoard(Long id){
         List<Board> boardList = boardRepository.findAllByOrderByCreatedAtDesc();
         List<GetAllBoardDto> getAllBoardDtoList = new ArrayList<>();
+        PageRequest pageRequest = PageRequest.of(0,10, Sort.by(Sort.Direction.DESC,"id"));
+        Slice<Board> page = boardRepository.findByIdLessThanAndOrderByIdDesc(id, pageRequest);
 
         for(Board board : boardList){
             int heartBoardNums = heartBoardRepository.countByBoard(board);
@@ -103,8 +110,10 @@ public class BoardService {
             GetAllBoardDto getAllBoardDto = new GetAllBoardDto(board, heartBoardNums, commentNums, boardImage);
             getAllBoardDtoList.add(getAllBoardDto);
         }
-        return ResponseDto.success(getAllBoardDtoList);
+        ResponseDto.success(getAllBoardDtoList);
+        return ResponseDto.success(page);
     }
+
 
     // 게시글 작성
     @Transactional
@@ -124,6 +133,8 @@ public class BoardService {
 
         if (uploadImage != null &&!uploadImage.isEmpty()) {
                 boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
+        } else if (uploadImage == null) {
+            boardImage = null;
         }
 
         Board board = new Board(boardRequestDto, member, boardImage);
