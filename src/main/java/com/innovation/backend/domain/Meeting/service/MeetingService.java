@@ -21,6 +21,9 @@ import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.domain.Crew.repository.CrewRepository;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.global.util.S3Upload;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -214,9 +217,9 @@ public class MeetingService {
     }
 
     //모임 전체 조회 (전체)
-    public List<MeetingResponseDto> getAllMeeting() {
+    public Page<MeetingResponseDto> getAllMeeting(Pageable pageable) {
 
-        List<Meeting> meetingList = meetingRepository.findAllByOrderByCreatedAtDesc();
+        Page<Meeting> meetingList = meetingRepository.findAllByOrderByCreatedAtDesc(pageable);
         List<MeetingResponseDto> meetingResponseDtoList = new ArrayList<>();
 
         for (Meeting meeting : meetingList) {
@@ -224,7 +227,7 @@ public class MeetingService {
             meetingResponseDtoList.add(meetingResponseDto);
         }
 
-        return meetingResponseDtoList;
+        return new PageImpl<>(meetingResponseDtoList, pageable, meetingList.getTotalElements());
     }
 
 
@@ -328,7 +331,7 @@ public class MeetingService {
 
     //수정 가능한 모임 상태 인지 확인
     private void isValidateStatus (Meeting meeting){
-        if(meeting.getMeetingStatus() != MeetingStatus.CAN_JOIN){
+        if(!(meeting.getMeetingStatus() == MeetingStatus.CAN_JOIN || meeting.getMeetingStatus() == MeetingStatus.READY_FOR_JOIN)){
             if(meeting.getNowPeople() > 1){
                 throw new CustomErrorException(ErrorCode.CAN_NOT_UPDATE_MEETING);
             }throw new CustomErrorException(ErrorCode.CAN_NOT_UPDATE_MEETING2);
