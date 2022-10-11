@@ -1,7 +1,7 @@
 package com.innovation.backend.security;
 
-import com.innovation.backend.domain.Member.domain.Member;
-import com.innovation.backend.global.enums.Authority;
+import com.innovation.backend.entity.Member;
+import com.innovation.backend.enums.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
