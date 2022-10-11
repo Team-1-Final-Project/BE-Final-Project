@@ -7,6 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MeetingRepository extends JpaRepository<Meeting,Long> {
-  Page<Meeting> findAllByOrderByCreatedAtDesc(Pageable pageable);
+  List<Meeting> findAllByOrderByCreatedAtDesc();
   List<Meeting> findTop4ByOrderByCreatedAtDesc();
 }

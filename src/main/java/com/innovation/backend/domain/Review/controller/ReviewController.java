@@ -8,6 +8,9 @@ import com.innovation.backend.security.UserDetailsImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,8 +54,8 @@ public class ReviewController {
 
   //후기 전체 조회
   @GetMapping("/review")
-  public ResponseDto<List<ReviewResponseDto>> getAllReview(){
-    return ResponseDto.success(reviewService.getAllReview());
+  public ResponseDto<Page<ReviewResponseDto>> getAllReview(@PageableDefault(size = 12) Pageable pageable){
+    return ResponseDto.success(reviewService.getAllReview(pageable));
   }
 
   //후기 상세 조회
