@@ -21,6 +21,9 @@ import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.domain.Crew.repository.CrewRepository;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.global.util.S3Upload;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -238,7 +241,7 @@ public class MeetingService {
     }
 
     // 모임 태그별 조회 (전체)
-    public List<MeetingResponseDto> getMeetingByTag(TagMeetingRequestDto tagMeetingRequestDto) {
+    public Page<MeetingResponseDto> getMeetingByTag(TagMeetingRequestDto tagMeetingRequestDto, Pageable pageable) {
         Set<Meeting> meetings = new HashSet<>();
 
         for (Long tagId : tagMeetingRequestDto.getTagIds()) {
@@ -254,7 +257,7 @@ public class MeetingService {
             meetingResponseDtoList.add(new MeetingResponseDto(meeting));
         }
 
-        return meetingResponseDtoList;
+       return new PageImpl<>(meetingResponseDtoList, pageable, meetings.size());
     }
 
 
