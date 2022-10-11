@@ -1,5 +1,6 @@
 package com.innovation.backend.domain.Meeting.controller;
 
+import com.innovation.backend.domain.Meeting.dto.response.MeetingGetAllResponseDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingLikeResponseDto;
 import com.innovation.backend.domain.Meeting.dto.request.MeetingRequestDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
@@ -59,8 +60,9 @@ public class MeetingController {
 
   //모임 전체 조회
   @GetMapping("/meeting")
-  public ResponseDto<List<MeetingResponseDto>> getAllMeeting() {
-    return ResponseDto.success(meetingService.getAllMeeting());
+  public ResponseDto<Page<MeetingGetAllResponseDto>> getAllMeeting(@PageableDefault(size = 12) Pageable pageable) {
+    return ResponseDto.success(meetingService.getAllMeeting(pageable));
+
   }
 
   //모임 상세 조회
@@ -71,8 +73,8 @@ public class MeetingController {
 
   //모임 태그별 조회
   @PostMapping("/meeting/tag")
-  public ResponseDto<List<MeetingResponseDto>> getMeetingByTag(@RequestBody TagMeetingRequestDto tagIds){
-    return ResponseDto.success(meetingService.getMeetingByTag(tagIds));
+  public ResponseDto<Page<MeetingGetAllResponseDto>> getMeetingByTag(@RequestBody TagMeetingRequestDto tagIds, @PageableDefault(size = 12) Pageable pageable){
+    return ResponseDto.success(meetingService.getMeetingByTag(tagIds, pageable));
   }
 
   //모임 좋아요

@@ -42,6 +42,8 @@ public class Meeting extends Timestamped {
   @Column
   private String meetingImage;
 
+  private String meetingThumbImage;
+
   //모임 모집 시작일
   @Column(nullable = false)
   private LocalDate joinStartDate;
@@ -106,10 +108,11 @@ public class Meeting extends Timestamped {
   private List<Review> reviews = new ArrayList<>();
 
   //모임 생성
-  public Meeting(MeetingRequestDto requestDto, Member member, String meetingImage){
+  public Meeting(MeetingRequestDto requestDto, Member member, String meetingImage, String meetingThumbImage){
     this.title = requestDto.getTitle();
     this.content = requestDto.getContent();
     this.meetingImage = meetingImage;
+    this.meetingThumbImage = meetingThumbImage;
     this.joinStartDate = requestDto.getJoinStartDate();
     this.joinEndDate = requestDto.getJoinEndDate();
     this.meetingStartDate = requestDto.getMeetingStartDate();
@@ -134,10 +137,11 @@ public class Meeting extends Timestamped {
   }
 
   //모임 수정
-  public void update(MeetingRequestDto requestDto,String meetingImage){
+  public void update(MeetingRequestDto requestDto,String meetingImage, String meetingThumbImage){
     this.title = requestDto.getTitle();
     this.content = requestDto.getContent();
     this.meetingImage = requestDto.getMeetingImage();
+    this.meetingThumbImage = meetingThumbImage;
     this.joinStartDate = requestDto.getJoinStartDate();
     this.joinEndDate = requestDto.getJoinEndDate();
     this.meetingStartDate = requestDto.getMeetingStartDate();

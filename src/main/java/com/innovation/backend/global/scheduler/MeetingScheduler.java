@@ -30,7 +30,9 @@ public class MeetingScheduler {
     for (Meeting meeting : meetingList){
       if(meeting.getJoinEndDate().isBefore(LocalDate.now())){
         meeting.setMeetingStatus(MeetingStatus.PASS_DEADLINE);
-      }if(meeting.getMeetingEndDate().isBefore(LocalDate.now())){
+      }if(meeting.getMeetingEndDate().isBefore(LocalDate.now()) || meeting.getMeetingEndDate().isEqual(LocalDate.now())){
+        meeting.setMeetingStatus(MeetingStatus.COMPLETED_MEETING);
+      }if(meeting.getMeetingStatus() == MeetingStatus.PASS_DEADLINE && meeting.getMeetingEndDate().isBefore(LocalDate.now())){
         meeting.setMeetingStatus(MeetingStatus.COMPLETED_MEETING);
       }
     }
