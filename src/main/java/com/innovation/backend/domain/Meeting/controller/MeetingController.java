@@ -59,7 +59,7 @@ public class MeetingController {
 
   //모임 전체 조회
   @GetMapping("/meeting")
-  public ResponseDto<Page<MeetingResponseDto>> getAllMeeting(@PageableDefault(size = 10) Pageable pageable) {
+  public ResponseDto<Page<MeetingResponseDto>> getAllMeeting(@PageableDefault(size = 12) Pageable pageable) {
     return ResponseDto.success(meetingService.getAllMeeting(pageable));
   }
 
@@ -71,8 +71,8 @@ public class MeetingController {
 
   //모임 태그별 조회
   @PostMapping("/meeting/tag")
-  public ResponseDto<List<MeetingResponseDto>> getMeetingByTag(@RequestBody TagMeetingRequestDto tagIds){
-    return ResponseDto.success(meetingService.getMeetingByTag(tagIds));
+  public ResponseDto<Page<MeetingResponseDto>> getMeetingByTag(@RequestBody TagMeetingRequestDto tagIds, @PageableDefault(size = 12) Pageable pageable){
+    return ResponseDto.success(meetingService.getMeetingByTag(tagIds, pageable));
   }
 
   //모임 좋아요
