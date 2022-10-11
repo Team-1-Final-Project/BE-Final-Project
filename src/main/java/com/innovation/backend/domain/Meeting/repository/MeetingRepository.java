@@ -9,7 +9,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface MeetingRepository extends JpaRepository<Meeting,Long> {
   List<Meeting> findAllByOrderByCreatedAtDesc();
   List<Meeting> findTop4ByOrderByCreatedAtDesc();
-
-//  List<Meeting> findAll(Pageable pageable);
-
 }
