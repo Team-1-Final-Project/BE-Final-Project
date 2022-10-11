@@ -1,4 +1,4 @@
-package com.innovation.backend.chat.config;
+package com.innovation.backend.domain.Chat.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

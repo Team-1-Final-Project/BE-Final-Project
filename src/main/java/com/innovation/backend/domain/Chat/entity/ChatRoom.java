@@ -1,11 +1,10 @@
-package com.innovation.backend.chat.entity;
+package com.innovation.backend.domain.Chat.entity;
 
 import com.innovation.backend.entity.Crew;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 
 import javax.persistence.*;
 

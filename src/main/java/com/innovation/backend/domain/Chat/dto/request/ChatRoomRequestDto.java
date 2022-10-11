@@ -1,11 +1,10 @@
-package com.innovation.backend.chat.dto.request;
+package com.innovation.backend.domain.Chat.dto.request;
 
-import com.innovation.backend.chat.entity.ChatRoom;
+import com.innovation.backend.domain.Chat.entity.ChatRoom;
 import com.innovation.backend.entity.Crew;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 
 @Getter
 @NoArgsConstructor

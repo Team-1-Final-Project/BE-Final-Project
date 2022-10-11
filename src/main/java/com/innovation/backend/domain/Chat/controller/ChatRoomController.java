@@ -1,8 +1,8 @@
-package com.innovation.backend.chat.controller;
+package com.innovation.backend.domain.Chat.controller;
 
 
-import com.innovation.backend.chat.dto.response.ChatRoomResponseDto;
-import com.innovation.backend.chat.service.ChatRoomService;
+import com.innovation.backend.domain.Chat.dto.response.ChatRoomResponseDto;
+import com.innovation.backend.domain.Chat.service.ChatRoomService;
 import com.innovation.backend.dto.response.ResponseDto;
 import com.innovation.backend.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;

@@ -1,11 +1,15 @@
-package com.innovation.backend.chat.dto.request;
+package com.innovation.backend.domain.Chat.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageRequestDto {
+@Entity
+public class Message {
 }

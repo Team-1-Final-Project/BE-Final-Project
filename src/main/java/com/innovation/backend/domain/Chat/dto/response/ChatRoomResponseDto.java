@@ -1,4 +1,4 @@
-package com.innovation.backend.chat.dto.response;
+package com.innovation.backend.domain.Chat.dto.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

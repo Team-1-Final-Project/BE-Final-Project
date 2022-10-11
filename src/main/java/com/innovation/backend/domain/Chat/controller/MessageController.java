@@ -1,4 +1,4 @@
-package com.innovation.backend.chat.controller;
+package com.innovation.backend.domain.Chat.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;

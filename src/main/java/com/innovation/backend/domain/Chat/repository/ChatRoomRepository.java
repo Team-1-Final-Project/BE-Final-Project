@@ -1,6 +1,6 @@
-package com.innovation.backend.chat.repository;
+package com.innovation.backend.domain.Chat.repository;
 
-import com.innovation.backend.chat.entity.ChatRoom;
+import com.innovation.backend.domain.Chat.entity.ChatRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChatRoomRepository extends JpaRepository <ChatRoom, Long> {
