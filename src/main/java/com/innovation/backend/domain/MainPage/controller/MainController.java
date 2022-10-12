@@ -1,6 +1,6 @@
 package com.innovation.backend.domain.MainPage.controller;
 
-import com.innovation.backend.domain.Badge.BadgeService;
+import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
 import com.innovation.backend.domain.MainPage.service.MainService;
@@ -54,7 +54,7 @@ public class MainController {
             log.error(e.getMessage());
             return ResponseDto.fail(ErrorCode.NEED_LOGIN);
         }
-        badgeService.getMissionChallengerBadge(userDetails, "MissionChallenger");
+        badgeService.getMissionStarterBadge(userDetails, "MissionStarter Badge");
         return ResponseDto.success(dailyMissionResponseDto);
     }
 

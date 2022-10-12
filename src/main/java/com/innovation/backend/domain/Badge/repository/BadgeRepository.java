@@ -1,10 +1,10 @@
-package com.innovation.backend.domain.Badge;
+package com.innovation.backend.domain.Badge.repository;
 
 
 
-import com.innovation.backend.domain.Badge.Badge;
+import com.innovation.backend.domain.Badge.domain.Badge;
+import com.innovation.backend.domain.Badge.domain.TagBadge;
 import com.innovation.backend.domain.Member.domain.Member;
-import com.innovation.backend.domain.Badge.TagBadge;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

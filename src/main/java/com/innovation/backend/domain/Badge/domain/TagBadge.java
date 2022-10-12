@@ -1,4 +1,4 @@
-package com.innovation.backend.domain.Badge;
+package com.innovation.backend.domain.Badge.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
