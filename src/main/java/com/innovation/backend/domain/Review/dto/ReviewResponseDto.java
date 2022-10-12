@@ -11,6 +11,7 @@ public class ReviewResponseDto {
   private final Long id;
   private final String content;
   private final String reviewImage;
+  private final String reviewThumbImage;
   private final MemberResponseDto author;
   private final Long meetingId;
   private final LocalDateTime createdAt;
@@ -19,6 +20,7 @@ public class ReviewResponseDto {
     this.id = review.getId();
     this.content = review.getContent();
     this.reviewImage = review.getReviewImage();
+    this.reviewThumbImage = review.getReviewThumbImage();
     this.author = new MemberResponseDto(review.getMember());
     this.meetingId = review.getMeeting().getId();
     this.createdAt = review.getCreatedAt();
