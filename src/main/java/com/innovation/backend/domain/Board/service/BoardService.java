@@ -1,5 +1,6 @@
 package com.innovation.backend.domain.Board.service;
 
+import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Board.domain.Board;
 import com.innovation.backend.domain.Board.domain.BoardTagConnection;
 import com.innovation.backend.domain.Board.domain.HeartBoard;
@@ -49,7 +50,7 @@ public class BoardService {
     private final S3Upload s3Upload;
     private final TagBoardRepository tagBoardRepository;
     private final BoardTagConnectionRepository boardTagConnectionRepository;
-
+    private final BadgeService badgeService;
 
     //게시글 좋아요
     @Transactional
@@ -67,6 +68,7 @@ public class BoardService {
         } else {
             heartBoardRepository.save(heartBoard);
             board.addBoardLike(likeNums + 1);
+            badgeService.getHeartMakerBadge(userDetails, "HeartMaker Badge");
             return new BoardLikeResponseDto(!boardLike);
         }
     }
@@ -141,6 +143,7 @@ public class BoardService {
         boardRepository.save(board);
 //        List<String> tagBoardList = boardRequestDto.getTagBoard();
         BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums());
+        badgeService.getWelcomeCommunityBadge(userDetails, "WelcomeCommunityBadge");
         return ResponseDto.success(boardResponseDto);
 
     }

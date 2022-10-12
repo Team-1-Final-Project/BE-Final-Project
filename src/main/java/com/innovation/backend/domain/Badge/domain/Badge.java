@@ -1,4 +1,4 @@
-package com.innovation.backend.domain.Badge;
+package com.innovation.backend.domain.Badge.domain;
 
 
 import com.innovation.backend.domain.Member.domain.Member;
