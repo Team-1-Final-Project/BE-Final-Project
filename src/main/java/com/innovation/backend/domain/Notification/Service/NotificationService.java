@@ -1,5 +1,6 @@
-package com.innovation.backend.domain.Notification;
+package com.innovation.backend.domain.Notification.Service;
 
+import com.innovation.backend.domain.Notification.dto.NotificationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;

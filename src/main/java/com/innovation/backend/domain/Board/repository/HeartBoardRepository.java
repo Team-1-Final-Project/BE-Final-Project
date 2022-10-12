@@ -12,4 +12,6 @@ public interface HeartBoardRepository extends JpaRepository<HeartBoard,Long> {
     List<HeartBoard> findByMember (Member member);
     void deleteByBoard (Board board);
     int countByBoard (Board board);
+
+    int countByMember(Member member);
 }

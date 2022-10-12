@@ -1,6 +1,6 @@
 package com.innovation.backend.domain.Member.dto.response;
 
-import com.innovation.backend.domain.Badge.TagBadge;
+import com.innovation.backend.domain.Badge.domain.TagBadge;
 import lombok.Getter;
 
 @Getter

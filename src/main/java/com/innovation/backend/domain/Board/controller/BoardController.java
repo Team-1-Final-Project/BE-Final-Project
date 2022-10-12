@@ -1,5 +1,6 @@
 package com.innovation.backend.domain.Board.controller;
 
+import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Board.dto.request.BoardRequestDto;
 import com.innovation.backend.domain.Board.dto.request.TagBoardRequestDto;
 import com.innovation.backend.domain.Board.dto.response.BoardLikeResponseDto;
@@ -31,7 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class BoardController {
 
     private final BoardService boardService;
-
+    private final BadgeService badgeService;
 
     //게시글 좋아요
     @PutMapping("/board/heart/{boardId}")

@@ -1,4 +1,4 @@
-package com.innovation.backend.domain.Notification;
+package com.innovation.backend.domain.Notification.dto;
 
 import lombok.Getter;
 
