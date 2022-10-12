@@ -22,6 +22,7 @@ import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.domain.Crew.repository.CrewRepository;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.global.util.S3Upload;
+import java.util.stream.Collectors;
 import org.hibernate.sql.Select;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -259,16 +260,18 @@ public class MeetingService {
 
     // 모임 태그별 조회 (전체)
     public Page<MeetingGetAllResponseDto> getMeetingByTag(TagMeetingRequestDto tagMeetingRequestDto, Pageable pageable) {
-        Long totalElement = meetingTagConnectionRepository.findByTagIdCount(tagMeetingRequestDto.getTagIds());
-        List<MeetingTagConnection> meetingTagConnectionList =
-            meetingTagConnectionRepository.findByTagId(tagMeetingRequestDto.getTagIds(), pageable.getOffset(), pageable.getPageSize());
+        Long totalElement = meetingRepository.findByTagIdCount(tagMeetingRequestDto.getTagIds());
+
+        List<Meeting> meetingList =
+            meetingRepository.findByTagId(tagMeetingRequestDto.getTagIds(), pageable.getOffset(), pageable.getPageSize());
 
         List<MeetingGetAllResponseDto> meetingGetAllResponseDtoList = new ArrayList<>();
-        for (MeetingTagConnection meetingTagConnection : meetingTagConnectionList) {
-            meetingGetAllResponseDtoList.add(new MeetingGetAllResponseDto(meetingTagConnection.getMeeting()));
+
+        for (Meeting meeting : meetingList) {
+            meetingGetAllResponseDtoList.add(new MeetingGetAllResponseDto(meeting));
         }
 
-       return new PageImpl<>(meetingGetAllResponseDtoList, pageable, totalElement);
+        return new PageImpl<>(meetingGetAllResponseDtoList, pageable, totalElement);
     }
 
 
