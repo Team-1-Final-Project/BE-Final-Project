@@ -14,7 +14,7 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class MeetingResponseDto {
+public class MeetingGetAllResponseDto {
 
   //모임 정보
   private final Long id;
@@ -26,7 +26,7 @@ public class MeetingResponseDto {
   private final LocalDate meetingEndDate;
   private final String location;
   private final String meetingImage;
-//  private final String meetingThumbImage;
+  private final String meetingThumbImage;
   private final int limitPeople;
   private final int nowPeople;
   private final LocalDateTime createdAt;
@@ -38,7 +38,7 @@ public class MeetingResponseDto {
   //모임에 가입한 유저 목록
   private final List<CrewResponseDto> crews = new ArrayList<>();
 
-  public MeetingResponseDto(Meeting meeting) {
+  public MeetingGetAllResponseDto(Meeting meeting) {
     this.id = meeting.getId();
     this.title = meeting.getTitle();
     this.content = meeting.getContent();
@@ -48,7 +48,7 @@ public class MeetingResponseDto {
     this.meetingEndDate = meeting.getMeetingEndDate();
     this.location = meeting.getLocation();
     this.meetingImage = meeting.getMeetingImage();
-//    this.meetingThumbImage = meeting.getMeetingThumbImage();
+    this.meetingThumbImage = meeting.getMeetingThumbImage();
     this.limitPeople = meeting.getLimitPeople();
     this.nowPeople = meeting.getNowPeople();
     this.meetingStatus = meeting.getMeetingStatus();
@@ -68,5 +68,4 @@ public class MeetingResponseDto {
       tagMeetings.add(tagMeetingResponseDto);
     }
   }
-
 }
