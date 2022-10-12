@@ -1,5 +1,6 @@
 package com.innovation.backend.domain.Meeting.controller;
 
+import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingLikeResponseDto;
 import com.innovation.backend.domain.Meeting.dto.request.MeetingRequestDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
@@ -30,12 +31,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class MeetingController {
 
   private final MeetingService meetingService;
-
+  private final BadgeService badgeService;
 
 
   // 모임 생성
   @PostMapping("/meeting")
   public ResponseDto<MeetingResponseDto> createMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart("data") MeetingRequestDto requestDto, @RequestPart(required = false) MultipartFile image) {
+    badgeService.getWelcomeMeetingBadge(userDetails, "WelcomeMeeting Badge");
     return ResponseDto.success(meetingService.createMeeting(requestDto, userDetails, image));
   }
 

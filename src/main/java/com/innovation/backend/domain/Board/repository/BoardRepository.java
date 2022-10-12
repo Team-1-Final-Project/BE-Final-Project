@@ -37,7 +37,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     List<Board> findByMember(Member member);
 
     long countBoardById(Long id);
-
+    int countByMember(Member member);
 //    Slice<Board> findByIdLessThanAndOrderByIdDesc(Pageable pageable);
     Slice<Board> findAllByOrderByCreatedAtDesc (Pageable pageable);
 
