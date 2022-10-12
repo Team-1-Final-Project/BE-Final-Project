@@ -1,23 +1,21 @@
-package com.innovation.backend.domain.Chat.entity;
+package com.innovation.backend.domain.Chatting.domain;
 
-import com.innovation.backend.domain.Board.domain.Board;
-import com.innovation.backend.domain.Chat.dto.MessageDto;
+import com.innovation.backend.domain.Chatting.dto.ChatDto;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
-import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.global.util.Timestamped;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
-
-@Getter
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class Message extends Timestamped {
-    private MessageDto.MessageType type;
+@Getter
+@Component
+public class Chat extends Timestamped {
 
     @Id
     @GeneratedValue
@@ -33,18 +31,18 @@ public class Message extends Timestamped {
     private String profileImage;
 
     @Column(columnDefinition = "LONGTEXT")
-    private String content;
+    private String message;
 
     @JoinColumn(name ="meeting_id",nullable = false)
     @ManyToOne
     private Meeting meeting;
 
 
-    public Message(MessageDto messageDto) {
-        this.sender = messageDto.getSender();
-        this.nickname = messageDto.getNickname();
-        this.profileImage = messageDto.getProfileImage();
-        this.content = messageDto.getContent();
+    public Chat(ChatDto chatDto) {
+        this.sender = chatDto.getSender();
+        this.nickname = chatDto.getNickname();
+        this.profileImage = chatDto.getProfileImage();
+        this.message = chatDto.getMessage();
     }
 
 
