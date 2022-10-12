@@ -51,6 +51,9 @@ dependencies {
 	//Selenium-java
 	implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.141.59'
 
+	//Thumbnailator
+	implementation 'net.coobird:thumbnailator:0.4.17'
+
 }
 
 tasks.named('test') {
