@@ -6,6 +6,8 @@ import com.innovation.backend.domain.Chat.service.ChatService;
 import com.innovation.backend.global.common.response.ResponseDto;
 import com.innovation.backend.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -23,8 +25,8 @@ public class ChatController {
 
     @GetMapping("/meeting/{meetingId}/chatroom")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseDto<List<MessageDto>> enterChat(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long id) {
-        return chatService.enterChat(userDetails, id);
+    public ResponseDto<Slice<MessageDto>> chatLoad(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long meetingId, Pageable pageable) {
+        return chatService.chatLoad(userDetails, meetingId, pageable);
     }
 
 

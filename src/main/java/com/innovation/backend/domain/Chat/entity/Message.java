@@ -2,6 +2,7 @@ package com.innovation.backend.domain.Chat.entity;
 
 import com.innovation.backend.domain.Board.domain.Board;
 import com.innovation.backend.domain.Chat.dto.MessageDto;
+import com.innovation.backend.domain.Meeting.domain.Meeting;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.global.util.Timestamped;
 import lombok.AllArgsConstructor;
@@ -34,9 +35,10 @@ public class Message extends Timestamped {
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
-    @JoinColumn(name = "chat_room_id", nullable = false)
+    @JoinColumn(name ="meeting_id",nullable = false)
     @ManyToOne
-    private ChatRoom chatRoom;
+    private Meeting meeting;
+
 
     public Message(MessageDto messageDto) {
         this.sender = messageDto.getSender();
@@ -44,5 +46,6 @@ public class Message extends Timestamped {
         this.profileImage = messageDto.getProfileImage();
         this.content = messageDto.getContent();
     }
+
 
 }
