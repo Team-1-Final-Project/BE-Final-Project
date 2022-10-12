@@ -34,6 +34,8 @@ public class Review extends Timestamped {
   //후기 사진
   @Column
   private String reviewImage;
+  //섬네일 사진
+  private String reviewThumbImage;
 
   //모임
   @ManyToOne(fetch = FetchType.LAZY)
@@ -47,17 +49,19 @@ public class Review extends Timestamped {
 
 
   //후기 생성
-  public Review (ReviewRequestDto requestDto, Member member, Meeting meeting, String reviewImage){
+  public Review (ReviewRequestDto requestDto, Member member, Meeting meeting, String reviewImage, String reviewThumbImage){
     this.content = requestDto.getContent();
     this.reviewImage = reviewImage;
+    this.reviewThumbImage = reviewThumbImage;
     this.member = member;
     this.meeting = meeting;
   }
 
   //후기 수정
-public void updateReview(ReviewRequestDto requestDto,String reviewImage){
+public void updateReview(ReviewRequestDto requestDto,String reviewImage, String reviewThumbImage){
   this.content = requestDto.getContent();
   this.reviewImage = reviewImage;
+  this.reviewThumbImage = reviewThumbImage;
 }
 
 
