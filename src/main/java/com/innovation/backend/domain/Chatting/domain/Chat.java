@@ -18,7 +18,7 @@ import javax.persistence.*;
 public class Chat extends Timestamped {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
