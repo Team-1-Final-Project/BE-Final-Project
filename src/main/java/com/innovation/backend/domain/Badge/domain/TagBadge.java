@@ -19,6 +19,9 @@ public class TagBadge {
     @Column(nullable = false)
     private String badgeName;
 
+    @Column
+    private String howToGet;
+
 }
 
 

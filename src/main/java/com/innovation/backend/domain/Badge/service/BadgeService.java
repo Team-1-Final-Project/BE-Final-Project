@@ -57,7 +57,7 @@ public class BadgeService {
         int boardCount = boardRepository.countByMember(userDetails.getMember());
         // CommunityActivist_1 Badge 획독 - 작성한 게시글 5개이상 보유시
         if(boardCount >= 5) {
-            badgeName = "CommunityActivist_1 Badge";
+            badgeName = "Community Activist_1 Badge";
         }
         commonBadge(userDetails, badgeName);
     }
