@@ -1,6 +1,7 @@
 package com.innovation.backend.domain.Board.repository;
 
 import com.innovation.backend.domain.Board.domain.Board;
+import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
 import com.innovation.backend.domain.Board.dto.response.GetAllBoardDto;
 import com.innovation.backend.domain.Member.domain.Member;
 import org.springframework.data.domain.Page;
@@ -28,8 +29,6 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
 
     List<Board> findAllByOrderByHeartBoardNumsDesc();
 
-    //    List<Board> findAllByTagBoard();
-//    Page<Board> findAllByOrderByCreatedAtDesc (Pageable pageable);
     List<Board> findAllByOrderByCreatedAtDesc();
 
     List<Board> findTop4ByCreatedAtBetweenOrderByHeartBoardNumsDesc(LocalDateTime start, LocalDateTime end);
@@ -38,8 +37,8 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
 
     long countBoardById(Long id);
     int countByMember(Member member);
-//    Slice<Board> findByIdLessThanAndOrderByIdDesc(Pageable pageable);
     Slice<Board> findAllByOrderByCreatedAtDesc (Pageable pageable);
+
 
 }
 

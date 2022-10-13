@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -89,8 +90,9 @@ public class BoardController {
 
     //게시글 태그별 조회
     @PostMapping("/board/tag")
-    public ResponseDto<List<BoardResponseDto>> getBoardByTag(@RequestBody TagBoardRequestDto tagBoardRequestDto){
-        return ResponseDto.success(boardService.getBoardByTag(tagBoardRequestDto));
+    public ResponseDto<List<BoardResponseDto>> getBoardByTag(@PageableDefault(page =0 ,sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+                                                             @RequestBody TagBoardRequestDto tagBoardRequestDto){
+        return ResponseDto.success(boardService.getBoardByTag(tagBoardRequestDto,pageable));
     }
 
 }
