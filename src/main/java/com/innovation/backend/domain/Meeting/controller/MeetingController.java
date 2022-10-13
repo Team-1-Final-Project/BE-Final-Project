@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -62,7 +63,7 @@ public class MeetingController {
 
   //모임 전체 조회
   @GetMapping("/meeting")
-  public ResponseDto<Page<MeetingGetAllResponseDto>> getAllMeeting(@PageableDefault(size = 12) Pageable pageable) {
+  public ResponseDto<Slice<MeetingGetAllResponseDto>> getAllMeeting(@PageableDefault(size = 12) Pageable pageable) {
     return ResponseDto.success(meetingService.getAllMeeting(pageable));
 
   }
@@ -75,7 +76,7 @@ public class MeetingController {
 
   //모임 태그별 조회
   @PostMapping("/meeting/tag")
-  public ResponseDto<Page<MeetingGetAllResponseDto>> getMeetingByTag(@RequestBody TagMeetingRequestDto tagIds, @PageableDefault(size = 12) Pageable pageable){
+  public ResponseDto<Slice<MeetingGetAllResponseDto>> getMeetingByTag(@RequestBody TagMeetingRequestDto tagIds, @PageableDefault(size = 12) Pageable pageable){
     return ResponseDto.success(meetingService.getMeetingByTag(tagIds, pageable));
   }
 

@@ -36,6 +36,7 @@ import java.util.Set;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -235,7 +236,7 @@ public class MeetingService {
     }
 
     //모임 전체 조회 (전체)
-    public Page<MeetingGetAllResponseDto> getAllMeeting(Pageable pageable) {
+    public Slice<MeetingGetAllResponseDto> getAllMeeting(Pageable pageable) {
 
         Page<Meeting> meetingList = meetingRepository.findAllByOrderByCreatedAtDesc(pageable);
         List<MeetingGetAllResponseDto> meetingGetAllResponseDtoList = new ArrayList<>();
@@ -259,7 +260,7 @@ public class MeetingService {
     }
 
     // 모임 태그별 조회 (전체)
-    public Page<MeetingGetAllResponseDto> getMeetingByTag(TagMeetingRequestDto tagMeetingRequestDto, Pageable pageable) {
+    public Slice<MeetingGetAllResponseDto> getMeetingByTag(TagMeetingRequestDto tagMeetingRequestDto, Pageable pageable) {
         Long totalElement = meetingRepository.findByTagIdCount(tagMeetingRequestDto.getTagIds());
 
         List<Meeting> meetingList =
