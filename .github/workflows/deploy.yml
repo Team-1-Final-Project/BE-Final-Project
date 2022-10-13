@@ -10,6 +10,7 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   S3_BUCKET_NAME: earthus-github-actions-s3-bucket
+#   RESOURCE_PATH: ./src/main/resources/application.yaml
   CODE_DEPLOY_APPLICATION_NAME: earthUs-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: earthUs-codedeploy-deployment-group
 
@@ -19,7 +20,7 @@ permissions:
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     environment: production
 
     steps:
@@ -27,7 +28,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # (2) JDK 11 세팅
+    # (2) JDK 17 세팅
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
