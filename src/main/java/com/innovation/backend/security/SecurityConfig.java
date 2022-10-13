@@ -67,7 +67,7 @@ public class SecurityConfig {
             .antMatchers("/google","/oauth2/**", "/css/**","/images/**","/js/**","/favicon.ico/**").permitAll()
             .antMatchers("/login/**").permitAll()
             .antMatchers("/main/**").permitAll()
-            .antMatchers("/board" , "/board/{boardTagName}","/board/heart/{boardId}").permitAll()
+            .antMatchers("/board" , "/board/{boardTagName}","/board/heart/{boardId}, /board/tag").permitAll()
             .antMatchers("/zeroshop/offline").permitAll()
             .antMatchers("/subscribe/**").permitAll()
             .antMatchers("/test/**").permitAll()

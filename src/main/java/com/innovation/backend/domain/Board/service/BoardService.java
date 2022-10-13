@@ -257,14 +257,14 @@ public class BoardService {
         board.setBoardTagConnectionList(boardTagConnectionList);
     }
 
-    public List<BoardResponseDto> getBoardByTag(TagBoardRequestDto tagBoardRequestDto) {
+    public List<BoardResponseDto> getBoardByTag(TagBoardRequestDto tagBoardRequestDto,Pageable pageable) {
 
         //태그 조회 결과값 중복방지
         Set<Board> boardHashSet = new HashSet<>();
         List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
 
         for (Long tagId : tagBoardRequestDto.getTagIds()) {
-            List<BoardTagConnection> boardTagConnectionList = boardTagConnectionRepository.findByTagId(tagId);
+            List<BoardTagConnection> boardTagConnectionList = boardTagConnectionRepository.findByTagId(tagId,pageable);
 
             for (BoardTagConnection boardTagConnection : boardTagConnectionList) {
                 boardHashSet.add(boardTagConnection.getBoard());
@@ -275,6 +275,7 @@ public class BoardService {
             BoardResponseDto boardResponseDto = new BoardResponseDto(board);
             boardResponseDtoList.add(boardResponseDto);
         }
+
         return boardResponseDtoList;
     }
 }
