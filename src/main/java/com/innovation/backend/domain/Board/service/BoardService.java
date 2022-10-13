@@ -143,7 +143,7 @@ public class BoardService {
         boardRepository.save(board);
 //        List<String> tagBoardList = boardRequestDto.getTagBoard();
         BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums());
-        badgeService.getWelcomeCommunityBadge(userDetails, "WelcomeCommunityBadge");
+        badgeService.getWelcomeCommunityBadge(userDetails, "Welcome Community Badge");
         return ResponseDto.success(boardResponseDto);
 
     }
