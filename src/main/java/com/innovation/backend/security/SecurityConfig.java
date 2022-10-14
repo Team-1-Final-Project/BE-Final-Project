@@ -93,7 +93,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("https://earthus.vercel.app");
+        configuration.addAllowedOriginPattern("https://earthus.vercel.app");
         configuration.addAllowedOrigin("");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
