@@ -17,6 +17,8 @@ import com.innovation.backend.domain.Board.repository.TagBoardRepository;
 import com.innovation.backend.domain.Comment.domain.Comment;
 import com.innovation.backend.domain.Comment.dto.response.CommentResponseDto;
 import com.innovation.backend.domain.Comment.repository.CommentRepository;
+import com.innovation.backend.domain.Meeting.domain.Meeting;
+import com.innovation.backend.domain.Meeting.dto.request.TagMeetingRequestDto;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.global.common.response.ResponseDto;
@@ -24,6 +26,7 @@ import com.innovation.backend.global.enums.ErrorCode;
 import com.innovation.backend.global.util.S3Upload;
 import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.security.jwt.TokenProvider;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -59,8 +62,8 @@ public class BoardService {
         Member member = memberRepository.findByEmail(userId).orElseThrow();
         Board board = boardRepository.findById(boardId).orElseThrow();
         int likeNums = board.getHeartBoardNums();
-        boolean boardLike = isBoardLike(member,board);
-        HeartBoard heartBoard = new HeartBoard(member,board);
+        boolean boardLike = isBoardLike(member, board);
+        HeartBoard heartBoard = new HeartBoard(member, board);
         if (isBoardLike(member, board)) {
             heartBoardRepository.deleteByMemberAndBoard(member, board);
             board.addBoardLike(likeNums - 1);
@@ -86,7 +89,7 @@ public class BoardService {
             String userId = userDetails.getUsername();
             Member member = memberRepository.findByEmail(userId).orElseThrow();
             Board board = boardRepository.findById(boardId).orElseThrow();
-            boardLike = isBoardLike(member,board);
+            boardLike = isBoardLike(member, board);
         }
         return new BoardLikeResponseDto(boardLike);
     }
@@ -94,13 +97,14 @@ public class BoardService {
     //게시글 전체 최신순으로 정렬
 
     @Transactional
-    public ResponseDto<Slice<GetAllBoardDto>> getAllBoard(Pageable pageable){
-        Slice<Board> boardList = boardRepository.findAllByOrderByCreatedAtDesc(pageable); {
+    public ResponseDto<Slice<GetAllBoardDto>> getAllBoard(Pageable pageable) {
+        Slice<Board> boardList = boardRepository.findAllByOrderByCreatedAtDesc(pageable);
+        {
             PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
         }
         List<GetAllBoardDto> getAllBoardDtoList = new ArrayList<>();
 
-        for(Board board : boardList){
+        for (Board board : boardList) {
             int heartBoardNums = heartBoardRepository.countByBoard(board);
             int commentNums = commentRepository.countCommentsByBoard(board);
             Board boardById = boardRepository.findBoardById(board.getId());
@@ -129,10 +133,10 @@ public class BoardService {
 
         Member member = userDetails.getMember(); //회원 검사
 
-        String boardImage=null;
+        String boardImage = null;
 
-        if (uploadImage != null &&!uploadImage.isEmpty()) {
-                boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
+        if (uploadImage != null && !uploadImage.isEmpty()) {
+            boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
         } else if (uploadImage == null) {
             boardImage = null;
         }
@@ -152,7 +156,7 @@ public class BoardService {
     @Transactional
     public ResponseDto<?> getBoard(Long id) {
         Board board = isPresentBoard(id);
-        if(null == board) {
+        if (null == board) {
             return ResponseDto.fail(ErrorCode.ENTITY_NOT_FOUND);
         }
         int commentNums = commentRepository.countCommentsByBoard(board);
@@ -167,7 +171,7 @@ public class BoardService {
         List<Comment> commentList = commentRepository.findAllByBoardOrderByCreatedAtDesc(board);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
-        for(Comment comment : commentList){
+        for (Comment comment : commentList) {
             CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
             commentResponseDtoList.add(commentResponseDto);
         }
@@ -188,7 +192,7 @@ public class BoardService {
         }
         Member member = userDetails.getMember();
 
-        if(board.validateMember(member.getId())) {
+        if (board.validateMember(member.getId())) {
             return ResponseDto.fail(ErrorCode.NOT_SAME_MEMBER);
         }
 
@@ -197,19 +201,19 @@ public class BoardService {
         List<Comment> commentList = commentRepository.findAllByBoardOrderByCreatedAtDesc(board);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
-        for(Comment comment : commentList){
+        for (Comment comment : commentList) {
             CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
             commentResponseDtoList.add(commentResponseDto);
         }
 
         String boardImage = boardAlter.getBoardImage();
 
-            if(boardImage != null && uploadImage.isEmpty()) {
-                boardImage = board.getBoardImage();
-            } else if (boardImage != null && !uploadImage.isEmpty()) {
-                    s3Upload.fileDelete(boardImage);
-                    boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
-            }
+        if (boardImage != null && uploadImage.isEmpty()) {
+            boardImage = board.getBoardImage();
+        } else if (boardImage != null && !uploadImage.isEmpty()) {
+            s3Upload.fileDelete(boardImage);
+            boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
+        }
         board.alter(boardRequestDto, boardImage);
         BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums(), commentNums, commentResponseDtoList);
         return ResponseDto.success(boardResponseDto);
@@ -225,15 +229,15 @@ public class BoardService {
         }
         Member member = userDetails.getMember();
 
-        if(board.validateMember(member.getId())) {
+        if (board.validateMember(member.getId())) {
             return ResponseDto.fail(ErrorCode.NOT_SAME_MEMBER);
         }
 
         String boardImage = board.getBoardImage();
 
-            if (boardImage != null &&!boardImage.isEmpty()) {
-                s3Upload.fileDelete(boardImage);
-            }
+        if (boardImage != null && !boardImage.isEmpty()) {
+            s3Upload.fileDelete(boardImage);
+        }
 
         boardRepository.delete(board);
         return ResponseDto.success("게시글 삭제가 성공적으로 완료되었습니다.");
@@ -257,25 +261,18 @@ public class BoardService {
         board.setBoardTagConnectionList(boardTagConnectionList);
     }
 
-    public List<BoardResponseDto> getBoardByTag(TagBoardRequestDto tagBoardRequestDto,Pageable pageable) {
+    public Page<BoardResponseDto> getBoardByTag(TagBoardRequestDto tagBoardRequestDto, Pageable pageable) {
 
-        //태그 조회 결과값 중복방지
-        Set<Board> boardHashSet = new HashSet<>();
+        Long totalElement = boardRepository.findByTagIdCount(tagBoardRequestDto.getTagIds());
+        List<Board> boardList = boardRepository.findByTagId(tagBoardRequestDto.getTagIds(), pageable);
         List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
 
-        for (Long tagId : tagBoardRequestDto.getTagIds()) {
-            List<BoardTagConnection> boardTagConnectionList = boardTagConnectionRepository.findByTagId(tagId,pageable);
-
-            for (BoardTagConnection boardTagConnection : boardTagConnectionList) {
-                boardHashSet.add(boardTagConnection.getBoard());
-            }
+        for (Board board : boardList) {
+            boardResponseDtoList.add(new BoardResponseDto(board));
         }
 
-        for (Board board : boardHashSet) {
-            BoardResponseDto boardResponseDto = new BoardResponseDto(board);
-            boardResponseDtoList.add(boardResponseDto);
-        }
-
-        return boardResponseDtoList;
+        return new PageImpl<>(boardResponseDtoList, pageable, totalElement);
     }
+
+
 }
