@@ -257,7 +257,7 @@ public class BoardService {
         board.setBoardTagConnectionList(boardTagConnectionList);
     }
 
-    public List<BoardResponseDto> getBoardByTag(TagBoardRequestDto tagBoardRequestDto,Pageable pageable) {
+    public Page<BoardResponseDto> getBoardByTag(TagBoardRequestDto tagBoardRequestDto,Pageable pageable) {
 
         //태그 조회 결과값 중복방지
         Set<Board> boardHashSet = new HashSet<>();
@@ -276,6 +276,6 @@ public class BoardService {
             boardResponseDtoList.add(boardResponseDto);
         }
 
-        return boardResponseDtoList;
+        return new PageImpl<>(boardResponseDtoList, pageable, boardResponseDtoList.size());
     }
 }

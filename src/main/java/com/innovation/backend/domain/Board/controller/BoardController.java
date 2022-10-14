@@ -90,7 +90,7 @@ public class BoardController {
 
     //게시글 태그별 조회
     @PostMapping("/board/tag")
-    public ResponseDto<List<BoardResponseDto>> getBoardByTag(@PageableDefault(page =0 ,sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+    public ResponseDto<Page<BoardResponseDto>> getBoardByTag(@PageableDefault(page =0 ,sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
                                                              @RequestBody TagBoardRequestDto tagBoardRequestDto){
         return ResponseDto.success(boardService.getBoardByTag(tagBoardRequestDto,pageable));
     }
