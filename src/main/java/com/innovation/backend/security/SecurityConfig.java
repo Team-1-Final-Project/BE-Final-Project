@@ -50,8 +50,8 @@ public class SecurityConfig {
         http.cors().configurationSource(request -> {
             var cors = new CorsConfiguration();
 
-            cors.setAllowedOrigins(Arrays.asList("*"));
-//            cors.setAllowedOrigins(List.of("http://earth-us.s3-website.ap-northeast-2.amazonaws.com","http://localhost:3000","https://accounts.google.com/o/oauth2/v2/**", "ws://localhost:8080/ws","http://localhost:8080/ws","https://earthus.vercel.app/**","https://earthus.vercel.app")); // 허용할 URL
+//            cors.setAllowedOrigins(Arrays.asList("*"));
+            cors.setAllowedOriginPatterns(List.of("http://earth-us.s3-website.ap-northeast-2.amazonaws.com","http://localhost:3000","https://accounts.google.com/o/oauth2/v2/**", "ws://localhost:8080/ws","http://localhost:8080/ws","https://earthus.vercel.app/**","https://earthus.vercel.app")); // 허용할 URL
             cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS")); // 허용할 Http Method
             cors.setAllowedHeaders(List.of("*")); // 허용할 Header
             cors.addExposedHeader("Authorization");
