@@ -23,6 +23,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -49,7 +50,7 @@ public class SecurityConfig {
         http.cors().configurationSource(request -> {
             var cors = new CorsConfiguration();
             //cors.setAllowedOrigins(List.of("http://earth-us.s3-website.ap-northeast-2.amazonaws.com","http://localhost:3000","https://accounts.google.com/o/oauth2/v2/**", "ws://localhost:8080/ws","http://localhost:8080/ws","https://earth-us.vercel.app/**","https://earth-us.vercel.app")); // 허용할 URL
-            cors.setAllowedOrigins(List.of("*"));
+            cors.setAllowedOrigins(Arrays.asList("*"));
             cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS")); // 허용할 Http Method
             cors.setAllowedHeaders(List.of("*")); // 허용할 Header
             cors.addExposedHeader("Authorization");
