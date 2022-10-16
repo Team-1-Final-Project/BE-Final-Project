@@ -27,7 +27,8 @@ public class SecurityConfig {
   String SECRET_KEY;
   private final TokenProvider tokenProvider;
   private final UserDetailsServiceImpl userDetailsService;
-private final CorsConfig corsConfig;
+  private final CorsConfig corsConfig;
+
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
