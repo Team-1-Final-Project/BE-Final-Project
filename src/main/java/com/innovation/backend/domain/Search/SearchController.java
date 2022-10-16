@@ -13,6 +13,7 @@ public class SearchController {
 
   @GetMapping("/testtest")
   public ResponseDto<String> test (){
+    System.out.println("hi~");
     return ResponseDto.success("성공입니다.");
   }
 
