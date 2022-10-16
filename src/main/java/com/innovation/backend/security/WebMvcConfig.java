@@ -9,8 +9,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-            .allowedOrigins("https://earthus.vercel.app")
-            .allowedOrigins(" https://main.d1bjeqt1vblv2f.amplifyapp.com/")
+            .allowedOrigins("https://earthus.vercel.app", "https://main.d1bjeqt1vblv2f.amplifyapp.com/")
             .allowedMethods("*") // 기타 설정
             .allowedHeaders("*");
     }

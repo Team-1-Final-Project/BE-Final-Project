@@ -52,7 +52,7 @@ public class SecurityConfig {
 
 //            cors.setAllowedOrigins(Arrays.asList("*"));
             cors.setAllowedOrigins(List.of("http://earth-us.s3-website.ap-northeast-2.amazonaws.com","http://localhost:3000",
-                "https://accounts.google.com/o/oauth2/v2/**", "ws://localhost:8080/ws","http://localhost:8080/ws", "https://earthus.vercel.app"," https://main.d1bjeqt1vblv2f.amplifyapp.com/")); // 허용할 URL
+                "https://accounts.google.com/o/oauth2/v2/**", "ws://localhost:8080/ws","http://localhost:8080/ws", "https://earthus.vercel.app","https://main.d1bjeqt1vblv2f.amplifyapp.com")); // 허용할 URL
             cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS", "HEAD")); // 허용할 Http Method
             cors.setAllowedHeaders(List.of("*")); // 허용할 Header
             cors.addExposedHeader("Authorization");
@@ -95,7 +95,7 @@ public class SecurityConfig {
 
         configuration.addAllowedOrigin("http://localhost:3000");
         configuration.addAllowedOrigin("https://earthus.vercel.app");
-        configuration.addAllowedOrigin(" https://main.d1bjeqt1vblv2f.amplifyapp.com/");
+        configuration.addAllowedOrigin("https://main.d1bjeqt1vblv2f.amplifyapp.com");
         configuration.addAllowedOrigin("");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
