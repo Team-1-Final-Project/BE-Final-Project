@@ -46,21 +46,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors();
-        http.cors().configurationSource(request -> {
-            var cors = new CorsConfiguration();
-
-//            cors.setAllowedOrigins(Arrays.asList("*"));
-            cors.setAllowedOrigins(List.of("http://earth-us.s3-website.ap-northeast-2.amazonaws.com","http://localhost:3000",
-                "https://accounts.google.com/o/oauth2/v2/**", "ws://localhost:8080/ws","http://localhost:8080/ws", "https://earthus.vercel.app","https://main.d1bjeqt1vblv2f.amplifyapp.com")); // 허용할 URL
-            cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS", "HEAD")); // 허용할 Http Method
-            cors.setAllowedHeaders(List.of("*")); // 허용할 Header
-            cors.addExposedHeader("Authorization");
-            cors.addExposedHeader("Refresh-Token");
-            cors.setAllowCredentials(true);
-            return cors;
-        });
-
         http.csrf().disable()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -86,28 +71,10 @@ public class SecurityConfig {
             .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
             .and()
             .apply(new JwtSecurityConfig(SECRET_KEY, tokenProvider, userDetailsService));
+
+        // cors
+        http.cors();
+
         return http.build();
     }
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.addAllowedOrigin("http://localhost:3000");
-        configuration.addAllowedOrigin("https://earthus.vercel.app");
-        configuration.addAllowedOrigin("https://main.d1bjeqt1vblv2f.amplifyapp.com");
-        configuration.addAllowedOrigin("");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
-        // 클라이언트가 응답에 접근 가능하도록 헤더 전송
-        configuration.addExposedHeader("Authorization");
-        configuration.addExposedHeader("Refresh-Token");
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-
-    }
-
 }
