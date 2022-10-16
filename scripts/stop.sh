@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 PROJECT_ROOT="/home/ubuntu/app"
-JAR_FILE="$PROJECT_ROOT/spring-webapp.jar"
+#JAR_FILE="$PROJECT_ROOT/spring-webapp.jar"
+JAR_FILE="java"
 
 TIME_NOW=$(date +%c)
 
@@ -9,7 +10,4 @@ TIME_NOW=$(date +%c)
 CURRENT_PID=$(pgrep -f $JAR_FILE)
 
 # 프로세스가 켜져 있으면 종료
-if [ -z $CURRENT_PID ]; then
-else
-  kill -9 $CURRENT_PID
-fi
+kill -9 $CURRENT_PID
