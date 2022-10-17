@@ -80,16 +80,15 @@ public class MyPageController {
       return ResponseDto.fail(ErrorCode.INVALID_ERROR);
     }
     return ResponseDto.success(missionClearResponseDtoList);
-
+  }
+  
   //획득한 배지 조회
   @GetMapping("/mypage/badge")
   public ResponseDto<List<BadgeResponseDto>> getMyBadge(@AuthenticationPrincipal UserDetailsImpl userDetails){
     Member member = userDetails.getMember();
     List<BadgeResponseDto> badgeResponseDtoList;
     badgeResponseDtoList = myPageService.getMyBadge(member);
-    return ResponseDto.success(badgeResponseDtoList);
+    return ResponseDto.success((badgeResponseDtoList));
 
   }
 }
-
-
