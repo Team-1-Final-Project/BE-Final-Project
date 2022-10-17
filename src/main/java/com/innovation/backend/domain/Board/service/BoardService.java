@@ -115,7 +115,7 @@ public class BoardService {
             GetAllBoardDto getAllBoardDto = new GetAllBoardDto(board, heartBoardNums, commentNums, boardImage);
             getAllBoardDtoList.add(getAllBoardDto);
         }
-        return ResponseDto.success(new PageImpl<>(getAllBoardDtoList, pageable, boardList.getNumberOfElements()));
+        return ResponseDto.success(new SliceImpl<>(getAllBoardDtoList, pageable, boardList.isLast()));
     }
 
 
