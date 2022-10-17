@@ -5,6 +5,7 @@ import com.innovation.backend.domain.Meeting.domain.HeartMeeting;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
 import com.innovation.backend.domain.Meeting.domain.MeetingTagConnection;
 import com.innovation.backend.domain.Meeting.domain.TagMeeting;
+import com.innovation.backend.domain.Meeting.dto.response.MeetingGetAllResponseDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingLikeResponseDto;
 import com.innovation.backend.domain.Meeting.dto.request.MeetingRequestDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
@@ -21,8 +22,11 @@ import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.domain.Crew.repository.CrewRepository;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.global.util.S3Upload;
+import java.util.stream.Collectors;
+import org.hibernate.sql.Select;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ import java.util.Set;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -64,17 +69,22 @@ public class MeetingService {
         isValidatePeopleNumber(requestDto);
 
         String meetingImage = null;
+        String meetingThumbImage = null;
 
         if (image != null && !image.isEmpty()) {
             try {
+                //메인 이미지 저장
                 meetingImage = s3Upload.uploadFiles(image, "images");
                 log.info(meetingImage);
+                //섬네일 이미지 저장
+                meetingThumbImage = s3Upload.uploadThumbFile(image, "thumbs");
+                log.info(meetingThumbImage);
             } catch (IOException e) {
                 log.error(e.getMessage());
             }
         }
 
-        Meeting meeting = new Meeting(requestDto, member, meetingImage);// 모임 객체 생성
+        Meeting meeting = new Meeting(requestDto, member, meetingImage,meetingThumbImage);// 모임 객체 생성
         Crew crew = new Crew(member, meeting);// 모임장 크루에 넣기
         meeting.addCrew(crew);
 
@@ -159,14 +169,18 @@ public class MeetingService {
             meeting.setMeetingTagConnectionList(oldMeetingTagConnectionList);
 
             String meetingImage = meeting.getMeetingImage();
+            String meetingThumbImage = meeting.getMeetingThumbImage();
 
             if(meetingImage != null ){
                 if(image == null || image.isEmpty()) {
                     meetingImage = meeting.getMeetingImage();
+                    meetingThumbImage = meeting.getMeetingThumbImage();
                 }else if (!image.isEmpty()) {
                     try{
                         s3Upload.fileDelete(meetingImage);
+                        s3Upload.fileDelete(meetingThumbImage);
                         meetingImage = s3Upload.uploadFiles(image, "images");
+                        meetingThumbImage = s3Upload.uploadThumbFile(image, "thumbs");
                     }catch (IOException e){
                         log.error(e.getMessage());
                     }
@@ -174,16 +188,18 @@ public class MeetingService {
             }else {
                 if (image == null || image.isEmpty()) {
                     meetingImage = null;
+                    meetingThumbImage = null;
                 } else if (!image.isEmpty()) {
                     try {
                         meetingImage = s3Upload.uploadFiles(image, "images");
+                        meetingThumbImage = s3Upload.uploadThumbFile(image, "thumbs");
                     } catch (IOException e) {
                         log.error(e.getMessage());
                     }
                 }
             }
             // 수정
-            meeting.update(requestDto,meetingImage);
+            meeting.update(requestDto,meetingImage,meetingThumbImage);
 
         } else {
             throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
@@ -211,23 +227,25 @@ public class MeetingService {
         //모임장과 같은 유저인지 확인하기
         if (meeting.isWrittenBy(member)) {
             meetingRepository.delete(meeting);
+            s3Upload.fileDelete(meeting.getMeetingImage());
+            s3Upload.fileDelete(meeting.getMeetingThumbImage());
         } else {
             throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
         }
     }
 
     //모임 전체 조회 (전체)
-    public Page<MeetingResponseDto> getAllMeeting(Pageable pageable) {
+    public Page<MeetingGetAllResponseDto> getAllMeeting(Pageable pageable) {
 
         Page<Meeting> meetingList = meetingRepository.findAllByOrderByCreatedAtDesc(pageable);
-        List<MeetingResponseDto> meetingResponseDtoList = new ArrayList<>();
+        List<MeetingGetAllResponseDto> meetingGetAllResponseDtoList = new ArrayList<>();
 
         for (Meeting meeting : meetingList) {
-            MeetingResponseDto meetingResponseDto = new MeetingResponseDto(meeting);
-            meetingResponseDtoList.add(meetingResponseDto);
+            MeetingGetAllResponseDto meetingGetAllResponseDto = new MeetingGetAllResponseDto(meeting);
+            meetingGetAllResponseDtoList.add(meetingGetAllResponseDto);
         }
 
-        return new PageImpl<>(meetingResponseDtoList, pageable, meetingList.getTotalElements());
+        return new PageImpl<>(meetingGetAllResponseDtoList, pageable, meetingList.getTotalElements());
     }
 
 
@@ -241,23 +259,19 @@ public class MeetingService {
     }
 
     // 모임 태그별 조회 (전체)
-    public Page<MeetingResponseDto> getMeetingByTag(TagMeetingRequestDto tagMeetingRequestDto, Pageable pageable) {
-        Set<Meeting> meetings = new HashSet<>();
+    public Page<MeetingGetAllResponseDto> getMeetingByTag(TagMeetingRequestDto tagMeetingRequestDto, Pageable pageable) {
+        Long totalElement = meetingRepository.findByTagIdCount(tagMeetingRequestDto.getTagIds());
 
-        for (Long tagId : tagMeetingRequestDto.getTagIds()) {
-            List<MeetingTagConnection> meetingTagConnectionList = meetingTagConnectionRepository.findByTagId(tagId);
+        List<Meeting> meetingList =
+            meetingRepository.findByTagId(tagMeetingRequestDto.getTagIds(), pageable.getOffset(), pageable.getPageSize());
 
-            for (MeetingTagConnection meetingTagConnection : meetingTagConnectionList) {
-                meetings.add(meetingTagConnection.getMeeting());
-            }
+        List<MeetingGetAllResponseDto> meetingGetAllResponseDtoList = new ArrayList<>();
+
+        for (Meeting meeting : meetingList) {
+            meetingGetAllResponseDtoList.add(new MeetingGetAllResponseDto(meeting));
         }
 
-        List<MeetingResponseDto> meetingResponseDtoList = new ArrayList<>();
-        for (Meeting meeting : meetings) {
-            meetingResponseDtoList.add(new MeetingResponseDto(meeting));
-        }
-
-       return new PageImpl<>(meetingResponseDtoList, pageable, meetings.size());
+        return new PageImpl<>(meetingGetAllResponseDtoList, pageable, totalElement);
     }
 
 

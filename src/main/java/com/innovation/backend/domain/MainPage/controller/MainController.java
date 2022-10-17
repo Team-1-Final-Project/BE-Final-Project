@@ -1,5 +1,6 @@
 package com.innovation.backend.domain.MainPage.controller;
 
+import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
 import com.innovation.backend.domain.MainPage.service.MainService;
@@ -29,6 +30,7 @@ public class MainController {
     private final MainService mainService;
     private final MemberRepository memberRepository;
     private final MeetingService meetingService;
+    private final BadgeService badgeService;
 
     // 데일리 미션 조회
     @GetMapping("/main/daily")
@@ -52,6 +54,7 @@ public class MainController {
             log.error(e.getMessage());
             return ResponseDto.fail(ErrorCode.NEED_LOGIN);
         }
+        badgeService.getMissionStarterBadge(userDetails, "MissionStarter Badge");
         return ResponseDto.success(dailyMissionResponseDto);
     }
 

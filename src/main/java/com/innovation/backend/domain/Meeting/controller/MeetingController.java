@@ -1,5 +1,7 @@
 package com.innovation.backend.domain.Meeting.controller;
 
+import com.innovation.backend.domain.Badge.service.BadgeService;
+import com.innovation.backend.domain.Meeting.dto.response.MeetingGetAllResponseDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingLikeResponseDto;
 import com.innovation.backend.domain.Meeting.dto.request.MeetingRequestDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
@@ -30,12 +32,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class MeetingController {
 
   private final MeetingService meetingService;
-
+  private final BadgeService badgeService;
 
 
   // 모임 생성
   @PostMapping("/meeting")
   public ResponseDto<MeetingResponseDto> createMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart("data") MeetingRequestDto requestDto, @RequestPart(required = false) MultipartFile image) {
+    badgeService.getWelcomeMeetingBadge(userDetails, "WelcomeMeeting Badge");
     return ResponseDto.success(meetingService.createMeeting(requestDto, userDetails, image));
   }
 
@@ -59,7 +62,7 @@ public class MeetingController {
 
   //모임 전체 조회
   @GetMapping("/meeting")
-  public ResponseDto<Page<MeetingResponseDto>> getAllMeeting(@PageableDefault(size = 12) Pageable pageable) {
+  public ResponseDto<Page<MeetingGetAllResponseDto>> getAllMeeting(@PageableDefault(size = 12) Pageable pageable) {
     return ResponseDto.success(meetingService.getAllMeeting(pageable));
 
   }
@@ -72,7 +75,7 @@ public class MeetingController {
 
   //모임 태그별 조회
   @PostMapping("/meeting/tag")
-  public ResponseDto<Page<MeetingResponseDto>> getMeetingByTag(@RequestBody TagMeetingRequestDto tagIds, @PageableDefault(size = 12) Pageable pageable){
+  public ResponseDto<Page<MeetingGetAllResponseDto>> getMeetingByTag(@RequestBody TagMeetingRequestDto tagIds, @PageableDefault(size = 12) Pageable pageable){
     return ResponseDto.success(meetingService.getMeetingByTag(tagIds, pageable));
   }
 

@@ -15,5 +15,5 @@ public interface DailyMissionRepository extends JpaRepository<DailyMission, Long
     boolean existsByMissionAndCreatedAtBetween(String mission,LocalDateTime start, LocalDateTime end);
     Long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
     List<DailyMission> findByMember(Member member);
-
+    int countByMember(Member member);
     ;}

@@ -1,5 +1,6 @@
 package com.innovation.backend.domain.Board.controller;
 
+import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Board.dto.request.BoardRequestDto;
 import com.innovation.backend.domain.Board.dto.request.TagBoardRequestDto;
 import com.innovation.backend.domain.Board.dto.response.BoardLikeResponseDto;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,7 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class BoardController {
 
     private final BoardService boardService;
-
+    private final BadgeService badgeService;
 
     //게시글 좋아요
     @PutMapping("/board/heart/{boardId}")
@@ -88,8 +90,9 @@ public class BoardController {
 
     //게시글 태그별 조회
     @PostMapping("/board/tag")
-    public ResponseDto<List<BoardResponseDto>> getBoardByTag(@RequestBody TagBoardRequestDto tagBoardRequestDto){
-        return ResponseDto.success(boardService.getBoardByTag(tagBoardRequestDto));
+    public ResponseDto<Page<BoardResponseDto>> getBoardByTag(@PageableDefault(page =0 ,sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                                             @RequestBody TagBoardRequestDto tagBoardRequestDto){
+        return ResponseDto.success(boardService.getBoardByTag(tagBoardRequestDto,pageable));
     }
 
 }

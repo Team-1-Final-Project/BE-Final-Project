@@ -60,16 +60,18 @@ public class ReviewService {
     isAlreadyWrite(member,meeting);
 
     String reviewImage = null;
+    String reviewThumbImage = null;
 
     if (image != null && !image.isEmpty()) {
       try {
         reviewImage = s3Upload.uploadFiles(image, "reviews");
         log.info(reviewImage);
+        reviewThumbImage = s3Upload.uploadThumbFile(image,"thumbs");
       } catch (IOException e) {
         log.error(e.getMessage());
       }}
 
-    Review review = new Review(requestDto, member, meeting,reviewImage);
+    Review review = new Review(requestDto, member, meeting,reviewImage,reviewThumbImage);
     reviewRepository.save(review);
     meeting.getReviews().add(review);
     member.getReviews().add(review);
@@ -90,30 +92,36 @@ public class ReviewService {
     isWrittenBy(member,review);
 
     String reviewImage = review.getReviewImage();
+    String reviewThumbImage = review.getReviewThumbImage();
 
     if(reviewImage != null){
       if(image == null || image.isEmpty()){
         reviewImage = review.getReviewImage();
+        reviewThumbImage = review.getReviewThumbImage();
       }else if (!image.isEmpty()) {
         try{
           s3Upload.fileDelete(reviewImage);
+          s3Upload.fileDelete(reviewThumbImage);
           reviewImage = s3Upload.uploadFiles(image,"reviews");
           log.info(reviewImage);
+          reviewThumbImage = s3Upload.uploadThumbFile(image,"thumbs");
         }catch (IOException e){
           log.error(e.getMessage());
         }}
     }else{
       if(image == null || image.isEmpty()){
         reviewImage = null;
+        reviewThumbImage = null;
       }else if (!image.isEmpty()){
         try{
           reviewImage = s3Upload.uploadFiles(image,"reviews");
+          reviewThumbImage = s3Upload.uploadThumbFile(image,"thumbs");
         }catch (IOException e){
           log.error(e.getMessage());
         }
       }
     }
-    review.updateReview(requestDto,reviewImage);
+    review.updateReview(requestDto,reviewImage,reviewThumbImage);
     reviewRepository.save(review);
   }
 
@@ -130,6 +138,8 @@ public class ReviewService {
     //같은 작성자인지 확인
     isWrittenBy(member,review);
     reviewRepository.delete(review);
+    s3Upload.fileDelete(review.getReviewImage());
+    s3Upload.fileDelete(review.getReviewThumbImage());
   }
 
   //후기 전체 조회 (전체)

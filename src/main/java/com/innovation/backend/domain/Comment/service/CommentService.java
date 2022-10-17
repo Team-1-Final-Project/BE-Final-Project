@@ -1,5 +1,6 @@
 package com.innovation.backend.domain.Comment.service;
 
+import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Comment.dto.request.CommentRequestDto;
 import com.innovation.backend.domain.Comment.dto.response.CommentResponseDto;
 import com.innovation.backend.domain.Board.repository.BoardRepository;
@@ -22,6 +23,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;
+    private final BadgeService badgeService;
 
     @Transactional
     public ResponseDto<?> createComment(UserDetailsImpl userDetails, CommentRequestDto commentRequestDto) {
@@ -35,6 +37,7 @@ public class CommentService {
         commentRepository.save(comment);
 
         CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
+        badgeService.getCommunityActivist_2Badge(userDetails, "Community Activist_2 Badge");
         return ResponseDto.success(commentResponseDto);
     }
 

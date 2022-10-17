@@ -1,6 +1,7 @@
 package com.innovation.backend.domain.Member.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.domain.Member.dto.response.MemberResponseDto;
@@ -34,8 +35,8 @@ public class MemberController {
     private final GoogleMemberService googleMemberService;
     private final MemberService memberService;
     private final KakaoMemberService kakaoMemberService;
+    private final BadgeService badgeService;
     private final MemberRepository memberRepository;
-
 
     @RequestMapping(value = "/login/google", method = RequestMethod.GET)
     public ResponseEntity<Object> moveGoogleInitUrl() {
@@ -69,6 +70,7 @@ public class MemberController {
     public Optional<Member> getLoginInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         String userId = userDetails.getUsername();
         Optional<Member> member = memberRepository.findByEmail(userId);
+        badgeService.getWelcomeBadge(userDetails, "Welcome Badge");
         return member;
     }
 
