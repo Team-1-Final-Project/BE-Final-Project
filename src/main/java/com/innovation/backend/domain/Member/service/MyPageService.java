@@ -1,33 +1,32 @@
 package com.innovation.backend.domain.Member.service;
 
 
+import com.innovation.backend.domain.Badge.domain.Badge;
+import com.innovation.backend.domain.Badge.domain.TagBadge;
+import com.innovation.backend.domain.Badge.repository.BadgeRepository;
+import com.innovation.backend.domain.Badge.repository.TagBadgeRepository;
 import com.innovation.backend.domain.Board.domain.Board;
 import com.innovation.backend.domain.Board.domain.HeartBoard;
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
 import com.innovation.backend.domain.Board.repository.BoardRepository;
 import com.innovation.backend.domain.Board.repository.HeartBoardRepository;
 import com.innovation.backend.domain.Crew.domain.Crew;
+import com.innovation.backend.domain.Crew.repository.CrewRepository;
 import com.innovation.backend.domain.DailyMission.domain.DailyMission;
-import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.MissionClearResponseDto;
 import com.innovation.backend.domain.DailyMission.repository.DailyMissionRepository;
-import com.innovation.backend.domain.Crew.repository.CrewRepository;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
 import com.innovation.backend.domain.Meeting.repository.MeetingRepository;
-import com.innovation.backend.domain.Badge.domain.Badge;
 import com.innovation.backend.domain.Member.domain.Member;
-import com.innovation.backend.domain.Badge.domain.TagBadge;
 import com.innovation.backend.domain.Member.dto.response.BadgeResponseDto;
-import com.innovation.backend.domain.Badge.repository.BadgeRepository;
-import com.innovation.backend.domain.Badge.repository.TagBadgeRepository;
 import com.innovation.backend.global.enums.ErrorCode;
 import com.innovation.backend.global.exception.CustomErrorException;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Service
