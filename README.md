@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+# Team-1 [BE] Final Project
+Back-End Repo..
+=======
 
 ## 🖥 Preview
 ![earthUs](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcd0e46%2FbtrN4wR9V5a%2FT0kXvqqHVq5zUKDURQCO6k%2Fimg.png)
@@ -76,3 +80,4 @@
 
 
 
+>>>>>>> Dev

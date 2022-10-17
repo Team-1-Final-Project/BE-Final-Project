@@ -20,7 +20,7 @@ permissions:
 jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     environment: production
 
     steps:
@@ -46,7 +46,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY_ID }}
         aws-region: ${{ env.AWS_REGION }}
 
     # (5) 빌드 결과물을 S3 버킷에 업로드
