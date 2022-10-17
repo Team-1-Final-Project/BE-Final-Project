@@ -7,6 +7,10 @@ import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
 import com.innovation.backend.domain.Board.repository.BoardRepository;
 import com.innovation.backend.domain.Board.repository.HeartBoardRepository;
 import com.innovation.backend.domain.Crew.domain.Crew;
+import com.innovation.backend.domain.DailyMission.domain.DailyMission;
+import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
+import com.innovation.backend.domain.DailyMission.dto.response.MissionClearResponseDto;
+import com.innovation.backend.domain.DailyMission.repository.DailyMissionRepository;
 import com.innovation.backend.domain.Crew.repository.CrewRepository;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
@@ -35,8 +39,11 @@ public class MyPageService {
   private final MeetingRepository meetingRepository;
   private final BoardRepository boardRepository;
   private final HeartBoardRepository heartBoardRepository;
+  private final ReviewRepository reviewRepository;
+  private final DailyMissionRepository dailyMissionRepository;
   private final BadgeRepository badgeRepository;
   private final TagBadgeRepository tagBadgeRepository;
+
   //참여한 모임 조회
   public List<MeetingResponseDto> GetJoinMeeting (Member member){
 
@@ -81,6 +88,17 @@ public class MyPageService {
         return boardResponseDtoList;
     }
 
+  //완료한 미션 조회
+  public List<MissionClearResponseDto> getSuccessMission(Member member) {
+    List<MissionClearResponseDto> missionClearResponseDtoList = new ArrayList<>();
+    List<DailyMission> dailyMissionList = dailyMissionRepository.findByMember(member);
+    for(DailyMission dailyMission : dailyMissionList){
+      MissionClearResponseDto missionClearResponseDto = new MissionClearResponseDto(dailyMission);
+      missionClearResponseDtoList.add(missionClearResponseDto);
+    }
+    return missionClearResponseDtoList;
+  }
+
     public List<BadgeResponseDto> getMyBadge(Member member) {
         List<BadgeResponseDto> badgeResponseDtoList = new ArrayList<>();
         List<Badge> badgeList = badgeRepository.findByMember(member);
@@ -91,4 +109,5 @@ public class MyPageService {
         }
         return badgeResponseDtoList;
     }
+
 }

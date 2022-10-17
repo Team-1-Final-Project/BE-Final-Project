@@ -24,13 +24,14 @@ public class WebsocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns(FRONTEND_URL, BACKEND_URL, DEV_SERVER_URL, "http://localhost:8080", "http://localhost:3000").withSockJS();
+                .setAllowedOrigins(FRONTEND_URL, BACKEND_URL, DEV_SERVER_URL, "http://localhost:8080/**", "http://localhost:3000/**");
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/pub");
         registry.enableSimpleBroker("/sub");
+
     }
 
     @Override

@@ -11,6 +11,7 @@ public class DailyMissionResponseDto {
     private Long clearCount;
     private LocalDateTime createdAt;
     private boolean missionClear;
+
     public DailyMissionResponseDto(DailyMission dailyMission, Long clearCount, Boolean isDaily) {
         this.mission = dailyMission.getMission();
         this.createdAt = dailyMission.getCreatedAt();
@@ -23,4 +24,5 @@ public class DailyMissionResponseDto {
         this.createdAt = dailyMission.getCreatedAt();
         this.missionClear = isDaily;
     }
+
 }
