@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SearchController {
 
-  @GetMapping("/testtest")
+  @GetMapping("/test")
   public ResponseDto<String> test (){
-    System.out.println("hi~");
     return ResponseDto.success("성공입니다.");
   }
 

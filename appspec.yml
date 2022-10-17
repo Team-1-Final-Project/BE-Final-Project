@@ -11,9 +11,20 @@ permissions:
     pattern: "**"
     owner: ubuntu
     group: ubuntu
+    mode: 755
+
+#hooks:
+#  AfterInstall:
+#    - location: scripts/deploy.sh
+#      timeout: 60
+#      runas: ubuntu
 
 hooks:
   AfterInstall:
-    - location: scripts/deploy.sh
+    - location: scripts/stop.sh
+      timeout: 60
+      runas: ubuntu
+  ApplicationStart:
+    - location: scripts/start.sh
       timeout: 60
       runas: ubuntu

@@ -68,7 +68,7 @@ public class KakaoMemberService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", "f8f9d1c002ca9dfbf31002f73faf8983");
-        body.add("redirect_uri", "http://earth-us.s3-website.ap-northeast-2.amazonaws.com/login/kakao");
+        body.add("redirect_uri", "https://main.d1bjeqt1vblv2f.amplifyapp.com/login/kakao");
         body.add("code", code);
         System.out.println(body);
 
