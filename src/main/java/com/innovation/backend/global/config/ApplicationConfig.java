@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableEncryptableProperties
 public class ApplicationConfig implements WebMvcConfigurer {
 
-  @Value("${jasyptEncryptorPassword}")
+  @Value("${jasypt.encryptor.password}")
   private String encryptKey;
 
   @Bean("jasyptStringEncryptor")
