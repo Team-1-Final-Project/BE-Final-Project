@@ -87,7 +87,7 @@ public class MyPageController {
     Member member = userDetails.getMember();
     List<BadgeResponseDto> badgeResponseDtoList;
     badgeResponseDtoList = myPageService.getMyBadge(member);
-    return ResponseDto.success((badgeResponseDtoList));
+    return ResponseDto.success(badgeResponseDtoList);
 
   }
 }
