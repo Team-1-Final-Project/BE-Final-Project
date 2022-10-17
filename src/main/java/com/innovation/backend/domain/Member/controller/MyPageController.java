@@ -80,6 +80,7 @@ public class MyPageController {
       return ResponseDto.fail(ErrorCode.INVALID_ERROR);
     }
     return ResponseDto.success(missionClearResponseDtoList);
+  }
 
   //획득한 배지 조회
   @GetMapping("/mypage/badge")
@@ -91,5 +92,3 @@ public class MyPageController {
 
   }
 }
-
-
