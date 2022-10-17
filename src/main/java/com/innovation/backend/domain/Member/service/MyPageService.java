@@ -39,7 +39,6 @@ public class MyPageService {
   private final MeetingRepository meetingRepository;
   private final BoardRepository boardRepository;
   private final HeartBoardRepository heartBoardRepository;
-  private final ReviewRepository reviewRepository;
   private final DailyMissionRepository dailyMissionRepository;
   private final BadgeRepository badgeRepository;
   private final TagBadgeRepository tagBadgeRepository;
