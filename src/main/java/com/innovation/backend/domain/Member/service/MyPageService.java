@@ -4,6 +4,10 @@ import com.innovation.backend.domain.Board.domain.Board;
 import com.innovation.backend.domain.Board.domain.HeartBoard;
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
 import com.innovation.backend.domain.Crew.domain.Crew;
+import com.innovation.backend.domain.DailyMission.domain.DailyMission;
+import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
+import com.innovation.backend.domain.DailyMission.dto.response.MissionClearResponseDto;
+import com.innovation.backend.domain.DailyMission.repository.DailyMissionRepository;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
@@ -35,6 +39,7 @@ public class MyPageService {
   private final BoardRepository boardRepository;
   private final HeartBoardRepository heartBoardRepository;
   private final ReviewRepository reviewRepository;
+  private final DailyMissionRepository dailyMissionRepository;
 
   //참여한 모임 조회
   public List<MeetingResponseDto> GetJoinMeeting (UserDetailsImpl userDetails){
@@ -99,4 +104,14 @@ public class MyPageService {
     return reviewResponseDtos;
   }
 
+  //완료한 미션 조회
+  public List<MissionClearResponseDto> getSuccessMission(Member member) {
+    List<MissionClearResponseDto> missionClearResponseDtoList = new ArrayList<>();
+    List<DailyMission> dailyMissionList = dailyMissionRepository.findByMember(member);
+    for(DailyMission dailyMission : dailyMissionList){
+      MissionClearResponseDto missionClearResponseDto = new MissionClearResponseDto(dailyMission);
+      missionClearResponseDtoList.add(missionClearResponseDto);
+    }
+    return missionClearResponseDtoList;
+  }
 }

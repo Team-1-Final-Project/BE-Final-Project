@@ -5,6 +5,7 @@ import com.innovation.backend.domain.Member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface DailyMissionRepository extends JpaRepository<DailyMission, Long> {
@@ -13,4 +14,6 @@ public interface DailyMissionRepository extends JpaRepository<DailyMission, Long
     boolean existsByMemberAndCreatedAtBetween(Member member,LocalDateTime start, LocalDateTime end);
     boolean existsByMissionAndCreatedAtBetween(String mission,LocalDateTime start, LocalDateTime end);
     Long countByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
-;}
+    List<DailyMission> findByMember(Member member);
+
+    ;}
