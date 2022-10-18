@@ -82,7 +82,7 @@ public class MeetingService {
                 meetingThumbImage = s3Upload.uploadThumbFile(image, "thumbs");
                 log.info(meetingThumbImage);
             } catch (Exception e) {
-                log.error("image Upload fail");
+                log.error("image Upload fail :" , e);
             }
         }
 
