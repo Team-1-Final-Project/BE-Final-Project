@@ -68,7 +68,7 @@ public class KakaoMemberService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id", "b6c7210fad39ab98eeed60425f16c67d");
-        body.add("redirect_uri", "https://earthus.vercel.app/login/kakao");
+        body.add("redirect_uri", "https://www.earthus.net/login/kakao");
         body.add("code", code);
         System.out.println(body);
 
