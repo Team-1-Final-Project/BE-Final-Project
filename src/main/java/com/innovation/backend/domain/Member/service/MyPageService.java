@@ -8,7 +8,7 @@ import com.innovation.backend.domain.Board.repository.BoardRepository;
 import com.innovation.backend.domain.Board.repository.HeartBoardRepository;
 import com.innovation.backend.domain.Crew.domain.Crew;
 import com.innovation.backend.domain.DailyMission.domain.DailyMission;
-import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
+
 import com.innovation.backend.domain.DailyMission.dto.response.MissionClearResponseDto;
 import com.innovation.backend.domain.DailyMission.repository.DailyMissionRepository;
 import com.innovation.backend.domain.Crew.repository.CrewRepository;
@@ -21,6 +21,7 @@ import com.innovation.backend.domain.Badge.domain.TagBadge;
 import com.innovation.backend.domain.Member.dto.response.BadgeResponseDto;
 import com.innovation.backend.domain.Badge.repository.BadgeRepository;
 import com.innovation.backend.domain.Badge.repository.TagBadgeRepository;
+import com.innovation.backend.domain.Review.repository.ReviewRepository;
 import com.innovation.backend.global.enums.ErrorCode;
 import com.innovation.backend.global.exception.CustomErrorException;
 import lombok.AllArgsConstructor;

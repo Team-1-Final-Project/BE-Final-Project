@@ -70,7 +70,6 @@ public class MemberController {
     public Optional<Member> getLoginInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         String userId = userDetails.getUsername();
         Optional<Member> member = memberRepository.findByEmail(userId);
-        badgeService.getWelcomeBadge(userDetails, "Welcome Badge");
         return member;
     }
 
