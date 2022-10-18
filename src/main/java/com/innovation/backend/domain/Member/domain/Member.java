@@ -1,6 +1,7 @@
 package com.innovation.backend.domain.Member.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.innovation.backend.domain.Badge.domain.Badge;
 import com.innovation.backend.domain.Crew.domain.Crew;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
 import com.innovation.backend.domain.Review.domain.Review;
@@ -8,14 +9,8 @@ import com.innovation.backend.global.enums.Authority;
 import com.innovation.backend.global.util.Timestamped;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -62,6 +57,10 @@ public class Member extends Timestamped {
   private Authority authority;
 
   private String provider;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE,orphanRemoval = true)
+  private List<Badge> badgeList = new ArrayList<>();
 
   public boolean validatePassword(PasswordEncoder passwordEncoder, String password) {
     return passwordEncoder.matches(password, this.password);
