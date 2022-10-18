@@ -72,6 +72,8 @@ public class MeetingService {
         String meetingThumbImage = null;
 
         if (image != null && !image.isEmpty()) {
+            log.info("image file is exist");
+
             try {
                 //메인 이미지 저장
                 meetingImage = s3Upload.uploadFiles(image, "images");
@@ -79,8 +81,8 @@ public class MeetingService {
                 //섬네일 이미지 저장
                 meetingThumbImage = s3Upload.uploadThumbFile(image, "thumbs");
                 log.info(meetingThumbImage);
-            } catch (IOException e) {
-                log.error(e.getMessage());
+            } catch (Exception e) {
+                log.error("image Upload fail");
             }
         }
 
