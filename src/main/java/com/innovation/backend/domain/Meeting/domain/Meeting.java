@@ -105,6 +105,7 @@ public class Meeting extends Timestamped {
 
   //후기
   @OneToMany(mappedBy = "meeting", cascade = CascadeType.REMOVE,orphanRemoval = true)
+  @JsonIgnore
   private List<Review> reviews = new ArrayList<>();
 
   //모임 생성
