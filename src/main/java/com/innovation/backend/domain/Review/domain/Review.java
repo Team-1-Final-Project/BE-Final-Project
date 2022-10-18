@@ -47,6 +47,7 @@ public class Review extends Timestamped {
   //작성자
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_id")
+  @JsonIgnore
   private Member member;
 
 

@@ -1,5 +1,6 @@
 package com.innovation.backend.domain.Crew.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.global.util.Timestamped;
@@ -28,11 +29,13 @@ public class Crew extends Timestamped {
   //유저 정보
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "MEMBER_ID",  nullable = false)
+  @JsonIgnore
   private Member member;
 
   //모임 정보
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "MEETING_ID")
+  @JsonIgnore
   private Meeting meeting;
 
   //모임에 크루 참여

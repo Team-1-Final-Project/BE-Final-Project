@@ -39,6 +39,7 @@ public class Member extends Timestamped {
 
   //후기
   @OneToMany(mappedBy = "member", orphanRemoval = true)
+  @JsonIgnore
   private List<Review> reviews = new ArrayList<>();
 
   @Column(nullable = false, unique = true)
