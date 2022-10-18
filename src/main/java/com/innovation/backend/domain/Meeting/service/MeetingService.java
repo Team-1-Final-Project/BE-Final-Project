@@ -227,8 +227,10 @@ public class MeetingService {
         //모임장과 같은 유저인지 확인하기
         if (meeting.isWrittenBy(member)) {
             meetingRepository.delete(meeting);
-            s3Upload.fileDelete(meeting.getMeetingImage());
-            s3Upload.fileDelete(meeting.getMeetingThumbImage());
+            if(meeting.getMeetingImage() != null && meeting.getMeetingThumbImage() != null){
+                s3Upload.fileDelete(meeting.getMeetingImage());
+                s3Upload.fileDelete(meeting.getMeetingThumbImage());
+            }
         } else {
             throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
         }
