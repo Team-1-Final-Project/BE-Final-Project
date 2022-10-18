@@ -18,7 +18,6 @@ public class CrewResponseDto {
   private final String email;
   private final String nickname;
   private final String profileImage;
-  private final List<BadgeResponseDto> badgeList = new ArrayList<>();
 
   public CrewResponseDto(Crew crew){
 
@@ -28,10 +27,6 @@ public class CrewResponseDto {
     this.nickname = crew.getMember().getNickname();
     this.profileImage = crew.getMember().getProfileImage();
 
-    for (Badge badge : crew.getMember().getBadgeList()) {
-      BadgeResponseDto badgeResponseDto = new BadgeResponseDto(badge.getTagBadge());
-      badgeList.add(badgeResponseDto);
-    }
   }
 
 }
