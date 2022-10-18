@@ -35,16 +35,6 @@ public class NotificationService {
 
         // 503 에러를 방지하기 위한 더미 이벤트 전송
         sendToClient(emitter, userId, "SSE 연결 성공","connect");
-
-        // WelcomeBadge 획득 - 첫 로그인시
-        Member member = memberRepository.findById(id).orElseThrow();
-        TagBadge tagBadge = tagBadgeRepository.findByBadgeName("Welcome Badge");
-        if(!badgeRepository.existsByMemberAndTagBadge(member,tagBadge)){
-            Badge badge = new Badge(tagBadge, member);
-            badgeRepository.save(badge);
-            sendToClient(emitter, userId, "Welcome Badge를 획득하였습니다.","message");
-        }
-
         emitters.put(userId, emitter);  // 생성된 emitters를 저장해둠
         emitter.onCompletion(() -> emitters.remove(userId));  // 네트워크 에러
         emitter.onTimeout(() -> emitters.remove(userId));  // 타임아웃

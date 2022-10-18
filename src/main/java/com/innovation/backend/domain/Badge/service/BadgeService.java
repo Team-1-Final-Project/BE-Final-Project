@@ -49,6 +49,11 @@ public class BadgeService {
         }
     }
 
+    // WelcomeMeetingBadge 획득 - 첫 모임 생성시
+    public void getWelcomeBadge(UserDetailsImpl userDetails, String badgeName) {
+        commonBadge(userDetails, badgeName);
+    }
+
     // WelcomeCommunityBadge 획득 - 첫 게시글 작성시
     public void getWelcomeCommunityBadge(UserDetailsImpl userDetails, String badgeName) {
         int boardCount = boardRepository.countByMember(userDetails.getMember());
