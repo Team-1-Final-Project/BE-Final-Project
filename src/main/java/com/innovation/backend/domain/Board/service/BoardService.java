@@ -128,7 +128,7 @@ public class BoardService {
 
         if (uploadImage != null && !uploadImage.isEmpty()) {
             boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
-        } else if (uploadImage.isEmpty()) {
+        } else if (uploadImage == null || uploadImage.isEmpty()) {
             boardImage = null;
         }
 
