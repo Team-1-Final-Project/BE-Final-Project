@@ -192,15 +192,13 @@ public class BoardService {
 
         String boardImage = boardAlter.getBoardImage();
 
-        if (boardImage != null && uploadImage.isEmpty()) {
+        if(uploadImage == null) {
             boardImage = board.getBoardImage();
-        } else if (boardImage != null && !uploadImage.isEmpty()) {
-            s3Upload.fileDelete(boardImage);
+        } else if(!uploadImage.isEmpty()) {
+            if(boardImage != null) {
+                s3Upload.fileDelete(boardImage);
+            } else
             boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
-        } else if (boardImage == null && !uploadImage.isEmpty()) {
-            boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
-        } else if (boardImage == null && uploadImage.isEmpty()) {
-            boardImage = null;
         }
 
         board.alter(boardRequestDto, boardImage);
