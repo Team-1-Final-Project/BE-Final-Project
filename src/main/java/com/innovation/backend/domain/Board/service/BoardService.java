@@ -101,7 +101,7 @@ public class BoardService {
     public ResponseDto<Slice<GetAllBoardDto>> getAllBoard(Pageable pageable) {
         Slice<Board> boardList = boardRepository.findAllByOrderByCreatedAtDesc(pageable);
         {
-            PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+            PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
         }
         List<GetAllBoardDto> getAllBoardDtoList = new ArrayList<>();
 
@@ -196,9 +196,6 @@ public class BoardService {
             boardImage = board.getBoardImage();
         } else if (boardImage != null && !uploadImage.isEmpty()) {
             s3Upload.fileDelete(boardImage);
-        } else if (boardImage == null && !uploadImage.isEmpty()) {
-            boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
-        }
             boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
         } else if (boardImage == null && !uploadImage.isEmpty()) {
             boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
