@@ -1,5 +1,6 @@
 package com.innovation.backend.domain.Review.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.domain.Review.dto.ReviewRequestDto;
@@ -40,11 +41,13 @@ public class Review extends Timestamped {
   //모임
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "meeting_id", nullable = false)
+  @JsonIgnore
   private Meeting meeting;
 
   //작성자
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_id")
+  @JsonIgnore
   private Member member;
 
 
