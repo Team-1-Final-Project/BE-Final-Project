@@ -196,6 +196,9 @@ public class BoardService {
             boardImage = board.getBoardImage();
         } else if (boardImage != null && !uploadImage.isEmpty()) {
             s3Upload.fileDelete(boardImage);
+        } else if (boardImage == null && !uploadImage.isEmpty()) {
+            boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
+        }
             boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
         } else if (boardImage == null && !uploadImage.isEmpty()) {
             boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
