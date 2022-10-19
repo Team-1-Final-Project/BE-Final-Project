@@ -81,7 +81,7 @@ public class MyPageController {
     }
     return ResponseDto.success(missionClearResponseDtoList);
   }
-  
+
   //획득한 배지 조회
   @GetMapping("/mypage/badge")
   public ResponseDto<List<BadgeResponseDto>> getMyBadge(@AuthenticationPrincipal UserDetailsImpl userDetails){

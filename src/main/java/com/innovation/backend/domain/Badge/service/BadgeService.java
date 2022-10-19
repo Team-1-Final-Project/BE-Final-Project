@@ -10,6 +10,7 @@ import com.innovation.backend.domain.Board.repository.HeartBoardRepository;
 import com.innovation.backend.domain.Comment.repository.CommentRepository;
 import com.innovation.backend.domain.DailyMission.repository.DailyMissionRepository;
 import com.innovation.backend.domain.Member.domain.Member;
+import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.domain.Notification.Service.NotificationService;
 import com.innovation.backend.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class BadgeService {
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
     private final HeartBoardRepository heartBoardRepository;
+    private final MemberRepository memberRepository;
 
     // 뱃지 중복여부
     public boolean hasBadge(Member member, TagBadge tagBadge) {
@@ -47,7 +49,7 @@ public class BadgeService {
         }
     }
 
-    // WelcomeBadge 획득 - 첫 로그인시
+    // WelcomeMeetingBadge 획득 - 첫 모임 생성시
     public void getWelcomeBadge(UserDetailsImpl userDetails, String badgeName) {
         commonBadge(userDetails, badgeName);
     }

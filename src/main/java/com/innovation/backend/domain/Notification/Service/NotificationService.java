@@ -1,5 +1,12 @@
 package com.innovation.backend.domain.Notification.Service;
 
+import com.innovation.backend.domain.Badge.domain.Badge;
+import com.innovation.backend.domain.Badge.domain.TagBadge;
+import com.innovation.backend.domain.Badge.repository.BadgeRepository;
+import com.innovation.backend.domain.Badge.repository.TagBadgeRepository;
+import com.innovation.backend.domain.Badge.service.BadgeService;
+import com.innovation.backend.domain.Member.domain.Member;
+import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.domain.Notification.dto.NotificationResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,6 +19,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
+
+    private final MemberRepository memberRepository;
+    private final TagBadgeRepository tagBadgeRepository;
+    private final BadgeRepository badgeRepository;
+
     private static Map<String, SseEmitter> emitters = new ConcurrentHashMap<>();  // multi-thread에서 동시에 작업하기 위한 map 클래스
 
     private static final Long DEFAULT_TIMEOUT = 60L * 24 * 60 * 1000;  // 타임아웃 하루
@@ -24,7 +36,6 @@ public class NotificationService {
         // 503 에러를 방지하기 위한 더미 이벤트 전송
         sendToClient(emitter, userId, "SSE 연결 성공","connect");
         emitters.put(userId, emitter);  // 생성된 emitters를 저장해둠
-
         emitter.onCompletion(() -> emitters.remove(userId));  // 네트워크 에러
         emitter.onTimeout(() -> emitters.remove(userId));  // 타임아웃
 

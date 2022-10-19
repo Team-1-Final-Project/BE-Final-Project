@@ -72,6 +72,8 @@ public class MeetingService {
         String meetingThumbImage = null;
 
         if (image != null && !image.isEmpty()) {
+            log.info("image file is exist");
+
             try {
                 //메인 이미지 저장
                 meetingImage = s3Upload.uploadFiles(image, "images");
@@ -79,8 +81,8 @@ public class MeetingService {
                 //섬네일 이미지 저장
                 meetingThumbImage = s3Upload.uploadThumbFile(image, "thumbs");
                 log.info(meetingThumbImage);
-            } catch (IOException e) {
-                log.error(e.getMessage());
+            } catch (Exception e) {
+                log.error("image Upload fail :" , e);
             }
         }
 
@@ -227,8 +229,10 @@ public class MeetingService {
         //모임장과 같은 유저인지 확인하기
         if (meeting.isWrittenBy(member)) {
             meetingRepository.delete(meeting);
-            s3Upload.fileDelete(meeting.getMeetingImage());
-            s3Upload.fileDelete(meeting.getMeetingThumbImage());
+            if(meeting.getMeetingImage() != null && meeting.getMeetingThumbImage() != null){
+                s3Upload.fileDelete(meeting.getMeetingImage());
+                s3Upload.fileDelete(meeting.getMeetingThumbImage());
+            }
         } else {
             throw new CustomErrorException(ErrorCode.NOT_ADMIN_OF_MEETING);
         }

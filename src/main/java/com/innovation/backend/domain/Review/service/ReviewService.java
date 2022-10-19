@@ -138,8 +138,11 @@ public class ReviewService {
     //같은 작성자인지 확인
     isWrittenBy(member,review);
     reviewRepository.delete(review);
-    s3Upload.fileDelete(review.getReviewImage());
-    s3Upload.fileDelete(review.getReviewThumbImage());
+
+    if(review.getReviewImage() != null && review.getReviewThumbImage() != null){
+      s3Upload.fileDelete(review.getReviewImage());
+      s3Upload.fileDelete(review.getReviewThumbImage());
+    }
   }
 
   //후기 전체 조회 (전체)

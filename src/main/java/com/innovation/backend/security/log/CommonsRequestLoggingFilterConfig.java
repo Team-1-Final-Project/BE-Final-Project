@@ -1,13 +1,14 @@
 package com.innovation.backend.security.log;
 
-import java.io.IOException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
+
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 
 @Configuration
 public class CommonsRequestLoggingFilterConfig extends CommonsRequestLoggingFilter {

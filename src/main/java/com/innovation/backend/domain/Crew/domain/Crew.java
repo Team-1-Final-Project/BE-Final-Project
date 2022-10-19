@@ -1,5 +1,6 @@
 package com.innovation.backend.domain.Crew.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.global.util.Timestamped;
@@ -25,30 +26,21 @@ public class Crew extends Timestamped {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  //참여 여부
-//  @Column
-//  private boolean attendance;
-
   //유저 정보
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "MEMBER_ID",  nullable = false)
+  @JsonIgnore
   private Member member;
 
   //모임 정보
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "MEETING_ID")
+  @JsonIgnore
   private Meeting meeting;
 
   //모임에 크루 참여
   public Crew(Member member, Meeting meeting) {
     this.member = member;
     this.meeting = meeting;
-//    this.attendance = false;
   }
-
-  //참여시 참여상태 변경
-//  public void attend() {
-//    this.attendance = true;
-//  }
-
 }

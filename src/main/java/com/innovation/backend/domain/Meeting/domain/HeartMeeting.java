@@ -1,5 +1,6 @@
 package com.innovation.backend.domain.Meeting.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.global.util.Timestamped;
 import lombok.AllArgsConstructor;
@@ -20,10 +21,12 @@ public class HeartMeeting extends Timestamped {
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "member_id")
+  @JsonIgnore
   private Member member;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "meeting_id")
+  @JsonIgnore
   private Meeting meeting;
 
   public HeartMeeting(Member member, Meeting meeting) {
