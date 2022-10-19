@@ -43,7 +43,7 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     List<Board> findByTagId(List<Long> tagId,Pageable pageable);
     @Query(nativeQuery = true, value = "select count(*) from board as m inner join board_tag_connection as mtc on m.id = mtc.board_id where mtc.tag_id in (:tagId)")
     Long findByTagIdCount(List<Long> tagId);
-    List<Board> findByTitleContainsIgnoreCase(String keyword);
+    Page<Board> findByTitleContainsIgnoreCase(String keyword, Pageable pageable);
 
 }
 

@@ -11,6 +11,10 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,26 +25,26 @@ public class SearchService {
   private final MeetingRepository meetingRepository;
 
   //게시글 검색
-  public List<BoardResponseDto> searchBoard (String keyword){
+  public Slice<BoardResponseDto> searchBoard (String keyword , Pageable pageable){
 
-    List<Board> boardList = boardRepository.findByTitleContainsIgnoreCase(keyword);
+    Page<Board> boardList = boardRepository.findByTitleContainsIgnoreCase(keyword,pageable);
 
     List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
     for(Board board : boardList){
       boardResponseDtoList.add(new BoardResponseDto(board));
     }
-    return boardResponseDtoList;
+    return new PageImpl<>(boardResponseDtoList, pageable,boardList.getTotalElements());
   }
 
   //모임 검색
-  public List<MeetingGetAllResponseDto> searchMeeting (String keyword){
+  public Slice<MeetingGetAllResponseDto> searchMeeting (String keyword, Pageable pageable){
 
-    List<Meeting> meetingList = meetingRepository.findByTitleContainsIgnoreCase(keyword);
+    Page<Meeting> meetingList = meetingRepository.findByTitleContainsIgnoreCase(keyword,pageable);
 
     List<MeetingGetAllResponseDto> meetingGetAllResponseDtos = new ArrayList<>();
     for (Meeting meeting : meetingList){
       meetingGetAllResponseDtos.add(new MeetingGetAllResponseDto(meeting));
     }
-    return meetingGetAllResponseDtos;
+    return new PageImpl<>(meetingGetAllResponseDtos, pageable,meetingList.getTotalElements());
   }
 }
