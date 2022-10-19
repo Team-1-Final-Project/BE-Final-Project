@@ -199,6 +199,8 @@ public class BoardService {
             boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
         } else if (boardImage == null && !uploadImage.isEmpty()) {
             boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
+        } else if (boardImage == null && uploadImage.isEmpty()) {
+            boardImage = null;
         }
         board.alter(boardRequestDto, boardImage);
         BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums(), commentNums, commentResponseDtoList);
