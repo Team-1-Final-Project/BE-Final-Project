@@ -26,12 +26,12 @@ public class SearchController {
   //게시글 검색하기
   @GetMapping("/board/search")
   public ResponseDto<Slice<BoardResponseDto>> searchBoard (@RequestParam(value = "keyword") String keyword,@PageableDefault(size = 12) Pageable pageable) {
-    return ResponseDto.success(searchService.searchBoard(keyword));
+    return ResponseDto.success(searchService.searchBoard(keyword,pageable));
   }
 
   //모임검색하기
   @GetMapping("/meeting/search")
   public ResponseDto<Slice<MeetingGetAllResponseDto>> searchMeeting (@RequestParam(value = "keyword") String keyword, @PageableDefault(size = 12) Pageable pageable) {
-    return ResponseDto.success(searchService.searchMeeting(keyword));
+    return ResponseDto.success(searchService.searchMeeting(keyword,pageable));
   }
 }
