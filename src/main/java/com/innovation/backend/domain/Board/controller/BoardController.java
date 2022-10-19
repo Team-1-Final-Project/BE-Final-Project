@@ -66,7 +66,7 @@ public class BoardController {
 
     @PostMapping(value = "/board", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseDto<?> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart(value = "data") BoardRequestDto boardRequestDto, @RequestPart(required = false, value = "boardImage")  MultipartFile uploadImage) throws IOException {
+    public ResponseDto<?> createBoard(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart(required = false, value = "data") BoardRequestDto boardRequestDto, @RequestPart(required = false, value = "boardImage")  MultipartFile uploadImage) throws IOException {
         return boardService.createBoard(userDetails, boardRequestDto, uploadImage);
     }
 
@@ -78,7 +78,7 @@ public class BoardController {
 
     @PutMapping(value = "/board/{id}", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseDto<?> alterBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart(value = "data") BoardRequestDto boardRequestDto, @RequestPart(required = false, value = "boardImage")  MultipartFile uploadImage) throws IOException {
+    public ResponseDto<?> alterBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart(required = false, value = "data") BoardRequestDto boardRequestDto, @RequestPart(required = false, value = "boardImage")  MultipartFile uploadImage) throws IOException {
         return boardService.alterBoard(id, userDetails, boardRequestDto, uploadImage);
     }
 
