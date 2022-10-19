@@ -1,7 +1,7 @@
 package com.innovation.backend.domain.Member.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.innovation.backend.domain.Badge.BadgeService;
+import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.domain.Member.dto.response.MemberResponseDto;
@@ -70,7 +70,7 @@ public class MemberController {
     public Optional<Member> getLoginInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         String userId = userDetails.getUsername();
         Optional<Member> member = memberRepository.findByEmail(userId);
-        badgeService.getWelcomeBadge(userDetails, "WelcomeBadge");
+        badgeService.getWelcomeBadge(userDetails,"Welcome Badge");
         return member;
     }
 

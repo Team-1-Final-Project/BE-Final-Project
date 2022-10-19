@@ -1,4 +1,4 @@
-package com.innovation.backend.domain.Badge;
+package com.innovation.backend.domain.Badge.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +18,9 @@ public class TagBadge {
 
     @Column(nullable = false)
     private String badgeName;
+
+    @Column
+    private String howToGet;
 
 }
 

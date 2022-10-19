@@ -22,8 +22,11 @@ import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.domain.Crew.repository.CrewRepository;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.global.util.S3Upload;
+import java.util.stream.Collectors;
+import org.hibernate.sql.Select;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,6 +36,7 @@ import java.util.Set;
 import javax.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -256,22 +260,18 @@ public class MeetingService {
 
     // 모임 태그별 조회 (전체)
     public Page<MeetingGetAllResponseDto> getMeetingByTag(TagMeetingRequestDto tagMeetingRequestDto, Pageable pageable) {
-        Set<Meeting> meetings = new HashSet<>();
+        Long totalElement = meetingRepository.findByTagIdCount(tagMeetingRequestDto.getTagIds());
 
-        for (Long tagId : tagMeetingRequestDto.getTagIds()) {
-            List<MeetingTagConnection> meetingTagConnectionList = meetingTagConnectionRepository.findByTagId(tagId);
+        List<Meeting> meetingList =
+            meetingRepository.findByTagId(tagMeetingRequestDto.getTagIds(), pageable.getOffset(), pageable.getPageSize());
 
-            for (MeetingTagConnection meetingTagConnection : meetingTagConnectionList) {
-                meetings.add(meetingTagConnection.getMeeting());
-            }
+        List<MeetingGetAllResponseDto> meetingGetAllResponseDtoList = new ArrayList<>();
+
+        for (Meeting meeting : meetingList) {
+            meetingGetAllResponseDtoList.add(new MeetingGetAllResponseDto(meeting));
         }
 
-        List<MeetingGetAllResponseDto> meetingResponseDtoList = new ArrayList<>();
-        for (Meeting meeting : meetings) {
-            meetingResponseDtoList.add(new MeetingGetAllResponseDto(meeting));
-        }
-
-       return new PageImpl<>(meetingResponseDtoList, pageable, meetings.size());
+        return new PageImpl<>(meetingGetAllResponseDtoList, pageable, totalElement);
     }
 
 

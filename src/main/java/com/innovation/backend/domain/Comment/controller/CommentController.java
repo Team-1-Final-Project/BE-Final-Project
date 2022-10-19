@@ -1,5 +1,6 @@
 package com.innovation.backend.domain.Comment.controller;
 
+import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Comment.dto.request.CommentRequestDto;
 import com.innovation.backend.domain.Comment.service.CommentService;
 import com.innovation.backend.global.common.response.ResponseDto;

@@ -2,6 +2,8 @@ package com.innovation.backend.domain.Member.controller;
 
 
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
+import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
+import com.innovation.backend.domain.DailyMission.dto.response.MissionClearResponseDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.domain.Member.dto.response.BadgeResponseDto;
@@ -67,6 +69,19 @@ public class MyPageController {
     return ResponseDto.success(boardResponseDtoList);
   }
 
+  //완료한 미션 조회
+  @GetMapping("/mypage/daily")
+  public ResponseDto<List<MissionClearResponseDto>> getSuccessMission(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    List<MissionClearResponseDto> missionClearResponseDtoList;
+    try {
+      Member member = userDetails.getMember();
+      missionClearResponseDtoList = myPageService.getSuccessMission(member);
+    } catch (Exception e) {
+      return ResponseDto.fail(ErrorCode.INVALID_ERROR);
+    }
+    return ResponseDto.success(missionClearResponseDtoList);
+  }
+
   //획득한 배지 조회
   @GetMapping("/mypage/badge")
   public ResponseDto<List<BadgeResponseDto>> getMyBadge(@AuthenticationPrincipal UserDetailsImpl userDetails){
@@ -74,7 +89,6 @@ public class MyPageController {
     List<BadgeResponseDto> badgeResponseDtoList;
     badgeResponseDtoList = myPageService.getMyBadge(member);
     return ResponseDto.success((badgeResponseDtoList));
+
   }
 }
-
-

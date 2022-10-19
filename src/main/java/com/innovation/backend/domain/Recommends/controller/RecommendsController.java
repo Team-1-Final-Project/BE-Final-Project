@@ -21,7 +21,14 @@ public class RecommendsController {
     @GetMapping("/zeroshop/offline")
     public ResponseDto<List<RecommendsResponseDto>> getOfflineList(@PageableDefault(page =0 ,sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         List<RecommendsResponseDto> recommendsResponseDto;
-        recommendsResponseDto = recommendsService.getOfflineList(pageable);
+        recommendsResponseDto = recommendsService.getOffLineList(pageable);
+        return ResponseDto.success(recommendsResponseDto);
+    }
+
+    @GetMapping("/zeroshop/online")
+    public ResponseDto<List<RecommendsResponseDto>> getonLineList(@PageableDefault(page =0 ,sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        List<RecommendsResponseDto> recommendsResponseDto;
+        recommendsResponseDto = recommendsService.getOnLineList(pageable);
         return ResponseDto.success(recommendsResponseDto);
     }
 }

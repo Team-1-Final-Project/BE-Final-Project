@@ -40,14 +40,14 @@ public class SecurityConfig {
     }
 
     @Bean
-    public WebSecurityCustomizer ignoringCustomizer() { return (web) -> web.ignoring().antMatchers("/h2-console/**"); }
+    public WebSecurityCustomizer ignoringCustomizer() { return (web) -> web.ignoring().antMatchers("/h2-console/**","/ws"); }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors();
         http.cors().configurationSource(request -> {
             var cors = new CorsConfiguration();
-            cors.setAllowedOrigins(List.of("http://earth-us.s3-website.ap-northeast-2.amazonaws.com","http://localhost:3000","https://accounts.google.com/o/oauth2/v2/**")); // 허용할 URL
+            cors.setAllowedOrigins(List.of("http://earth-us.s3-website.ap-northeast-2.amazonaws.com","http://localhost:3000","https://accounts.google.com/o/oauth2/v2/**", "ws://localhost:8080/ws","http://localhost:8080/ws","https://earthus.vercel.app")); // 허용할 URL
             cors.setAllowedMethods(List.of("GET","POST", "PUT", "DELETE", "OPTIONS")); // 허용할 Http Method
             cors.setAllowedHeaders(List.of("*")); // 허용할 Header
             cors.addExposedHeader("Authorization");
@@ -62,13 +62,15 @@ public class SecurityConfig {
             .and()
             .authorizeRequests()
 //                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-            .antMatchers("/").permitAll()
-            .antMatchers("/h2-console/**").permitAll()
+            .antMatchers("/**").permitAll()
+            .antMatchers("/h2-console/**","/ws").permitAll()
             .antMatchers("/google","/oauth2/**", "/css/**","/images/**","/js/**","/favicon.ico/**").permitAll()
             .antMatchers("/login/**").permitAll()
             .antMatchers("/main/**").permitAll()
-            .antMatchers("/board" , "/board/{boardTagName}","/board/heart/{boardId}").permitAll()
+            .antMatchers("/board" , "/board/{boardTagName}","/board/heart/{boardId}, /board/tag").permitAll()
             .antMatchers("/zeroshop/offline").permitAll()
+            .antMatchers("/subscribe/**").permitAll()
+            .antMatchers("/test/**").permitAll()
             .antMatchers(HttpMethod.GET,"/meeting/**").permitAll()
             .antMatchers("/swagger-ui/**","/v3/api-docs/**").permitAll()
             .antMatchers(HttpMethod.GET,"/review/**").permitAll()

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="CONSOLE"
+    class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n
+      </pattern>
+    </encoder>
+  </appender>
+
+  <appender name="LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_FILE}.log</file>
+    <encoder
+      class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>[%d{dd-MM-yyyy HH:mm:ss.SSS}][%thread] %-5level %logger{36}.%M - %msg%n
+      </Pattern>
+    </encoder>
+    <rollingPolicy
+      class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>
+        ${LOG_FILE}-%d{yyyy-MM-dd}-%i.log.zip
+      </fileNamePattern>
+      <maxFileSize>
+        ${LOG_FILE_MAX_SIZE:-500MB}
+      </maxFileSize>
+      <maxHistory>
+        ${LOG_FILE_MAX_HISTORY:-0}
+      </maxHistory>
+    </rollingPolicy>
+  </appender>
+
+  <logger name="org.springframework.web"
+    level="DEBUG"/>
+  <logger name="org.springframework.core"
+    level="INFO"/>
+  <logger name="org.springframework.beans"
+    level="INFO"/>
+  <logger name="org.springframework.context.annotation"
+    level="INFO"/>
+  <logger name="org.springframework.aop.framework"
+    level="INFO"/>
+  <logger name="org.springframework.boot.autoconfigure.logging"
+    level="DEBUG"/>
+  <logger name="org.springframework.security.web"
+    level="INFO"/>
+  <logger name="org.apache" level="INFO"/>
+  <logger name="org.hibernate.persister"
+    level="INFO"/>
+  <logger name="org.hibernate.cfg"
+    level="INFO"/>
+  <logger name="org.hibernate.type"
+    level="INFO"/>
+  <logger name="org.hibernate.loader.plan"
+    level="INFO"/>
+  <logger name="org.hibernate.boot"
+    level="INFO"/>
+  <logger name="org.hibernate.engine.internal"
+    level="INFO"/>
+  <logger name="org.hibernate.loader.Loader"
+    level="INFO"/>
+  <logger name="org.hibernate.hql.internal.ast.tree"
+    level="INFO"/>
+  <logger name="org.springframework.orm.jpa"
+    level="INFO"/>
+  <logger name="com.sun.xml" level="INFO"/>
+  <logger name="com.sparta.miniprojectb" level="DEBUG"/>
+
+  <root level="DEBUG">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="LOG_FILE"/>
+  </root>
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="LOG_FILE"/>
+  </root>
+</configuration>

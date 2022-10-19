@@ -1,11 +1,12 @@
 package com.innovation.backend.domain.Meeting.dto.response;
 
 import com.innovation.backend.domain.Crew.domain.Crew;
+import com.innovation.backend.domain.Crew.dto.CrewDetailResponseDto;
 import com.innovation.backend.domain.Crew.dto.CrewResponseDto;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
 import com.innovation.backend.domain.Meeting.domain.MeetingTagConnection;
 import com.innovation.backend.domain.Meeting.domain.TagMeeting;
-import com.innovation.backend.domain.Member.dto.response.MemberResponseDto;
+import com.innovation.backend.domain.Member.dto.response.MemberDetailResponseDto;
 import com.innovation.backend.global.enums.MeetingStatus;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,13 +31,13 @@ public class MeetingResponseDto {
   private final int limitPeople;
   private final int nowPeople;
   private final LocalDateTime createdAt;
-  private final MemberResponseDto admin;
+  private final MemberDetailResponseDto admin;
   private final Long heartNums;
   private final MeetingStatus meetingStatus;
   private final List<TagMeetingResponseDto> tagMeetings = new ArrayList<>();
 
   //모임에 가입한 유저 목록
-  private final List<CrewResponseDto> crews = new ArrayList<>();
+  private final List<CrewDetailResponseDto> crews = new ArrayList<>();
 
   public MeetingResponseDto(Meeting meeting) {
     this.id = meeting.getId();
@@ -53,13 +54,13 @@ public class MeetingResponseDto {
     this.nowPeople = meeting.getNowPeople();
     this.meetingStatus = meeting.getMeetingStatus();
     this.heartNums = meeting.getHeartNums();
-    this.admin = new MemberResponseDto(meeting.getAdmin()); //모임장
+    this.admin = new MemberDetailResponseDto(meeting.getAdmin()); //모임장
 
     this.createdAt = meeting.getCreatedAt();
 
     for (Crew crew : meeting.getCrews()) {
-      CrewResponseDto crewResponseDto = new CrewResponseDto(crew);
-      crews.add(crewResponseDto);
+      CrewDetailResponseDto crewDetailResponseDto = new CrewDetailResponseDto(crew);
+      crews.add(crewDetailResponseDto);
     }
 
     for(MeetingTagConnection meetingTagConnection : meeting.getMeetingTagConnectionList()){

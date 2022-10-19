@@ -1,10 +1,14 @@
 package com.innovation.backend.domain.Member.dto.response;
 
+import com.innovation.backend.domain.Badge.domain.Badge;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.global.enums.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor

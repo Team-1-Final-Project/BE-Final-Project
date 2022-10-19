@@ -1,7 +1,12 @@
 package com.innovation.backend.domain.Crew.dto;
 
+import com.innovation.backend.domain.Badge.domain.Badge;
 import com.innovation.backend.domain.Crew.domain.Crew;
+import com.innovation.backend.domain.Member.dto.response.BadgeResponseDto;
 import lombok.Getter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 
@@ -21,6 +26,7 @@ public class CrewResponseDto {
     this.email = crew.getMember().getEmail();
     this.nickname = crew.getMember().getNickname();
     this.profileImage = crew.getMember().getProfileImage();
+
   }
 
 }

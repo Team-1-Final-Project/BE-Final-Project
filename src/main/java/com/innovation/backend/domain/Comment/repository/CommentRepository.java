@@ -2,6 +2,7 @@ package com.innovation.backend.domain.Comment.repository;
 
 import com.innovation.backend.domain.Comment.domain.Comment;
 import com.innovation.backend.domain.Board.domain.Board;
+import com.innovation.backend.domain.Member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
     List<Comment> findAllByOrderByCreatedAtDesc();
 
     int countCommentsByBoard(Board board);
+
+    int countByMember(Member member);
 }
