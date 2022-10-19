@@ -25,8 +25,7 @@ public class SearchService {
   private final MeetingRepository meetingRepository;
 
   //게시글 검색
-  public Slice<BoardResponseDto> searchBoard (String keyword , Pageable pageable){
-
+  public Slice<BoardResponseDto> searchBoard (String keyword,Pageable pageable){
     Page<Board> boardList = boardRepository.findByTitleContainsIgnoreCase(keyword,pageable);
 
     List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
@@ -38,7 +37,6 @@ public class SearchService {
 
   //모임 검색
   public Slice<MeetingGetAllResponseDto> searchMeeting (String keyword, Pageable pageable){
-
     Page<Meeting> meetingList = meetingRepository.findByTitleContainsIgnoreCase(keyword,pageable);
 
     List<MeetingGetAllResponseDto> meetingGetAllResponseDtos = new ArrayList<>();
