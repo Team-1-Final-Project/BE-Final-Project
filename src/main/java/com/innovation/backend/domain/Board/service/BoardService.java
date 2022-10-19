@@ -101,7 +101,7 @@ public class BoardService {
     public ResponseDto<Slice<GetAllBoardDto>> getAllBoard(Pageable pageable) {
         Slice<Board> boardList = boardRepository.findAllByOrderByCreatedAtDesc(pageable);
         {
-            PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+            PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
         }
         List<GetAllBoardDto> getAllBoardDtoList = new ArrayList<>();
 
