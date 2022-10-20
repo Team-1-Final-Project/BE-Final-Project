@@ -54,7 +54,7 @@ public class MainController {
             log.error(e.getMessage());
             return ResponseDto.fail(ErrorCode.NEED_LOGIN);
         }
-        badgeService.getMissionStarterBadge(userDetails, "MissionStarter Badge");
+        badgeService.getMissionStarterBadge(userDetails, "환경보호의 시작");
         return ResponseDto.success(dailyMissionResponseDto);
     }
 

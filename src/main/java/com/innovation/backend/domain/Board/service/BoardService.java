@@ -72,7 +72,7 @@ public class BoardService {
         } else {
             heartBoardRepository.save(heartBoard);
             board.addBoardLike(likeNums + 1);
-            badgeService.getHeartMakerBadge(userDetails, "HeartMaker Badge");
+            badgeService.getHeartMakerBadge(userDetails, "사랑꾼");
             return new BoardLikeResponseDto(!boardLike);
         }
     }
@@ -138,7 +138,7 @@ public class BoardService {
         boardRepository.save(board);
 
         BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums());
-        badgeService.getWelcomeCommunityBadge(userDetails, "Welcome Community Badge");
+        badgeService.getWelcomeCommunityBadge(userDetails, "글쓰기의 시작");
         return ResponseDto.success(boardResponseDto);
 
     }

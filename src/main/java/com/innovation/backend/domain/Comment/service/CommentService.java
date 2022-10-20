@@ -37,7 +37,7 @@ public class CommentService {
         commentRepository.save(comment);
 
         CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
-        badgeService.getCommunityActivist_2Badge(userDetails, "Community Activist_2 Badge");
+        badgeService.getCommunityActivist_2Badge(userDetails, "소통의 달인");
         return ResponseDto.success(commentResponseDto);
     }
 
