@@ -51,9 +51,9 @@ public class ChatService {
         return optionalMeeting.orElse(null);
     }
 
-//    @Transactional
-//    public void saveChat(ChatDto chatDto) {
-//
-//        chatRepository.save(new Chat(chatDto));
-//    }
+    @Transactional
+    public void saveChat(ChatDto chatDto) {
+
+        chatRepository.save(new Chat(chatDto));
+    }
 }
