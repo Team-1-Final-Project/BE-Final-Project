@@ -25,7 +25,7 @@ public class Badge {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private boolean isSignature;
+    private boolean isSignature = false;
 
     public Badge(TagBadge tagBadge, Member member){
         this.tagBadge = tagBadge;
