@@ -2,6 +2,8 @@ package com.innovation.backend.domain.Meeting.repository;
 
 import com.innovation.backend.domain.Meeting.domain.Meeting;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +17,6 @@ public interface MeetingRepository extends JpaRepository<Meeting,Long> {
   @Query(nativeQuery = true, value = "select count(*) from meeting as m inner join meeting_tag_connection as mtc on m.id = mtc.meeting_id where mtc.tag_id in (:tagId)")
   Long findByTagIdCount(List<Long> tagId);
   Page<Meeting> findByTitleContainsIgnoreCase (String keyword,Pageable pageable);
+
+  Optional<Meeting> findById(Long meetingId);
 }
