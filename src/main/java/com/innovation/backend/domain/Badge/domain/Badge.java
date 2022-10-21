@@ -24,7 +24,7 @@ public class Badge {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
+    
     @Column(nullable = false)
     private boolean isSignature = false;
 
