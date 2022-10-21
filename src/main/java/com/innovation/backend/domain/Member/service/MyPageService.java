@@ -9,8 +9,10 @@ import com.innovation.backend.domain.Badge.repository.TagBadgeRepository;
 import com.innovation.backend.domain.Board.domain.Board;
 import com.innovation.backend.domain.Board.domain.HeartBoard;
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
+import com.innovation.backend.domain.Board.dto.response.MainBoardResponseDto;
 import com.innovation.backend.domain.Board.repository.BoardRepository;
 import com.innovation.backend.domain.Board.repository.HeartBoardRepository;
+import com.innovation.backend.domain.Comment.repository.CommentRepository;
 import com.innovation.backend.domain.Crew.domain.Crew;
 import com.innovation.backend.domain.Crew.repository.CrewRepository;
 import com.innovation.backend.domain.DailyMission.domain.DailyMission;
@@ -54,6 +56,7 @@ public class MyPageService {
   private final BadgeRepository badgeRepository;
   private final TagBadgeRepository tagBadgeRepository;
   private final MemberRepository memberRepository;
+  private final CommentRepository commentRepository;
   private final S3Upload s3Upload;
 
   //참여한 모임 조회
@@ -74,26 +77,28 @@ public class MyPageService {
   }
 
     //작성한 게시글 조회
-    public List<BoardResponseDto> getWriteBoard(Member member) {
-      List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
+    public List<MainBoardResponseDto> getWriteBoard(Member member) {
+      List<MainBoardResponseDto> boardResponseDtoList = new ArrayList<>();
       List<Board> boardList = boardRepository.findByMember(member);
 
       for (Board board : boardList) {
-        BoardResponseDto boardResponseDto = new BoardResponseDto(board);
-        boardResponseDtoList.add(boardResponseDto);
+          int commentNums = commentRepository.countCommentsByBoard(board);
+          MainBoardResponseDto boardResponseDto = new MainBoardResponseDto(board,commentNums);
+          boardResponseDtoList.add(boardResponseDto);
       }
 
       return boardResponseDtoList;
     }
 
     //좋아요한 게시글 조회
-    public List<BoardResponseDto> getMyHitBoard(Member member) {
-        List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
+    public List<MainBoardResponseDto> getMyHitBoard(Member member) {
+        List<MainBoardResponseDto> boardResponseDtoList = new ArrayList<>();
         List<HeartBoard> heartBoardList = heartBoardRepository.findByMember(member);
 
         for (HeartBoard heartBoard : heartBoardList) {
             Board board = boardRepository.findById(heartBoard.getBoard().getId()).orElseThrow();
-            BoardResponseDto boardResponseDto = new BoardResponseDto(board);
+            int commentNums = commentRepository.countCommentsByBoard(board);
+            MainBoardResponseDto boardResponseDto = new MainBoardResponseDto(board,commentNums);
             boardResponseDtoList.add(boardResponseDto);
         }
 

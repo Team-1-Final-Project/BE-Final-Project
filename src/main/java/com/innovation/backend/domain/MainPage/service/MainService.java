@@ -1,6 +1,8 @@
 package com.innovation.backend.domain.MainPage.service;
 
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
+import com.innovation.backend.domain.Board.dto.response.MainBoardResponseDto;
+import com.innovation.backend.domain.Comment.repository.CommentRepository;
 import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
 import com.innovation.backend.domain.Board.domain.Board;
@@ -33,6 +35,7 @@ public class MainService {
     private final MemberRepository memberRepository;
     private final MeetingRepository meetingRepository;
     private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
     LocalDateTime startDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0));
     LocalDateTime endDatetime = LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59));
@@ -94,11 +97,12 @@ public class MainService {
     }
 
     // 주간 인기글 조회
-    public List<BoardResponseDto> getHitBoard() {
+    public List<MainBoardResponseDto> getHitBoard() {
         List<Board> boardList = boardRepository.findTop4ByCreatedAtBetweenOrderByHeartBoardNumsDesc(weekStartDatetime, weekEndDatetime);
-        List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
+        List<MainBoardResponseDto> boardResponseDtoList = new ArrayList<>();
         for (Board board : boardList) {
-            BoardResponseDto boardResponseDto = new BoardResponseDto(board);
+            int commentNums = commentRepository.countCommentsByBoard(board);
+            MainBoardResponseDto boardResponseDto = new MainBoardResponseDto(board,commentNums);
             boardResponseDtoList.add(boardResponseDto);
         }
         return boardResponseDtoList;
