@@ -162,6 +162,11 @@ public class Meeting extends Timestamped {
     }
   }
 
+  public boolean validateMeeting(Long meetingId) {
+//    Long thisMeetingId = this.meeting.getId();
+    return !meetingId.equals(id);
+  }
+
   //참가자 추가
   public void addNowPeople(){
     this.nowPeople += 1;

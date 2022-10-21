@@ -18,5 +18,5 @@ public interface MeetingRepository extends JpaRepository<Meeting,Long> {
   Long findByTagIdCount(List<Long> tagId);
   Page<Meeting> findByTitleContainsIgnoreCase (String keyword,Pageable pageable);
 
-  Optional<Meeting> findById(Long meetingId);
+//  Optional<Meeting> findById(Long meetingId);
 }

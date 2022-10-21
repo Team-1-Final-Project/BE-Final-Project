@@ -27,22 +27,23 @@ public class MeetingCommentService {
     private final MeetingCommentRepository meetingCommentRepository;
     private final MeetingRepository meetingRepository;
     private final CrewRepository crewRepository;
-    private final MeetingComment meetingComment;
+//    private final MeetingComment meetingComment;
 
     @Transactional
     public ResponseDto<MeetingCommentResponseDto> createComment(Long meetingId, UserDetailsImpl userDetails, MeetingCommentRequestDto meetingCommentRequestDto) {
         Member member = userDetails.getMember();
         Meeting meeting = isPresentMeeting(meetingId);
+//        MeetingComment meetingCheck = new MeetingComment();
 
         if(member == null) {
             return ResponseDto.fail(ErrorCode.MEMBER_NOT_FOUND);
-        } else if ((meeting == null) || (meetingComment.validateMeeting(meeting.getId()) == false)) {
+        } else if (meeting == null) {
             return ResponseDto.fail(ErrorCode.NOT_FOUND_MEETING);
         }
 
         isCrewCheck(member,meeting);
 
-        MeetingComment meetingComment = new MeetingComment(meeting, meetingCommentRequestDto, member);
+        MeetingComment meetingComment = new MeetingComment(meeting, meetingCommentRequestDto.getContent(), member);
         meetingCommentRepository.save(meetingComment);
 
         MeetingCommentResponseDto meetingCommentResponseDto = new MeetingCommentResponseDto(meetingComment);
@@ -52,12 +53,13 @@ public class MeetingCommentService {
     public ResponseDto<List<MeetingCommentResponseDto>> getAllComments(Long meetingId, UserDetailsImpl userDetails) {
         Member member = userDetails.getMember();
         Meeting meeting = isPresentMeeting(meetingId);
+        MeetingComment meetingCheck = new MeetingComment();
 
         if(member == null)  {
             return ResponseDto.fail(ErrorCode.MEMBER_NOT_FOUND);
         } else if (meeting == null) {
             return ResponseDto.fail(ErrorCode.NOT_FOUND_MEETING);
-        } else if (meetingComment.validateMeeting(meeting.getId()) == false) {
+        } else if (meeting.validateMeeting(meeting.getId())) {
             return ResponseDto.fail(ErrorCode.NEVER_JOIN);
         }
 
@@ -79,7 +81,7 @@ public class MeetingCommentService {
 
         if(member == null) {
             return ResponseDto.fail(ErrorCode.MEMBER_NOT_FOUND);
-        } else if(meetingComment.validateMember(member.getId()) == false) {
+        } else if(meetingComment.validateMember(member.getId())) {
             return ResponseDto.fail(ErrorCode.NOT_SAME_MEMBER);
         }
 
@@ -95,19 +97,17 @@ public class MeetingCommentService {
 
     public ResponseDto<String> deleteComment(Long meetingCommentId, UserDetailsImpl userDetails) {
         Member member = userDetails.getMember();
-        MeetingComment meetingComment = isPresentMeetingComment(meetingCommentId);
 
         if(member == null) {
             return ResponseDto.fail(ErrorCode.MEMBER_NOT_FOUND);
-        } else if(meetingComment.validateMember(member.getId()) == false) {
+        }
+
+        MeetingComment meetingComment = isPresentMeetingComment(meetingCommentId);
+
+        if(meetingComment.validateMember(member.getId())) {
             return ResponseDto.fail(ErrorCode.NOT_SAME_MEMBER);
         }
 
-        if(meetingComment == null) {
-            return ResponseDto.fail(ErrorCode.ENTITY_NOT_FOUND);
-        } else if (meetingComment != isPresentMeetingComment(meetingCommentId)) {
-            return ResponseDto.fail(ErrorCode.NOT_SAME_MEMBER);
-        }
         meetingCommentRepository.delete(meetingComment);
         return ResponseDto.success("모임 내 해당 댓글을 삭제하였습니다.");
     }

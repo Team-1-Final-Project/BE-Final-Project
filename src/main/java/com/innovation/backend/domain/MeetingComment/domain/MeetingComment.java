@@ -1,7 +1,5 @@
 package com.innovation.backend.domain.MeetingComment.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.innovation.backend.domain.Crew.domain.Crew;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
 import com.innovation.backend.domain.MeetingComment.dto.request.MeetingCommentRequestDto;
 import com.innovation.backend.domain.Member.domain.Member;
@@ -9,9 +7,6 @@ import com.innovation.backend.global.util.Timestamped;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 
 @Getter
@@ -29,7 +24,7 @@ public class MeetingComment extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-    @JsonProperty
+//    @JsonProperty
     @Column(nullable = false)
     private String content;
 
@@ -38,9 +33,9 @@ public class MeetingComment extends Timestamped {
     private Meeting meeting;
 
 
-    public MeetingComment(Meeting meeting, MeetingCommentRequestDto meetingCommentRequestDto, Member member) {
+    public MeetingComment(Meeting meeting, String content, Member member) {
         this.meeting = meeting;
-        this.content = meetingCommentRequestDto.getContent();
+        this.content = content;
         this.member = member;
     }
 
@@ -52,9 +47,6 @@ public class MeetingComment extends Timestamped {
         Long thisMemberId = this.member.getId();
         return !memberId.equals(thisMemberId);
     }
-    public boolean validateMeeting(Long meetingId) {
-        Long thisMeetingId = this.meeting.getId();
-        return !meetingId.equals(thisMeetingId);
-    }
+
 
 }
