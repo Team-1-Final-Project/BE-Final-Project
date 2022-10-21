@@ -3,6 +3,7 @@ package com.innovation.backend.domain.Member.controller;
 
 import com.innovation.backend.domain.Badge.dto.SignatureBadgeRequestDto;
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
+import com.innovation.backend.domain.Board.dto.response.MainBoardResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.MissionClearResponseDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
@@ -48,8 +49,8 @@ public class MyPageController {
 
   //작성한 게시글 조회
   @GetMapping("/mypage/board")
-  public ResponseDto<List<BoardResponseDto>> getWriteBoard(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    List<BoardResponseDto> boardResponseDtoList;
+  public ResponseDto<List<MainBoardResponseDto>> getWriteBoard(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    List<MainBoardResponseDto> boardResponseDtoList;
     try {
       Member member = userDetails.getMember();
       boardResponseDtoList = myPageService.getWriteBoard(member);
@@ -61,8 +62,8 @@ public class MyPageController {
 
   //좋아요한 게시글 조회
   @GetMapping("/mypage/hitboard")
-  public ResponseDto<List<BoardResponseDto>> getMyHitBoard(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-    List<BoardResponseDto> boardResponseDtoList;
+  public ResponseDto<List<MainBoardResponseDto>> getMyHitBoard(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    List<MainBoardResponseDto> boardResponseDtoList;
     try {
       Member member = userDetails.getMember();
       boardResponseDtoList = myPageService.getMyHitBoard(member);

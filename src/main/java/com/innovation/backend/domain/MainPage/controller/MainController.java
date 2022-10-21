@@ -2,6 +2,7 @@ package com.innovation.backend.domain.MainPage.controller;
 
 import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
+import com.innovation.backend.domain.Board.dto.response.MainBoardResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
 import com.innovation.backend.domain.MainPage.service.MainService;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
@@ -72,8 +73,8 @@ public class MainController {
 
     // 주간 인기글 조회
     @GetMapping("/main/hitboard")
-    public ResponseDto<List<BoardResponseDto>> getHitBoard() {
-        List<BoardResponseDto> boardResponseDtoList;
+    public ResponseDto<List<MainBoardResponseDto>> getHitBoard() {
+        List<MainBoardResponseDto> boardResponseDtoList;
         try {
             boardResponseDtoList = mainService.getHitBoard();
         } catch (Exception e) {
