@@ -4,6 +4,7 @@ package com.innovation.backend.domain.Badge.repository;
 
 import com.innovation.backend.domain.Badge.domain.Badge;
 import com.innovation.backend.domain.Badge.domain.TagBadge;
+import com.innovation.backend.domain.Badge.dto.SignatureBadgeRequestDto;
 import com.innovation.backend.domain.Member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,4 +16,6 @@ public interface BadgeRepository extends JpaRepository<Badge, Long> {
     boolean existsByMember(Member member);
 
     boolean existsByMemberAndTagBadge(Member member, TagBadge tagBadge);
+
+    Badge findByMemberAndTagBadge(Member member, TagBadge tagBadge);
 }
