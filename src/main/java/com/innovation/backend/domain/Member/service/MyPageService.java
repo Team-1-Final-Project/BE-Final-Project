@@ -3,6 +3,7 @@ package com.innovation.backend.domain.Member.service;
 
 import com.innovation.backend.domain.Badge.domain.Badge;
 import com.innovation.backend.domain.Badge.domain.TagBadge;
+import com.innovation.backend.domain.Badge.dto.SignatureBadgeRequestDto;
 import com.innovation.backend.domain.Badge.repository.BadgeRepository;
 import com.innovation.backend.domain.Badge.repository.TagBadgeRepository;
 import com.innovation.backend.domain.Board.domain.Board;
@@ -115,7 +116,7 @@ public class MyPageService {
         List<Badge> badgeList = badgeRepository.findByMember(member);
         for (Badge badge : badgeList) {
             TagBadge tagBadge = tagBadgeRepository.findById(badge.getTagBadge().getId()).orElseThrow();
-            BadgeResponseDto badgeResponseDto = new BadgeResponseDto(tagBadge);
+            BadgeResponseDto badgeResponseDto = new BadgeResponseDto(tagBadge,badge);
             badgeResponseDtoList.add(badgeResponseDto);
         }
         return badgeResponseDtoList;
@@ -134,5 +135,18 @@ public class MyPageService {
         }
         member.setProfileImage(profileImage);
         memberRepository.save(member);
+    }
+
+    public void setSignatureBadge(UserDetailsImpl userDetails, SignatureBadgeRequestDto badgeId) {
+        Member member = userDetails.getMember();
+        List<Badge> badgeList = badgeRepository.findByMember(member);
+        for (Badge badge : badgeList) {
+            badge.setSignatureBadge(false);
+        }
+        System.out.println(badgeId+"sdfsdf");
+        TagBadge tagBadge = tagBadgeRepository.findById(badgeId.getBadgeId()).orElseThrow();
+        Badge badge = badgeRepository.findByMemberAndTagBadge(member,tagBadge);
+        badge.setSignatureBadge(true);
+        badgeRepository.save(badge);
     }
 }

@@ -1,6 +1,7 @@
 package com.innovation.backend.domain.Member.controller;
 
 
+import com.innovation.backend.domain.Badge.dto.SignatureBadgeRequestDto;
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.MissionClearResponseDto;
@@ -93,10 +94,17 @@ public class MyPageController {
     return ResponseDto.success((badgeResponseDtoList));
   }
 
-  // 사이트 username 설정
-  @PostMapping("/member/profile")
+  // 프로필 사진 설정
+  @PostMapping("/mypage/profile")
   public ResponseDto<String> setUserprofile(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestPart(value = "profileImage") MultipartFile profileImage) {
     myPageService.setUserprofile(userDetails,profileImage);
     return ResponseDto.success("프로필 사진이 변경 되었습니다.");
+  }
+
+  // 대표 뱃지 설정
+  @PostMapping("/mypage/badge")
+  public ResponseDto<String> setSignatureBadge(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody SignatureBadgeRequestDto badgeId){
+    myPageService.setSignatureBadge(userDetails,badgeId);
+    return ResponseDto.success("대표 뱃지가 변경 되었습니다.");
   }
 }
