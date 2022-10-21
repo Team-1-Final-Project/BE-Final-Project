@@ -23,6 +23,7 @@ import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.global.common.response.ResponseDto;
 import com.innovation.backend.global.enums.ErrorCode;
+import com.innovation.backend.global.exception.CustomErrorException;
 import com.innovation.backend.global.util.S3Upload;
 import com.innovation.backend.security.UserDetailsImpl;
 import com.innovation.backend.security.jwt.TokenProvider;
@@ -71,7 +72,7 @@ public class BoardService {
         } else {
             heartBoardRepository.save(heartBoard);
             board.addBoardLike(likeNums + 1);
-            badgeService.getHeartMakerBadge(userDetails, "HeartMaker Badge");
+            badgeService.getHeartMakerBadge(userDetails, "사랑꾼");
             return new BoardLikeResponseDto(!boardLike);
         }
     }
@@ -100,7 +101,7 @@ public class BoardService {
     public ResponseDto<Slice<GetAllBoardDto>> getAllBoard(Pageable pageable) {
         Slice<Board> boardList = boardRepository.findAllByOrderByCreatedAtDesc(pageable);
         {
-            PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+            PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
         }
         List<GetAllBoardDto> getAllBoardDtoList = new ArrayList<>();
 
@@ -109,9 +110,7 @@ public class BoardService {
             int commentNums = commentRepository.countCommentsByBoard(board);
             Board boardById = boardRepository.findBoardById(board.getId());
             String boardImage = boardById.getBoardImage();
-//            if(boardImage != null || !boardImage.isEmpty()){
-//                boardImage = board.getBoardImage();
-//            }
+
             GetAllBoardDto getAllBoardDto = new GetAllBoardDto(board, heartBoardNums, commentNums, boardImage);
             getAllBoardDtoList.add(getAllBoardDto);
         }
@@ -123,21 +122,13 @@ public class BoardService {
     @Transactional
     public ResponseDto<?> createBoard(UserDetailsImpl userDetails, BoardRequestDto boardRequestDto, MultipartFile uploadImage) throws IOException {
 
-//        if (null == request.getHeader("Refresh-Token")) {
-//            return ResponseDto.fail(ErrorCode.MEMBER_NOT_FOUND);
-//        }
-//        Member member = tokenProvider.getMemberFromAuthentication();
-//        if (null == member) {
-//            return ResponseDto.fail(ErrorCode.MEMBER_NOT_FOUND);
-//        }
-
         Member member = userDetails.getMember(); //회원 검사
 
         String boardImage = null;
 
         if (uploadImage != null && !uploadImage.isEmpty()) {
             boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
-        } else if (uploadImage == null) {
+        } else if (uploadImage == null || uploadImage.isEmpty()) {
             boardImage = null;
         }
 
@@ -145,9 +136,9 @@ public class BoardService {
         addBoardTagConnection(boardRequestDto, board);
 
         boardRepository.save(board);
-//        List<String> tagBoardList = boardRequestDto.getTagBoard();
+
         BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums());
-        badgeService.getWelcomeCommunityBadge(userDetails, "Welcome Community Badge");
+        badgeService.getWelcomeCommunityBadge(userDetails, "글쓰기의 시작");
         return ResponseDto.success(boardResponseDto);
 
     }
@@ -161,13 +152,6 @@ public class BoardService {
         }
         int commentNums = commentRepository.countCommentsByBoard(board);
 
-//        List<TagBoard> tagBoardList = tagBoardRepository.findAllByBoard(board);
-//        List<String> tagNameList = new ArrayList<>();
-//
-//        for(TagBoard tagBoard : tagBoardList) {
-//            String tagName = tagBoard.getTagName();
-//            tagNameList.add(tagName);
-//        }
         List<Comment> commentList = commentRepository.findAllByBoardOrderByCreatedAtDesc(board);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
 
@@ -208,12 +192,15 @@ public class BoardService {
 
         String boardImage = boardAlter.getBoardImage();
 
-        if (boardImage != null && uploadImage.isEmpty()) {
+        if(uploadImage == null) {
             boardImage = board.getBoardImage();
-        } else if (boardImage != null && !uploadImage.isEmpty()) {
-            s3Upload.fileDelete(boardImage);
+        } else if(!uploadImage.isEmpty()) {
+            if(boardImage != null) {
+                s3Upload.fileDelete(boardImage);
+            }
             boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
         }
+
         board.alter(boardRequestDto, boardImage);
         BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums(), commentNums, commentResponseDtoList);
         return ResponseDto.success(boardResponseDto);

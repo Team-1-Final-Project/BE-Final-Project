@@ -45,26 +45,26 @@ public class BadgeService {
         if(hasBadge(member,tagBadge)){
             Badge badge = new Badge(tagBadge,member);
             badgeRepository.save(badge);
-            notificationService.sendEvent(id,badgeName+"를 획득하였습니다.");
+            notificationService.sendEvent(id,badgeName+ " 뱃지를 획득하였습니다.");
         }
     }
 
-    // WelcomeMeetingBadge 획득 - 첫 모임 생성시
+    // 제로웨이스트 새싹 획득 - 첫 로그인시
     public void getWelcomeBadge(UserDetailsImpl userDetails, String badgeName) {
         commonBadge(userDetails, badgeName);
     }
 
-    // WelcomeCommunityBadge 획득 - 첫 게시글 작성시
+    // 글쓰기의 시작 획득 - 첫 게시글 작성시
     public void getWelcomeCommunityBadge(UserDetailsImpl userDetails, String badgeName) {
         int boardCount = boardRepository.countByMember(userDetails.getMember());
-        // CommunityActivist_1 Badge 획독 - 작성한 게시글 5개이상 보유시
+        // 글쓰기의 달인 획독 - 작성한 게시글 5개이상 보유시
         if(boardCount >= 5) {
-            badgeName = "Community Activist_1 Badge";
+            badgeName = "글쓰기의 달인";
         }
         commonBadge(userDetails, badgeName);
     }
 
-    // CommunityActivist_2Badge 획독 - 작성한 댓글 5개이상 보유시
+    // 소통의 달인 획독 - 작성한 댓글 5개이상 보유시
     public void getCommunityActivist_2Badge(UserDetailsImpl userDetails, String badgeName) {
         int commentCount = commentRepository.countByMember(userDetails.getMember());
         if(commentCount >= 5) {
@@ -72,7 +72,7 @@ public class BadgeService {
         }
     }
 
-    // HeartMakerBadge 획독 - 좋아요한 게시글 5개이상시
+    // 사랑꾼 획독 - 좋아요한 게시글 5개이상시
     public void getHeartMakerBadge(UserDetailsImpl userDetails, String badgeName) {
         int heartCount = heartBoardRepository.countByMember(userDetails.getMember());
         if(heartCount >= 5) {
@@ -80,20 +80,19 @@ public class BadgeService {
         }
     }
 
-    // WelcomeMeetingBadge 획득 - 첫 모임 생성시
+    // 모임 개척자 획득 - 첫 모임 생성시
     public void getWelcomeMeetingBadge(UserDetailsImpl userDetails, String badgeName) {
         commonBadge(userDetails, badgeName);
     }
 
-    // MissionStarterBadge 획득 - 첫 데일리미션 성공시
+    // 환경보호의 시작 획득 - 첫 데일리미션 성공시
     public void getMissionStarterBadge(UserDetailsImpl userDetails, String badgeName) {
         int missionCount = dailyMissionRepository.countByMember(userDetails.getMember());
-        // MissionChallengerBadge 획득 - 데일리미션 5회이상 성공시
+        // 환경보호의 달인 획득 - 데일리미션 5회이상 성공시
         if(missionCount >=5){
-            badgeName = "MissionChallenger Badge";
+            badgeName = "환경보호의 달인";
         }
         commonBadge(userDetails, badgeName);
-
     }
 
 

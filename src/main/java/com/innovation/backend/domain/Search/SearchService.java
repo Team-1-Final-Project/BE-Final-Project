@@ -25,6 +25,7 @@ public class SearchService {
   private final MeetingRepository meetingRepository;
 
   //게시글 검색
+
   public Slice<BoardResponseDto> searchBoard (String keyword , Pageable pageable){
 
     Page<Board> boardList = boardRepository.findByTitleContainsIgnoreCaseOrderByCreatedAtDesc(keyword,pageable);

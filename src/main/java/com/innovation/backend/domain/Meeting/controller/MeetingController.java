@@ -38,7 +38,7 @@ public class MeetingController {
   // 모임 생성
   @PostMapping("/meeting")
   public ResponseDto<MeetingResponseDto> createMeeting(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart("data") MeetingRequestDto requestDto, @RequestPart(required = false) MultipartFile image) {
-    badgeService.getWelcomeMeetingBadge(userDetails, "WelcomeMeeting Badge");
+    badgeService.getWelcomeMeetingBadge(userDetails, "모임 개척자");
     return ResponseDto.success(meetingService.createMeeting(requestDto, userDetails, image));
   }
 

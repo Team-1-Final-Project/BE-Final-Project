@@ -3,6 +3,7 @@ package com.innovation.backend.domain.Member.service;
 
 import com.innovation.backend.domain.Badge.domain.Badge;
 import com.innovation.backend.domain.Badge.domain.TagBadge;
+import com.innovation.backend.domain.Badge.dto.SignatureBadgeRequestDto;
 import com.innovation.backend.domain.Badge.repository.BadgeRepository;
 import com.innovation.backend.domain.Badge.repository.TagBadgeRepository;
 import com.innovation.backend.domain.Board.domain.Board;
@@ -19,17 +20,25 @@ import com.innovation.backend.domain.Meeting.domain.Meeting;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
 import com.innovation.backend.domain.Meeting.repository.MeetingRepository;
 import com.innovation.backend.domain.Member.domain.Member;
+import com.innovation.backend.domain.Member.dto.request.UserProfileRequestDto;
 import com.innovation.backend.domain.Member.dto.response.BadgeResponseDto;
 import com.innovation.backend.domain.Badge.repository.BadgeRepository;
 import com.innovation.backend.domain.Badge.repository.TagBadgeRepository;
+import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.domain.Review.repository.ReviewRepository;
 import com.innovation.backend.global.enums.ErrorCode;
 import com.innovation.backend.global.exception.CustomErrorException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.innovation.backend.global.util.S3Upload;
+import com.innovation.backend.security.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -44,6 +53,8 @@ public class MyPageService {
   private final DailyMissionRepository dailyMissionRepository;
   private final BadgeRepository badgeRepository;
   private final TagBadgeRepository tagBadgeRepository;
+  private final MemberRepository memberRepository;
+  private final S3Upload s3Upload;
 
   //참여한 모임 조회
   public List<MeetingResponseDto> GetJoinMeeting (Member member){
@@ -105,10 +116,37 @@ public class MyPageService {
         List<Badge> badgeList = badgeRepository.findByMember(member);
         for (Badge badge : badgeList) {
             TagBadge tagBadge = tagBadgeRepository.findById(badge.getTagBadge().getId()).orElseThrow();
-            BadgeResponseDto badgeResponseDto = new BadgeResponseDto(tagBadge);
+            BadgeResponseDto badgeResponseDto = new BadgeResponseDto(tagBadge,badge);
             badgeResponseDtoList.add(badgeResponseDto);
         }
         return badgeResponseDtoList;
     }
 
+    public void setUserprofile(UserDetailsImpl userDetails, MultipartFile image) {
+        Member member = userDetails.getMember();
+        String profileImage = null;
+
+        if (image != null && !image.isEmpty()) {
+            try {
+                profileImage = s3Upload.uploadFiles(image, "boardImages");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        member.setProfileImage(profileImage);
+        memberRepository.save(member);
+    }
+
+    public void setSignatureBadge(UserDetailsImpl userDetails, SignatureBadgeRequestDto badgeId) {
+        Member member = userDetails.getMember();
+        List<Badge> badgeList = badgeRepository.findByMember(member);
+        for (Badge badge : badgeList) {
+            badge.setSignatureBadge(false);
+        }
+        System.out.println(badgeId+"sdfsdf");
+        TagBadge tagBadge = tagBadgeRepository.findById(badgeId.getBadgeId()).orElseThrow();
+        Badge badge = badgeRepository.findByMemberAndTagBadge(member,tagBadge);
+        badge.setSignatureBadge(true);
+        badgeRepository.save(badge);
+    }
 }

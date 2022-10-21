@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ChatController {
 
-    private final SimpMessageSendingOperations messageForm;
+//    private final SimpMessageSendingOperations messageForm;
     private final ChatService chatService;
 
     @GetMapping("/meeting/{meetingId}/chatroom")
@@ -27,11 +27,11 @@ public class ChatController {
         return chatService.chatLoad(meetingId, pageable);
     }
 
-    @MessageMapping("/chat/message")
-    public void meetingChat(ChatDto chatDto) {
-
-        chatService.saveChat(chatDto);
-        messageForm.convertAndSend(
-                "/sub/chat/" + chatDto);
-    }
+//    @MessageMapping("/chat/message")
+//    public void meetingChat(ChatDto chatDto) {
+//
+//        chatService.saveChat(chatDto);
+//        messageForm.convertAndSend(
+//                "/sub/chat/" + chatDto);
+//    }
 }

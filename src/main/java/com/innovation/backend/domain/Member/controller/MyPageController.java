@@ -1,11 +1,14 @@
 package com.innovation.backend.domain.Member.controller;
 
 
+import com.innovation.backend.domain.Badge.dto.SignatureBadgeRequestDto;
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.MissionClearResponseDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
 import com.innovation.backend.domain.Member.domain.Member;
+import com.innovation.backend.domain.Member.dto.request.UserProfileRequestDto;
+import com.innovation.backend.domain.Member.dto.request.UsernameRequestDto;
 import com.innovation.backend.domain.Member.dto.response.BadgeResponseDto;
 import com.innovation.backend.domain.Member.service.MyPageService;
 import com.innovation.backend.global.common.response.ResponseDto;
@@ -15,8 +18,8 @@ import com.innovation.backend.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -89,6 +92,19 @@ public class MyPageController {
     List<BadgeResponseDto> badgeResponseDtoList;
     badgeResponseDtoList = myPageService.getMyBadge(member);
     return ResponseDto.success((badgeResponseDtoList));
+  }
 
+  // 프로필 사진 설정
+  @PostMapping("/mypage/profile")
+  public ResponseDto<String> setUserprofile(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestPart(value = "profileImage") MultipartFile profileImage) {
+    myPageService.setUserprofile(userDetails,profileImage);
+    return ResponseDto.success("프로필 사진이 변경 되었습니다.");
+  }
+
+  // 대표 뱃지 설정
+  @PostMapping("/mypage/badge")
+  public ResponseDto<String> setSignatureBadge(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody SignatureBadgeRequestDto badgeId){
+    myPageService.setSignatureBadge(userDetails,badgeId);
+    return ResponseDto.success("대표 뱃지가 변경 되었습니다.");
   }
 }
