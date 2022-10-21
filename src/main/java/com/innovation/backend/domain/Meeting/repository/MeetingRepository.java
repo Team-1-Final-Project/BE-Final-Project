@@ -14,5 +14,5 @@ public interface MeetingRepository extends JpaRepository<Meeting,Long> {
   List<Meeting> findByTagId(List<Long> tagId, long offset, int limit);
   @Query(nativeQuery = true, value = "select count(*) from meeting as m inner join meeting_tag_connection as mtc on m.id = mtc.meeting_id where mtc.tag_id in (:tagId)")
   Long findByTagIdCount(List<Long> tagId);
-  Page<Meeting> findByTitleContainsIgnoreCase (String keyword,Pageable pageable);
+  Page<Meeting> findByTitleContainsIgnoreCaseOrderByCreatedAtDesc (String keyword,Pageable pageable);
 }
