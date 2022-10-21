@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.domain.Crew.domain.Crew;
 //import com.innovation.backend.enums.MeetingStatus;
 import com.innovation.backend.domain.Meeting.dto.request.MeetingRequestDto;
+import com.innovation.backend.domain.MeetingComment.domain.MeetingComment;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.domain.Review.domain.Review;
 import com.innovation.backend.global.enums.MeetingStatus;
@@ -108,6 +109,10 @@ public class Meeting extends Timestamped {
   @JsonIgnore
   private List<Review> reviews = new ArrayList<>();
 
+  @OneToMany(mappedBy = "meeting", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  private List<MeetingComment> meetingComment;
+
   //모임 생성
   public Meeting(MeetingRequestDto requestDto, Member member, String meetingImage, String meetingThumbImage){
     this.title = requestDto.getTitle();
@@ -155,6 +160,11 @@ public class Meeting extends Timestamped {
     }else {
       this.meetingStatus = MeetingStatus.COMPLETE_JOIN;
     }
+  }
+
+  public boolean validateMeeting(Long meetingId) {
+//    Long thisMeetingId = this.meeting.getId();
+    return !meetingId.equals(id);
   }
 
   //참가자 추가
