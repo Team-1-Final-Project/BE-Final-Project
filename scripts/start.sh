@@ -17,9 +17,7 @@ ENCRYPT_PASSWORD=$(cat /home/ubuntu/app/EncPw)
 
 # jar 파일 실행
 echo "$TIME_NOW > $JAR_FILE 파일 실행" >> $DEPLOY_LOG
-#sudo nohup java -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/var/log -jar -Xmx1024M -Djasypt.encryptor.password=$ENCRYPT_PASSWORD $JAR_FILE > $APP_LOG 2> $ERROR_LOG &
-sudo nohup java -jar -javaagent:/home/ubuntu/scouter/agent.java/conf/scouter.agent.jar -DScouter.config=/home/ubuntu/scouter/agent.java/conf/earth-us.conf
- -Djasypt.encryptor.password=$ENCRYPT_PASSWORD $JAR_FILE > $APP_LOG 2> $ERROR_LOG &
+sudo nohup java -javaagent:/home/ubuntu/scouter/agent.java/scouter.agent.jar -DScouter.config=/home/ubuntu/scouter/agent.java/conf/earthUs.conf -jar -Djasypt.encryptor.password=$ENCRYPT_PASSWORD $JAR_FILE > $APP_LOG 2> $ERROR_LOG &
 
 CURRENT_PID=$(pgrep -f $JAR_FILE)
 echo "$TIME_NOW > 실행된 프로세스 아이디 $CURRENT_PID 입니다." >> $DEPLOY_LOG
