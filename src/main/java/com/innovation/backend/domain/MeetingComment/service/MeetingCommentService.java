@@ -43,7 +43,7 @@ public class MeetingCommentService {
 
         isCrewCheck(member,meeting);
 
-        MeetingComment meetingComment = new MeetingComment(meeting, meetingCommentRequestDto.getContent(), member);
+        MeetingComment meetingComment = new MeetingComment(meeting, meetingCommentRequestDto, member);
         meetingCommentRepository.save(meetingComment);
 
         MeetingCommentResponseDto meetingCommentResponseDto = new MeetingCommentResponseDto(meetingComment);
@@ -76,8 +76,9 @@ public class MeetingCommentService {
     }
 
     public ResponseDto<MeetingCommentResponseDto> alterComment(Long meetingCommentId, UserDetailsImpl userDetails, MeetingCommentRequestDto meetingCommentRequestDto) {
-        Member member = userDetails.getMember();
         MeetingComment meetingComment = isPresentMeetingComment(meetingCommentId);
+
+        Member member = userDetails.getMember();
 
         if(member == null) {
             return ResponseDto.fail(ErrorCode.MEMBER_NOT_FOUND);
@@ -90,7 +91,9 @@ public class MeetingCommentService {
         } else if (meetingComment != isPresentMeetingComment(meetingCommentId)) {
             return ResponseDto.fail(ErrorCode.NOT_SAME_MEMBER);
         }
+
         meetingComment.alter(meetingCommentRequestDto);
+        meetingCommentRepository.save(meetingComment);
         MeetingCommentResponseDto meetingCommentResponseDto = new MeetingCommentResponseDto(meetingComment);
         return ResponseDto.success(meetingCommentResponseDto);
     }

@@ -33,9 +33,9 @@ public class MeetingComment extends Timestamped {
     private Meeting meeting;
 
 
-    public MeetingComment(Meeting meeting, String content, Member member) {
+    public MeetingComment(Meeting meeting, MeetingCommentRequestDto meetingCommentRequestDto, Member member) {
         this.meeting = meeting;
-        this.content = content;
+        this.content = meetingCommentRequestDto.getContent();
         this.member = member;
     }
 
