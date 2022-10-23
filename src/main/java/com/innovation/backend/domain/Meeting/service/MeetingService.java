@@ -48,7 +48,6 @@ public class MeetingService {
     private final MeetingRepository meetingRepository;
     private final CrewRepository crewRepository;
     private final S3Upload s3Upload;
-
     private final TagMeetingRepository tagMeetingRepository;
     private final MemberRepository memberRepository;
     private final HeartMeetingRepository heartMeetingRepository;
