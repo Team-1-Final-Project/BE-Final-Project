@@ -69,7 +69,7 @@ public class MainService {
         String missionContent = getDailyMission.getMission();
         DailyMission dailyMission = new DailyMission(missionContent, member);
 
-        if (isDaily == false) {
+        if (isDaily == false && userDetails != null) {
             dailyMissionRepository.save(dailyMission);
             clearCount = dailyMissionRepository.countByCreatedAtBetween(startDatetime, endDatetime) - 1;
         } else {
