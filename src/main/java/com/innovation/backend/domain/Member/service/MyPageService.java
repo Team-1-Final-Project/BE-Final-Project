@@ -16,15 +16,18 @@ import com.innovation.backend.domain.DailyMission.domain.DailyMission;
 import com.innovation.backend.domain.DailyMission.dto.response.MissionClearResponseDto;
 import com.innovation.backend.domain.DailyMission.repository.DailyMissionRepository;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
+import com.innovation.backend.domain.Meeting.dto.response.MeetingGetAllResponseDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
 import com.innovation.backend.domain.Meeting.repository.MeetingRepository;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.domain.Member.dto.response.BadgeResponseDto;
 import com.innovation.backend.domain.Badge.repository.BadgeRepository;
 import com.innovation.backend.domain.Badge.repository.TagBadgeRepository;
+import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.domain.Review.repository.ReviewRepository;
 import com.innovation.backend.global.enums.ErrorCode;
 import com.innovation.backend.global.exception.CustomErrorException;
+import com.innovation.backend.security.UserDetailsImpl;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -44,22 +47,24 @@ public class MyPageService {
   private final DailyMissionRepository dailyMissionRepository;
   private final BadgeRepository badgeRepository;
   private final TagBadgeRepository tagBadgeRepository;
+  private final MemberRepository memberRepository;
 
   //참여한 모임 조회
-  public List<MeetingResponseDto> GetJoinMeeting (Member member){
+  public List<MeetingGetAllResponseDto> GetJoinMeeting (UserDetailsImpl userDetails){
+    Member member = memberRepository.findById(userDetails.getMember().getId())
+        .orElseThrow(()-> new CustomErrorException(ErrorCode.NEED_LOGIN));
 
-    List<MeetingResponseDto> meetingResponseDtoList = new ArrayList<>();
+    List<MeetingGetAllResponseDto> meetingGetAllResponseDtoList = new ArrayList<>();
     List<Crew> crewList = crewRepository.findByMember(member);
 
     for(Crew crew : crewList) {
       Meeting meeting = meetingRepository.findById(crew.getMeeting().getId())
           .orElseThrow(() -> new CustomErrorException(ErrorCode.NOT_FOUND_MEETING));
 
-      MeetingResponseDto meetingResponseDto = new MeetingResponseDto(meeting);
-      meetingResponseDtoList.add(meetingResponseDto);
+      MeetingGetAllResponseDto meetingGetAllResponseDto = new MeetingGetAllResponseDto(meeting);
+      meetingGetAllResponseDtoList.add(meetingGetAllResponseDto);
     }
-
-    return meetingResponseDtoList;
+    return meetingGetAllResponseDtoList;
   }
 
     //작성한 게시글 조회

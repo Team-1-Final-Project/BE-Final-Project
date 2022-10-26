@@ -4,6 +4,7 @@ package com.innovation.backend.domain.Member.controller;
 import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.MissionClearResponseDto;
+import com.innovation.backend.domain.Meeting.dto.response.MeetingGetAllResponseDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.domain.Member.dto.response.BadgeResponseDto;
@@ -28,19 +29,8 @@ public class MyPageController {
 
   //참여한 모임 조회
   @GetMapping("/mypage/meeting")
-  public ResponseDto<List<MeetingResponseDto>> getJoinMeeting (@AuthenticationPrincipal UserDetailsImpl userDetails){
-    List<MeetingResponseDto> meetingResponseDtoList;
-    try {
-      Member member = userDetails.getMember();
-      meetingResponseDtoList = myPageService.GetJoinMeeting(member);
-    } catch (CustomErrorException e) {
-      log.error(e.getMessage());
-      return ResponseDto.fail(e.getErrorCode());
-    } catch (Exception e) {
-      log.error("error: ", e);
-      return ResponseDto.fail(ErrorCode.INVALID_ERROR);
-    }
-    return ResponseDto.success(meetingResponseDtoList);
+  public ResponseDto<List<MeetingGetAllResponseDto>> getJoinMeeting (@AuthenticationPrincipal UserDetailsImpl userDetails){
+    return ResponseDto.success(myPageService.GetJoinMeeting(userDetails));
   }
 
   //작성한 게시글 조회
