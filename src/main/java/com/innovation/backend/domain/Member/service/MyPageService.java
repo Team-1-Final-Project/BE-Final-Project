@@ -129,8 +129,7 @@ public class MyPageService {
 
     public void setUserprofile(UserDetailsImpl userDetails, MultipartFile image) {
         Member member = userDetails.getMember();
-        String profileImage = null;
-
+        String profileImage = member.getProfileImage();
         if (image != null && !image.isEmpty()) {
             try {
                 profileImage = s3Upload.uploadFiles(image, "boardImages");
@@ -148,7 +147,6 @@ public class MyPageService {
         for (Badge badge : badgeList) {
             badge.setSignatureBadge(false);
         }
-        System.out.println(badgeId+"sdfsdf");
         TagBadge tagBadge = tagBadgeRepository.findById(badgeId.getBadgeId()).orElseThrow();
         Badge badge = badgeRepository.findByMemberAndTagBadge(member,tagBadge);
         badge.setSignatureBadge(true);

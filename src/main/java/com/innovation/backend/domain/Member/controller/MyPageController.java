@@ -97,9 +97,10 @@ public class MyPageController {
 
   // 프로필 사진 설정
   @PostMapping("/mypage/profile")
-  public ResponseDto<String> setUserprofile(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestPart(value = "profileImage") MultipartFile profileImage) {
+  public Member setUserprofile(@AuthenticationPrincipal UserDetailsImpl userDetails,@RequestPart(value = "profileImage",required = false) MultipartFile profileImage) {
     myPageService.setUserprofile(userDetails,profileImage);
-    return ResponseDto.success("프로필 사진이 변경 되었습니다.");
+    Member member = userDetails.getMember();
+    return member;
   }
 
   // 대표 뱃지 설정
