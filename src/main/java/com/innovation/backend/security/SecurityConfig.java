@@ -81,23 +81,4 @@ public class SecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//
-//        configuration.addAllowedOrigin("http://localhost:3000");
-//        configuration.addAllowedOrigin("");
-//        configuration.addAllowedHeader("*");
-//        configuration.addAllowedMethod("*");
-//        configuration.setAllowCredentials(true);
-//        // 클라이언트가 응답에 접근 가능하도록 헤더 전송
-//        configuration.addExposedHeader("Authorization");
-//        configuration.addExposedHeader("Refresh-Token");
-//
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//
-//    }
-
 }

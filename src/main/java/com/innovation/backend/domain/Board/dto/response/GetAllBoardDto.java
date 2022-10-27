@@ -20,8 +20,6 @@ public class GetAllBoardDto extends Timestamped {
     private String title;
     private String content;
     private int heartBoardNums;
-//    private Long commentsNum;
-//    private List<String> tagBoard;
     private int commentNums;
     private final List<TagBoardResponseDto> tagBoards = new ArrayList<>();
 
@@ -36,7 +34,6 @@ public class GetAllBoardDto extends Timestamped {
         this.heartBoardNums = heartBoardNums;
         this.commentNums = commentNums;
         super.createdAt = board.getCreatedAt();
-//        this.tagBoard = tagBoard;
         for (BoardTagConnection boardTagConnection : board.getBoardTagConnectionList()) {
             TagBoard tagBoard = boardTagConnection.getTagBoard();
             TagBoardResponseDto tagBoardResponseDto = new TagBoardResponseDto(tagBoard);

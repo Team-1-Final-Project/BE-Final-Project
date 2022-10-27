@@ -8,6 +8,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TagMeetingRequestDto {
 
-  private List<Long> tagIds;
+  private final List<Long> tagIds;
 
 }

@@ -32,11 +32,6 @@ public class Board extends Timestamped {
   @Column(nullable = false)
   private String title;
 
-//  @ElementCollection
-//  @CollectionTable(name = "boardImage_id")
-////  @OneToMany(fetch = FetchType.LAZY)
-//  private List<String> boardImage = new ArrayList<>();
-
   @Column(nullable = false)
   private String content;
 
@@ -61,14 +56,8 @@ public class Board extends Timestamped {
   private Set<BoardTagConnection> boardTagConnectionList = new HashSet<>();
 
 
-//  @Column
-//  private int heartBoardNums;
-
   @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<HeartBoard> heartBoardList;
-
-//  @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-//  private List<TagBoard> tagBoardList;
 
 
   @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -105,13 +94,5 @@ public class Board extends Timestamped {
     Long thisMemberId = this.member.getId();
     return !memberId.equals(thisMemberId);
   }
-
-//  public void heart(){
-//    this.heartBoardNums += 1;
-//  }
-//
-//  public void unheart(){
-//    this.heartBoardNums -= 1;
-//  }
 
 }

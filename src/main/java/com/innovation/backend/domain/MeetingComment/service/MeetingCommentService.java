@@ -27,13 +27,13 @@ public class MeetingCommentService {
     private final MeetingCommentRepository meetingCommentRepository;
     private final MeetingRepository meetingRepository;
     private final CrewRepository crewRepository;
-//    private final MeetingComment meetingComment;
+
 
     @Transactional
     public ResponseDto<MeetingCommentResponseDto> createComment(Long meetingId, UserDetailsImpl userDetails, MeetingCommentRequestDto meetingCommentRequestDto) {
         Member member = userDetails.getMember();
         Meeting meeting = isPresentMeeting(meetingId);
-//        MeetingComment meetingCheck = new MeetingComment();
+
 
         if(member == null) {
             return ResponseDto.fail(ErrorCode.MEMBER_NOT_FOUND);
