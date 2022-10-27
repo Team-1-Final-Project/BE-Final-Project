@@ -3,7 +3,7 @@ package com.innovation.backend.domain.Member.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Member.domain.Member;
-import com.innovation.backend.domain.Member.dto.request.UsernameRequestDto;
+import com.innovation.backend.domain.Member.dto.request.NicknameRequestDto;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.domain.Member.dto.response.MemberResponseDto;
 import com.innovation.backend.domain.Member.service.MemberService;
@@ -19,7 +19,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -90,10 +89,11 @@ public class MemberController {
     }
 
     // 사이트 username 설정
-    @PostMapping("/member/username")
-    public ResponseDto<String> setUsername(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UsernameRequestDto username) {
-        memberService.setUsername(userDetails,username);
-        return ResponseDto.success("닉네임이 변경 되었습니다.");
+    @PutMapping("/member/nickname")
+    public Member setNickname(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody NicknameRequestDto nickname) {
+        Member member = userDetails.getMember();
+        memberService.setNickname(member,nickname);
+        return member;
     }
 
 }

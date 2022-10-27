@@ -2,14 +2,10 @@ package com.innovation.backend.domain.Member.controller;
 
 
 import com.innovation.backend.domain.Badge.dto.SignatureBadgeRequestDto;
-import com.innovation.backend.domain.Board.dto.response.BoardResponseDto;
 import com.innovation.backend.domain.Board.dto.response.MainBoardResponseDto;
-import com.innovation.backend.domain.DailyMission.dto.response.DailyMissionResponseDto;
 import com.innovation.backend.domain.DailyMission.dto.response.MissionClearResponseDto;
 import com.innovation.backend.domain.Meeting.dto.response.MeetingResponseDto;
 import com.innovation.backend.domain.Member.domain.Member;
-import com.innovation.backend.domain.Member.dto.request.UserProfileRequestDto;
-import com.innovation.backend.domain.Member.dto.request.UsernameRequestDto;
 import com.innovation.backend.domain.Member.dto.response.BadgeResponseDto;
 import com.innovation.backend.domain.Member.service.MyPageService;
 import com.innovation.backend.global.common.response.ResponseDto;

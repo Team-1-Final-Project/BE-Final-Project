@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.domain.Badge.domain.Badge;
 import com.innovation.backend.domain.Crew.domain.Crew;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
-import com.innovation.backend.domain.Member.dto.request.UsernameRequestDto;
+import com.innovation.backend.domain.Member.dto.request.NicknameRequestDto;
 import com.innovation.backend.domain.Review.domain.Review;
 import com.innovation.backend.global.enums.Authority;
 import com.innovation.backend.global.util.Timestamped;
@@ -49,8 +49,6 @@ public class Member extends Timestamped {
   @Column(nullable = false)
   private String nickname;
 
-  private String username;
-
   @Column(nullable = false)
   private String password;
 
@@ -79,8 +77,8 @@ public class Member extends Timestamped {
     this.provider = provider;
   }
 
-  public void setUsername(UsernameRequestDto username) {
-    this.username = username.getUsername();
+  public void setNickname(NicknameRequestDto nickname) {
+    this.nickname = nickname.getNickname();
   }
 
   public void setProfileImage(String profileImage) {

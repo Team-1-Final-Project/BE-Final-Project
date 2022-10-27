@@ -136,6 +136,8 @@ public class MyPageService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        } else {
+            profileImage = "https://test-bucket-jaewon.s3.ap-northeast-2.amazonaws.com/images/basic.jpg";
         }
         member.setProfileImage(profileImage);
         memberRepository.save(member);
