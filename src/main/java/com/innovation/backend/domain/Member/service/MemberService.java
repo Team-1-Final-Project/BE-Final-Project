@@ -3,6 +3,7 @@ package com.innovation.backend.domain.Member.service;
 
 import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.domain.Member.dto.request.MemberRequestDto;
+import com.innovation.backend.domain.Member.dto.request.NicknameRequestDto;
 import com.innovation.backend.domain.Member.dto.response.MemberResponseDto;
 import com.innovation.backend.global.common.response.ResponseDto;
 import com.innovation.backend.global.enums.Authority;
@@ -13,6 +14,7 @@ import com.innovation.backend.domain.Member.repository.MemberRepository;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -85,6 +87,7 @@ public class MemberService {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         return optionalMember.orElse(null);
     }
+
     @Transactional
     public void putToken(Member member, HttpServletResponse response) {
         TokenDto tokenDto = tokenProvider.generateTokenDto(member);
@@ -98,6 +101,12 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow();
         System.out.println(member);
         return new MemberResponseDto(member);
+    }
+
+    // 사이트 username 설정
+    public void setNickname(Member member, NicknameRequestDto nickname) {
+        member.setNickname(nickname);
+        memberRepository.save(member);
     }
 }
 

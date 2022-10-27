@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.innovation.backend.domain.Badge.domain.Badge;
 import com.innovation.backend.domain.Crew.domain.Crew;
 import com.innovation.backend.domain.Meeting.domain.Meeting;
+import com.innovation.backend.domain.Member.dto.request.NicknameRequestDto;
 import com.innovation.backend.domain.Review.domain.Review;
 import com.innovation.backend.global.enums.Authority;
 import com.innovation.backend.global.util.Timestamped;
@@ -76,6 +77,14 @@ public class Member extends Timestamped {
     this.profileImage = profileImage;
     this.authority = authority;
     this.provider = provider;
+  }
+
+  public void setNickname(NicknameRequestDto nickname) {
+    this.nickname = nickname.getNickname();
+  }
+
+  public void setProfileImage(String profileImage) {
+    this.profileImage = profileImage;
   }
 
 }

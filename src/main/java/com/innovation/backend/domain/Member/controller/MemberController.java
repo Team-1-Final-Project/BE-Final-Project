@@ -3,6 +3,7 @@ package com.innovation.backend.domain.Member.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.innovation.backend.domain.Badge.service.BadgeService;
 import com.innovation.backend.domain.Member.domain.Member;
+import com.innovation.backend.domain.Member.dto.request.NicknameRequestDto;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.domain.Member.dto.response.MemberResponseDto;
 import com.innovation.backend.domain.Member.service.MemberService;
@@ -86,5 +87,14 @@ public class MemberController {
         }
         return ResponseDto.success(memberResponseDto);
     }
+
+    // 사이트 username 설정
+    @PutMapping("/member/nickname")
+    public Member setNickname(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody NicknameRequestDto nickname) {
+        Member member = userDetails.getMember();
+        memberService.setNickname(member,nickname);
+        return member;
+    }
+
 }
 
