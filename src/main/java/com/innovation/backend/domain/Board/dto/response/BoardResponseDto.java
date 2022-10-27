@@ -21,7 +21,6 @@ public class BoardResponseDto extends Timestamped {
     private String content;
     private String boardImage;
     private int heartBoardNums;
-    //    private Long commentsNum;
     private final List<TagBoardResponseDto> tagBoards = new ArrayList<>();
     private int commentNums;
     private List<CommentResponseDto> commentResponseDtoList;
@@ -44,8 +43,6 @@ public class BoardResponseDto extends Timestamped {
             TagBoardResponseDto tagBoardResponseDto = new TagBoardResponseDto(tagBoard);
             tagBoards.add(tagBoardResponseDto);
         }
-//        this.tagBoard =  board.getTagBoardList();
-//        this.commentsNum = commentsNum;
     }
 
     public BoardResponseDto(Board board, int heartBoardNums, int commentNums, List<CommentResponseDto> commentResponseDtoList) {
@@ -58,7 +55,6 @@ public class BoardResponseDto extends Timestamped {
         this.heartBoardNums = heartBoardNums;
         super.createdAt = board.getCreatedAt();
         super.modifiedAt = board.getModifiedAt();
-//        this.tagBoard =  board.getTagBoardList();
         for (BoardTagConnection boardTagConnection : board.getBoardTagConnectionList()) {
             TagBoard tagBoard = boardTagConnection.getTagBoard();
             TagBoardResponseDto tagBoardResponseDto = new TagBoardResponseDto(tagBoard);

@@ -4,10 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class RecommendsResponseDto {
-    private String title;
-    private String address;
-    private String content;
-    private String image;
+    private final String title;
+    private final String address;
+    private final String content;
+    private final String image;
 
     public RecommendsResponseDto(Recommends recommends) {
         this.title = recommends.getTitle();

@@ -29,8 +29,4 @@ public class DailyMission extends Timestamped {
     this.mission = mission;
     this.member = member;
   }
-
-//  public void count(Long clearCount) {
-//    this.clearCount = clearCount;
-//  }
 }

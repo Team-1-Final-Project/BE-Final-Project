@@ -56,7 +56,6 @@ public class GoogleMemberService {
         redirectView.setUrl("http://localhost:3000");
         return redirectView;
 
-//        return ResponseEntity.ok().body(ResponseDto.success("Google OAuth 로그인 성공"));
     }
 
 

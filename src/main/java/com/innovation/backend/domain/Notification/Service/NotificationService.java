@@ -9,6 +9,7 @@ import com.innovation.backend.domain.Member.domain.Member;
 import com.innovation.backend.domain.Member.repository.MemberRepository;
 import com.innovation.backend.domain.Notification.dto.NotificationResponseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class NotificationService {
 
@@ -31,7 +33,8 @@ public class NotificationService {
     public SseEmitter subscribe(Long id) {
 
         String userId = String.valueOf(id);
-        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);  // sse 연결 요청에 응답하기 위해 sseEmitter 객체 생성(유호시간)
+        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);// sse 연결 요청에 응답하기 위해 sseEmitter 객체 생성(유호시간)
+        log.info("Num of SSE : "+  emitters.keySet().size());
 
         // 503 에러를 방지하기 위한 더미 이벤트 전송
         sendToClient(emitter, userId, "SSE 연결 성공","connect");
@@ -50,6 +53,7 @@ public class NotificationService {
             SseEmitter emitter = emitters.get(userId);
             sendToClient(emitter, userId, notificationResponseDto,"message");
         }
+        log.info("Num of SSE : "+  emitters.keySet().size());
 
     }
 
@@ -59,9 +63,9 @@ public class NotificationService {
         try {
             System.out.println("SSE 보내는 중 : " + userId + " " + data.toString());
             emitter.send(SseEmitter.event()
-                    .id(userId)
-                    .name(type)
-                    .data(data));
+                .id(userId)
+                .name(type)
+                .data(data));
         } catch (IOException e) {
             emitters.remove(userId);
             e.printStackTrace();

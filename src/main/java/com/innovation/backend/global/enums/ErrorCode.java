@@ -3,7 +3,7 @@ package com.innovation.backend.global.enums;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
-//@AllArgsConstructor
+
 @Getter
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ErrorCode {

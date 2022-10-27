@@ -44,7 +44,6 @@ public class CommentService {
     @Transactional
     public ResponseDto<?> alterComment(Long commentId, UserDetailsImpl userDetails, CommentRequestDto commentRequestDto) {
         Comment comment = isPresentComment(commentId);
-//        Comment commentAlter = commentRepository.findCommentById(commentId);
 
         if (null == comment) {
             return ResponseDto.fail(ErrorCode.ENTITY_NOT_FOUND);

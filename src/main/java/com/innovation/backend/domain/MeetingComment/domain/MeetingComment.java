@@ -24,7 +24,6 @@ public class MeetingComment extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
-//    @JsonProperty
     @Column(nullable = false)
     private String content;
 

@@ -30,9 +30,6 @@ public class TagMeeting {
   @OneToMany(mappedBy = "tagMeeting")
   @JsonIgnore
   private List<MeetingTagConnection> meetingTagConnectionList = new ArrayList<>();
-
-  public TagMeeting(MeetingTagConnection meetingTagConnection){
-    this.id = meetingTagConnection.getId();
-  }
+  
 
 }
