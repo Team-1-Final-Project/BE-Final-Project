@@ -38,6 +38,9 @@ public class Board extends Timestamped {
   @Column
   private String boardImage;
 
+  @Column
+  private String boardThumbnail;
+
   /// 좋아요 부분
   @Column
   private int heartBoardNums = 0;
@@ -64,10 +67,11 @@ public class Board extends Timestamped {
   private List<Comment> commentList;
 
 
-  public Board(BoardRequestDto boardRequestDto, Member member, String boardImage){
+  public Board(BoardRequestDto boardRequestDto, Member member, String boardImage, String boardThumbnail){
     this.title = boardRequestDto.getTitle();
     this.content = boardRequestDto.getContent();
     this.boardImage = boardImage;
+    this.boardThumbnail = boardThumbnail;
     this.member = member;
   }
 
@@ -75,10 +79,11 @@ public class Board extends Timestamped {
     this.boardTagConnectionList = boardTagConnections;
   }
 
-  public void alter(BoardRequestDto boardRequestDto, String boardImageAlter){
+  public void alter(BoardRequestDto boardRequestDto, String boardImageAlter, String boardThumbnailAlter){
     String title = boardRequestDto.getTitle();
     String content = boardRequestDto.getContent();
     String boardImage = boardImageAlter;
+    String boardThumbnail = boardThumbnailAlter;
     if(title != null){
       this.title = title;
     }
@@ -87,7 +92,10 @@ public class Board extends Timestamped {
     }
     if(boardImage != null){
       this.boardImage = boardImage;
-    } // 수정되지 않은 데이터 기존 유지
+    }
+    if(boardThumbnail !=null){
+      this.boardThumbnail = boardThumbnail;// 수정되지 않은 데이터 기존 유지
+    }
   }
 
   public boolean validateMember(Long memberId) {

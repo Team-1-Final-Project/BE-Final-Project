@@ -109,9 +109,9 @@ public class BoardService {
             int heartBoardNums = heartBoardRepository.countByBoard(board);
             int commentNums = commentRepository.countCommentsByBoard(board);
             Board boardById = boardRepository.findBoardById(board.getId());
-            String boardImage = boardById.getBoardImage();
+            String boardThumbnail = boardById.getBoardThumbnail();
 
-            GetAllBoardDto getAllBoardDto = new GetAllBoardDto(board, heartBoardNums, commentNums, boardImage);
+            GetAllBoardDto getAllBoardDto = new GetAllBoardDto(board, heartBoardNums, commentNums, boardThumbnail);
             getAllBoardDtoList.add(getAllBoardDto);
         }
         return ResponseDto.success(new SliceImpl<>(getAllBoardDtoList, pageable, boardList.isLast()));
@@ -125,14 +125,17 @@ public class BoardService {
         Member member = userDetails.getMember(); //회원 검사
 
         String boardImage = null;
+        String boardThumbnail = null;
 
         if (uploadImage != null && !uploadImage.isEmpty()) {
             boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
+            boardThumbnail = s3Upload.uploadThumbFile(uploadImage, "boardThumbnail");
         } else if (uploadImage == null || uploadImage.isEmpty()) {
             boardImage = null;
+            boardThumbnail = null;
         }
 
-        Board board = new Board(boardRequestDto, member, boardImage);
+        Board board = new Board(boardRequestDto, member, boardImage, boardThumbnail);
         addBoardTagConnection(boardRequestDto, board);
 
         boardRepository.save(board);
@@ -191,6 +194,7 @@ public class BoardService {
         }
 
         String boardImage = boardAlter.getBoardImage();
+        String boardThumbnail = boardAlter.getBoardThumbnail();
 
         if(uploadImage == null) {
             boardImage = board.getBoardImage();
@@ -199,9 +203,10 @@ public class BoardService {
                 s3Upload.fileDelete(boardImage);
             }
             boardImage = s3Upload.uploadFiles(uploadImage, "boardImages");
+            boardThumbnail = s3Upload.uploadThumbFile(uploadImage, "boardThumbnail");
         }
 
-        board.alter(boardRequestDto, boardImage);
+        board.alter(boardRequestDto, boardImage, boardThumbnail);
         BoardResponseDto boardResponseDto = new BoardResponseDto(board, board.getHeartBoardNums(), commentNums, commentResponseDtoList);
         return ResponseDto.success(boardResponseDto);
     }
@@ -221,9 +226,12 @@ public class BoardService {
         }
 
         String boardImage = board.getBoardImage();
+        String boardThumnail = board.getBoardThumbnail();
+
 
         if (boardImage != null && !boardImage.isEmpty()) {
             s3Upload.fileDelete(boardImage);
+            s3Upload.fileDelete(boardThumnail);
         }
 
         boardRepository.delete(board);
