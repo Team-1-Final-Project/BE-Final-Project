@@ -16,7 +16,7 @@ public class GetAllBoardDto extends Timestamped {
     private Long boardId;
     private String profileImage;
     private String writerName;
-    private String boardImage;
+    private String boardThumbnail;
     private String title;
     private String content;
     private int heartBoardNums;
@@ -24,13 +24,13 @@ public class GetAllBoardDto extends Timestamped {
     private final List<TagBoardResponseDto> tagBoards = new ArrayList<>();
 
 
-    public GetAllBoardDto(Board board, int heartBoardNums, int commentNums, String boardImage){
+    public GetAllBoardDto(Board board, int heartBoardNums, int commentNums, String boardThumbnail){
         this.boardId = board.getId();
         this.profileImage = board.getMember().getProfileImage();
         this.writerName = board.getMember().getNickname();
         this.title = board.getTitle();
         this.content = board.getContent();
-        this.boardImage = boardImage;
+        this.boardThumbnail = boardThumbnail;
         this.heartBoardNums = heartBoardNums;
         this.commentNums = commentNums;
         super.createdAt = board.getCreatedAt();
