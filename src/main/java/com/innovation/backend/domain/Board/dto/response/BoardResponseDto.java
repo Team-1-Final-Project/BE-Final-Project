@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class BoardResponseDto extends Timestamped {
     private Long boardId;
+    private String email;
     private String profileImage;
     private String writerName;
     private String title;
@@ -29,6 +30,7 @@ public class BoardResponseDto extends Timestamped {
 
     public BoardResponseDto(Board board, int heartBoardNums) {
         this.boardId = board.getId();
+        this.email = board.getMember().getEmail();
         this.writerName = board.getMember().getNickname();
         this.profileImage = board.getMember().getProfileImage();
         this.title = board.getTitle();
@@ -47,6 +49,7 @@ public class BoardResponseDto extends Timestamped {
 
     public BoardResponseDto(Board board, int heartBoardNums, int commentNums, List<CommentResponseDto> commentResponseDtoList) {
         this.boardId = board.getId();
+        this.email = board.getMember().getEmail();
         this.writerName = board.getMember().getNickname();
         this.profileImage = board.getMember().getProfileImage();
         this.title = board.getTitle();
@@ -67,6 +70,7 @@ public class BoardResponseDto extends Timestamped {
 
     public BoardResponseDto(Board board) {
         this.boardId = board.getId();
+        this.email = board.getMember().getEmail();
         this.writerName = board.getMember().getNickname();
         this.profileImage = board.getMember().getProfileImage();
         this.title = board.getTitle();
