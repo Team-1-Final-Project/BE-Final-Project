@@ -1,5 +1,21 @@
+<div align="center"> 
+<h1> Innovation Camp SEOUL [1조] </br> </br> 
+<img src="https://user-images.githubusercontent.com/110370262/198892139-df6d5f2a-3f8b-4c58-8618-ef4398d1cebf.png" width="320">
+</h1>
+</div>
 
-# Innovation Camp SEOUL [1조] : Earth,Us
+<br></br>
+
+<div align="center"> 
+<h3> 🔎 group info </h3> </br>
+   ▪︎ Back-End : 강윤주 (Team Leader) / 전혜진 / 안재원 </br> </br>
+   ▪︎ Front-End : 심유선 (Deputy Team Leader) / 김민석 / 박세은A / 오정진 </br> 
+     [Front-End GitHub](https://github.com/Team-1-Final-Project/FE-Final-Project) (링크
+</div>
+
+<br></br>
+<br></br>
+
 
 ## 🖥 Preview
 ![영상썸네일_최종](https://user-images.githubusercontent.com/110370262/198887577-72c986b2-82ef-4e48-8105-12d2933ca192.png)
@@ -7,10 +23,20 @@
 ![earthUs](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcd0e46%2FbtrN4wR9V5a%2FT0kXvqqHVq5zUKDURQCO6k%2Fimg.png)
 
 
-## 🔎 group info
-   * BE : 강윤주 (Team Leader) / 전혜진 / 안재원
-   * FE : 심유선 (Deputy Team Leader) / 김민석 / 박세은A / 오정진 [Front-End GitHub](https://github.com/Team-1-Final-Project/FE-Final-Project) (링크)
+<br></br>
+<br></br>
 
+## 📃 서비스 개요
+<div align="center"> 
+최근 우리는 날이 갈수록 심각해지는 기후변화와 가속화되는 환경오염을 겪고 있습니다. </br> </br>
+이러한 이유로 환경 문제에 관심이 있고 제로웨이스트를  실천하고자 하는 분들이라면 누구나 </br>
+환경 문제에 대한 노하우나 생각을  공유, 소통하며 자유롭게 모여 함께 실천할 수 있는 공간을 제공함으로서 </br>
+일상 속에 자연스레 녹아드는 제로웨이스트를 추구하고자 기획하게 된 서비스입니다.
+</div>
+
+<br></br>
+<br></br>
+<br></br>
 
 ## 💡 핵심기능
 
@@ -26,27 +52,50 @@
 
 >일부 페이지 권한을 전체 개방하여 미가입 유저에게 일부 서비스 이용을 허용하여 미리보기를 제공합니다.
 
+<br></br>
+<br></br>
+<br></br>
 
 ## 🛠 Service Architecture
 ![서비스 아키텍쳐](https://user-images.githubusercontent.com/110370262/198887695-657fd21a-5d5b-4d09-b538-e2f5d90091a8.png)
 
+<br></br>
+<br></br>
+<br></br>
 
 ## 📁 Project Structure
-![structure](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FmUMmk%2FbtrNXYHrLY8%2FALfyidilVqXbnVrDePtXLK%2Fimg.png)
+<br></br>
+<div align="center">
+<img src="https://user-images.githubusercontent.com/110370262/198891253-555bc7ef-9ee6-458d-9826-173732f3f43b.png">
+</div>
+<br></br>
 
  * 가시성과 편의성을 고도하기 위해 폴더 구조를 기능별로 분류 후, 각 기능별마다 스프링 기본 구조로 재분류하였습니다.
-
-![meetingFolder](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FvXiG9%2FbtrNXVKSiWU%2FM9zL0Oi3KG6BHyIepgBB71%2Fimg.png)
  * 상세폴더 구조는 예시로 대표기능의 폴더 구조를 첨부하였습니다.
 
 
+<br></br>
+<br></br>
+<br></br>
 
-### [🔗 API 설계](https://www.notion.so/7fa2f4edf3da4a1cba1a25c80a2833a4?v=a29bf04c9e6e469ca21cdf7f228a2079) (링크연결)
+<hr>
+<br></br>
+<div align="center"> 
+<h3> <a href="https://www.notion.so/7fa2f4edf3da4a1cba1a25c80a2833a4?v=a29bf04c9e6e469ca21cdf7f228a2079">🔗 API 설계</a>  (링크 이동)</h3>
+</div>
+<br></br>
+<hr>
+
+<br></br>
+<br></br>
+<br></br>
 
 ## 🗂 ERD
 ![ERD](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FclCCne%2FbtrNYt72JfM%2FkO1XYUVcjIjei63k4XoQTK%2Fimg.png)
 
-
+<br></br>
+<br></br>
+<br></br>
 
 ## 🚀 Trouble Shooting
 > ### Selenium
@@ -71,8 +120,9 @@
 * 해결방안
   + 동의 내역을 받아와서 동의하지 않은 사용자일 경우 S3에 업로드하여 지정한 이미지를 기본 프로필 이미지로 설정되도록 수정하였습니다.
 
-
-
+<br></br>
+<br></br>
+<br></br>
 
 ## 📚 Back-End Technique Stacks
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white)
