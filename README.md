@@ -1,18 +1,21 @@
 <div align="center"> 
-<h1> Innovation Camp SEOUL [1조] : Earth,Us </h1>
+<h1> Innovation Camp SEOUL [1조] </br> </br> 
+<img src="https://user-images.githubusercontent.com/110370262/198892139-df6d5f2a-3f8b-4c58-8618-ef4398d1cebf.png" width="320">
+</h1>
 </div>
 
 <br></br>
 
 <div align="center"> 
 <h3> 🔎 group info </h3> </br>
-   * BE : 강윤주 (Team Leader) / 전혜진 / 안재원 </br> </br>
-   * FE : 심유선 (Deputy Team Leader) / 김민석 / 박세은A / 오정진 </br> 
+   ▪︎ Back-End : 강윤주 (Team Leader) / 전혜진 / 안재원 </br> </br>
+   ▪︎ Front-End : 심유선 (Deputy Team Leader) / 김민석 / 박세은A / 오정진 </br> 
      [Front-End GitHub](https://github.com/Team-1-Final-Project/FE-Final-Project) (링크
 </div>
 
 <br></br>
 <br></br>
+
 
 ## 🖥 Preview
 ![영상썸네일_최종](https://user-images.githubusercontent.com/110370262/198887577-72c986b2-82ef-4e48-8105-12d2933ca192.png)
