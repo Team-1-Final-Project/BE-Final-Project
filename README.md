@@ -10,7 +10,7 @@
 <h3> 🔎 group info </h3> </br>
    ▪︎ Back-End : 강윤주 (Team Leader) / 전혜진 / 안재원 </br> </br>
    ▪︎ Front-End : 심유선 (Deputy Team Leader) / 김민석 / 박세은A / 오정진 </br> 
-     [Front-End GitHub](https://github.com/Team-1-Final-Project/FE-Final-Project) (링크
+     <a href="https://github.com/Team-1-Final-Project/FE-Final-Project">Front-End GitHub 바로가기</a>
 </div>
 
 <br></br>
@@ -81,7 +81,7 @@
 <hr>
 <br></br>
 <div align="center"> 
-<h3> <a href="https://www.notion.so/7fa2f4edf3da4a1cba1a25c80a2833a4?v=a29bf04c9e6e469ca21cdf7f228a2079">🔗 API 설계</a>  (링크 이동)</h3>
+<h3> <a href="https://www.notion.so/7fa2f4edf3da4a1cba1a25c80a2833a4?v=a29bf04c9e6e469ca21cdf7f228a2079">🔗 API 명세서 보기</a></h3>
 </div>
 <br></br>
 <hr>
