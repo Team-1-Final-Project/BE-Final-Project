@@ -1,12 +1,9 @@
 
-
-# Team-1 [BE] Final Project
-Back-End Repo..
-
-=======
-
+# Innovation Camp SEOUL [1조] : Earth,Us
 
 ## 🖥 Preview
+![영상썸네일_최종](https://user-images.githubusercontent.com/110370262/198887577-72c986b2-82ef-4e48-8105-12d2933ca192.png)
+
 ![earthUs](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcd0e46%2FbtrN4wR9V5a%2FT0kXvqqHVq5zUKDURQCO6k%2Fimg.png)
 
 
@@ -31,8 +28,7 @@ Back-End Repo..
 
 
 ## 🛠 Service Architecture
-![architecture](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FZzmin%2FbtrNZGySzkd%2FPkE0YIk8PKu8sZpJZdF4Ok%2Fimg.png)
-
+![서비스 아키텍쳐](https://user-images.githubusercontent.com/110370262/198887695-657fd21a-5d5b-4d09-b538-e2f5d90091a8.png)
 
 
 ## 📁 Project Structure
@@ -78,9 +74,27 @@ Back-End Repo..
 
 
 
-## 📚 Technique Stacks
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white) <img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white"> <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"> ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white) <img src="https://img.shields.io/badge/apache tomcat-F8DC75?style=for-the-badge&logo=apachetomcat&logoColor=white"> <img src="https://img.shields.io/badge/Spring Security-6DB33F?style=for-the-badge&logo=Spring Security&logoColor=white"> <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white) <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white"> <img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white"> <img src="https://img.shields.io/badge/Amazon RDS-527FFF?style=for-the-badge&logo=Amazon RDS&logoColor=white"> <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white"> <img src="https://img.shields.io/badge/Ubuntu-D4911E?style=for-the-badge&logo=Ubuntu&logoColor=white"> <img src="https://img.shields.io/badge/intelliJ IDEA-7A1FA2?style=for-the-badge&logo=intelliJIDEA&logoColor=white">
-
-
-=======
+## 📚 Back-End Technique Stacks
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white)
+<img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
+<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white">
+<img src="https://img.shields.io/badge/Spring Security-52B0E7?style=for-the-badge&logo=Spring Security&logoColor=white">
+<img src="https://img.shields.io/badge/OAuth2.0-02303A?style=for-the-badge&logo=OAuth2.0&logoColor=white">
+<img src="https://img.shields.io/badge/JWT-A100FF?style=for-the-badge&logo=JWT&logoColor=white">
+<img src="https://img.shields.io/badge/kakao developers-FFCD00?style=for-the-badge&logo=kakao developers&logoColor=white">
+![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white)
+<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">
+<img src="https://img.shields.io/badge/Selenium-43B02A?style=for-the-badge&logo=Selenium&logoColor=white">
+<img src="https://img.shields.io/badge/SSE-181717?style=for-the-badge&logo=SSE&logoColor=white">
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
+<img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+<img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=for-the-badge&logo=git&logoColor=white">
+<img src="https://img.shields.io/badge/Amazon EC2-FF9900?style=for-the-badge&logo=Amazon EC2&logoColor=white">
+<img src="https://img.shields.io/badge/Amazon RDS-003791?style=for-the-badge&logo=Amazon RDS&logoColor=white">
+<img src="https://img.shields.io/badge/Amazon S3-DA1F26?style=for-the-badge&logo=Amazon S3&logoColor=white">
+<img src="https://img.shields.io/badge/Ubuntu-D4911E?style=for-the-badge&logo=Ubuntu&logoColor=white">
+<img src="https://img.shields.io/badge/HTTPS-00A98F?style=for-the-badge&logo=HTTPS&logoColor=white">
+<img src="https://img.shields.io/badge/Code Deploy-43B02A?style=for-the-badge&logo=Code Deploy&logoColor=white">
+<img src="https://img.shields.io/badge/intelliJ IDEA-7A1FA2?style=for-the-badge&logo=intelliJIDEA&logoColor=white">
 
